@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using IHomeFurniture.Models;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace IHomeFurniture.Controllers
 {
@@ -12,23 +13,41 @@ namespace IHomeFurniture.Controllers
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
         // ==========================================
-        // 1. ĐĂNG KÝ
+        // 1. ĐĂNG KÝ (GET - Hiển thị giao diện)
         // ==========================================
         public ActionResult Register()
         {
             return View();
         }
 
+        // ==========================================
+        // 1. ĐĂNG KÝ (POST - Xử lý dữ liệu)
+        // ==========================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterVM model)
         {
             if (ModelState.IsValid)
             {
+                // KIỂM TRA TÀI KHOẢN/EMAIL TRÙNG
                 var check = db.KHACHHANGs.FirstOrDefault(s => s.TaiKhoan == model.TaiKhoan || s.Email == model.Email);
                 if (check != null)
                 {
                     ViewBag.Error = "Tài khoản hoặc Email đã tồn tại!";
+                    return View(model);
+                }
+
+                // KIỂM TRA ĐỘ DÀI MẬT KHẨU
+                if (model.MatKhau.Length < 8)
+                {
+                    ViewBag.Error = "Mật khẩu phải có độ dài từ 8 ký tự trở lên!";
+                    return View(model);
+                }
+
+                // KIỂM TRA KÝ TỰ ĐẶC BIỆT
+                if (!Regex.IsMatch(model.MatKhau, @"[^a-zA-Z0-9]"))
+                {
+                    ViewBag.Error = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt (VD: @, #, $, !,...)";
                     return View(model);
                 }
 
@@ -157,7 +176,7 @@ namespace IHomeFurniture.Controllers
         }
 
         // ==========================================
-        // 6. HÀM GỬI MAIL (ĐÃ NẰM TRONG CLASS)
+        // 6. HÀM GỬI MAIL 
         // ==========================================
         private bool SendEmail(string toEmail, string otp)
         {

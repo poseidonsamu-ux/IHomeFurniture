@@ -17,8 +17,8 @@ namespace IHomeFurniture.Models // Kiểm tra kỹ namespace của bạn
         public string TaiKhoan { get; set; }
 
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
-        // Ràng buộc: Ít nhất 8 ký tự, 1 Hoa, 1 Thường, 1 Số, KHÔNG ký tự đặc biệt
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "Mật khẩu ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số (không ký tự đặc biệt)")]
+        // ĐÃ SỬA LUẬT: Bắt buộc 8 ký tự, 1 Hoa, 1 Thường, 1 Số, CÓ ÍT NHẤT 1 KÝ TỰ ĐẶC BIỆT
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$", ErrorMessage = "Mật khẩu ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ít nhất 1 ký tự đặc biệt (VD: @, #, $,...)")]
         [DataType(DataType.Password)]
         public string MatKhau { get; set; }
 
