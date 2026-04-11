@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Xác nhận OTP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex items-center justify-center min-h-screen bg-gray-50">
+    <div class="max-w-md w-full bg-white p-10 rounded-3xl shadow-xl border border-gray-100 text-center">
+        <div class="mb-6">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-envelope-open-text text-2xl text-black"></i>
+            </div>
+            <h2 class="text-2xl font-bold">Xác thực Email</h2>
+            <p class="text-gray-400 text-sm mt-2">Mã OTP 6 số đã được gửi tới <br> <span class="text-black font-semibold">@ViewBag.Email</span></p>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            <input type="hidden" name="email" value="@ViewBag.Email" />
+
+            if (ViewBag.Error != null)
+            {
+                <p class="text-red-500 text-sm mb-4 bg-red-50 py-2 rounded-lg">@ViewBag.Error</p>
+            }
+
+            <input type="text" name="otp" maxlength="6" required
+                   class="w-full text-center text-4xl tracking-widest font-mono font-bold py-4 border-2 border-gray-100 rounded-2xl focus:border-black focus:outline-none mb-6 transition-all"
+                   placeholder="000000" autofocus />
+
+            <div class="flex items-center justify-center space-x-2 mb-8">
+                <i class="fa-regular fa-clock text-gray-400"></i>
+                <span id="timer" class="text-xl font-bold text-black">03:00</span>
+            </div>
+
+            <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-gray-900 transition-all shadow-lg active:scale-95">
+                XÁC NHẬN NGAY
+            </button>
+        }
+
+        <div id="resend-container" class="hidden mt-8 pt-6 border-t border-gray-100">
+            <p class="text-sm text-gray-400">Chưa nhận được mã?</p>
+            <a href="@Url.Action("ResendOtp", new { email = ViewBag.Email })"
+               class="inline-block mt-2 text-black font-bold border-b-2 border-black hover:opacity-60 transition">
+                GỬI LẠI MÃ MỚI
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    let timeLeft = 180;
+    const timerDisplay = document.getElementById('timer');
+    const resendContainer = document.getElementById('resend-container');
+
+    const countdown = setInterval(() => {
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+
+        timerDisplay.innerText = `0${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerDisplay.innerText = "Hết hạn";
+            timerDisplay.classList.add('text-red-500');
+            resendContainer.classList.remove('hidden');
+        }
+        timeLeft--;
+    }, 1000);
+</script>

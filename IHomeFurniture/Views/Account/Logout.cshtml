@@ -1,0 +1,12 @@
+﻿public ActionResult Logout()
+{
+    // Xóa bỏ toàn bộ dữ liệu đang lưu trong Session
+    Session.Clear();
+
+    // Hoặc nếu muốn kỹ hơn, bạn xóa từng cái:
+    // Session["MaKH"] = null;
+    // Session["HoTen"] = null;
+
+    // Chuyển hướng người dùng về trang chủ (Home/Index)
+    return RedirectToAction("Index", "Home");
+}

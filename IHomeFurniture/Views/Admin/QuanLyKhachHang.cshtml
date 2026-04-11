@@ -1,0 +1,71 @@
+﻿@model IEnumerable<IHomeFurniture.Models.KHACHHANG>
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="min-h-screen bg-gray-50 py-10 px-10">
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="bg-red-50 text-red-600 p-4 rounded-xl mb-6 border border-red-100 flex items-center">
+                <i class="fa-solid fa-triangle-exclamation mr-3"></i>
+                @TempData["Error"]
+            </div>
+        }
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-black inline-block mr-4">Danh sách Khách hàng</h2>
+                <span class="bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">Tổng: @Model.Count() user</span>
+            </div>
+            <a href="/Admin/ThemKhachHang" class="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-800 transition">+ Thêm mới</a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 uppercase text-sm">
+                        <th class="p-4">ID</th>
+                        <th class="p-4">Khách hàng</th>
+                        <th class="p-4">Tài khoản / Email</th>
+                        <th class="p-4 text-center">Trạng thái</th>
+                        <th class="p-4 text-right">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="border-b hover:bg-gray-50 transition">
+                            <td class="p-4 font-bold">#@item.MaKH</td>
+                            <td class="p-4">
+                                <p class="font-bold">@item.HoTen</p>
+                                <p class="text-xs text-gray-400">@item.DienThoai</p>
+                            </td>
+                            <td class="p-4">
+                                <p class="font-medium text-gray-700">@item.TaiKhoan</p>
+                                <p class="text-xs text-gray-500">@item.Email</p>
+                            </td>
+                            <td class="p-4 text-center">
+                                @if (item.TrangThai == true)
+                                {
+                                    <span class="text-green-600 font-bold bg-green-50 px-2 py-1 rounded">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="text-red-500 font-bold bg-red-50 px-2 py-1 rounded">Bị khóa</span>
+                                }
+                            </td>
+                            <td class="p-4 text-right space-x-2">
+                                <a href="/Admin/SuaKhachHang/@item.MaKH" class="bg-blue-50 text-blue-600 p-2 rounded hover:bg-blue-100 transition inline-block" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="/Admin/XoaKhachHang/@item.MaKH" class="bg-orange-50 text-orange-600 p-2 rounded hover:bg-orange-100 transition inline-block" title="Khóa"><i class="fa-solid fa-user-slash"></i></a>
+                                <a href="/Admin/XoaVinhVien/@item.MaKH" onclick="return confirm('CẢNH BÁO: Xóa vĩnh viễn không thể khôi phục! Tiếp tục?');" class="bg-red-50 text-red-600 p-2 rounded hover:bg-red-100 transition inline-block" title="Xóa vĩnh viễn"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

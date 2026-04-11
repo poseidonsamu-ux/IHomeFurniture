@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="relative h-[80vh] flex items-center justify-center bg-gray-100">
+    <div class="absolute inset-0 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2000" alt="Interior" class="w-full h-full object-cover opacity-80">
+    </div>
+    <div class="relative text-center px-4">
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 text-gray-900">Nâng tầm không gian sống</h1>
+        <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Khám phá bộ sưu tập nội thất tối giản, hiện đại mang phong cách iHome.</p>
+        <a href="/Product" class="bg-black text-white px-8 py-4 rounded-full font-semibold hover:bg-gray-800 transition">Mua sắm ngay</a>
+    </div>
+</header>
+
+<section class="py-20 px-10">
+    <h2 class="text-3xl font-bold mb-12 text-center">Danh mục nổi bật</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="group relative overflow-hidden h-96 cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1000" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black bg-opacity-20 flex items-end p-8">
+                <h3 class="text-white text-2xl font-bold">Phòng Khách</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-gray-50 py-20 px-10">
+    <div class="flex justify-between items-end mb-12">
+        <div>
+            <h2 class="text-3xl font-bold">Sản phẩm mới nhất</h2>
+            <p class="text-gray-500 mt-2">Thiết kế độc quyền chỉ có tại iHome</p>
+        </div>
+        <a href="#" class="text-black border-b border-black font-semibold">Xem tất cả</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="bg-white p-4 group">
+            <div class="relative overflow-hidden mb-4 h-64">
+                <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800" class="w-full h-full object-cover">
+                <button class="absolute bottom-0 left-0 right-0 bg-black text-white py-3 translate-y-full group-hover:translate-y-0 transition">Thêm vào giỏ</button>
+            </div>
+            <h4 class="font-semibold text-lg">Ghế Sofa Velvet Grey</h4>
+            <p class="text-gray-500">12.500.000đ</p>
+        </div>
+    </div>
+</section>

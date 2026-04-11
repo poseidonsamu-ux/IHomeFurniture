@@ -1,0 +1,95 @@
+﻿@model IHomeFurniture.Models.RegisterVM
+@{
+    ViewBag.Title = "Đăng ký thành viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    input::-ms-reveal,
+    input::-ms-clear {
+        display: none;
+    }
+</style>
+
+<div class="flex items-center justify-center min-h-screen bg-gray-50 py-12 px-4">
+    <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-black font-sans">Tham gia iHOME.</h2>
+            <p class="text-gray-500 mt-2">Đăng ký để nhận ưu đãi nội thất mới nhất</p>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="space-y-4">
+                @if (ViewBag.Error != null)
+                {
+                    <div class="bg-red-50 text-red-500 p-3 rounded-lg text-sm border border-red-100">@ViewBag.Error</div>
+                }
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Họ tên khách hàng</label>
+                    @Html.TextBoxFor(m => m.HoTen, new { @class = "w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none transition", placeholder = "Nguyễn Văn A" })
+                    @Html.ValidationMessageFor(m => m.HoTen, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Email (để nhận OTP)</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none transition", placeholder = "name@gmail.com" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Tên tài khoản</label>
+                    @Html.TextBoxFor(m => m.TaiKhoan, new { @class = "w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none transition", placeholder = "ihome_user123" })
+                    @Html.ValidationMessageFor(m => m.TaiKhoan, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Mật khẩu</label>
+                    <div class="relative">
+                        @Html.PasswordFor(m => m.MatKhau, new { @class = "w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none transition", placeholder = "********", id = "passMain" })
+                        <button type="button" onclick="togglePass('passMain', 'iconMain')" class="absolute right-3 top-2.5 text-gray-400 hover:text-black">
+                            <i id="iconMain" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.MatKhau, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Xác nhận mật khẩu</label>
+                    <div class="relative">
+                        @Html.PasswordFor(m => m.NhapLaiMatKhau, new { @class = "w-full px-4 py-2 border rounded-lg focus:ring-1 focus:ring-black outline-none transition", placeholder = "********", id = "passConfirm" })
+                        <button type="button" onclick="togglePass('passConfirm', 'iconConfirm')" class="absolute right-3 top-2.5 text-gray-400 hover:text-black">
+                            <i id="iconConfirm" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.NhapLaiMatKhau, "", new { @class = "text-red-500 text-xs mt-1" })
+                </div>
+
+                <button type="submit" class="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition shadow-md mt-4">
+                    TIẾP TỤC NHẬN MÃ OTP
+                </button>
+            </div>
+        }
+
+        <p class="text-center text-sm text-gray-500 mt-6">
+            Đã có tài khoản? <a href="/Account/Login" class="text-black font-bold border-b border-black">Đăng nhập</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function togglePass(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    }
+</script>

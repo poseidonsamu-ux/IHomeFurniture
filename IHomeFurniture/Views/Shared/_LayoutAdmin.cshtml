@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - I-HOME Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-gray-900 text-white flex flex-col">
+        <div class="h-16 flex items-center justify-center border-b border-gray-800">
+            <h1 class="text-2xl font-bold tracking-widest text-white">iHOME<span class="text-blue-500">.</span></h1>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1">
+                <li>
+                    <a href="/Admin/Index" class="flex items-center px-6 py-3 hover:bg-gray-800 transition">
+                        <i class="fa-solid fa-chart-pie w-6"></i> Tổng quan
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/QuanLyKhachHang" class="flex items-center px-6 py-3 hover:bg-gray-800 transition">
+                        <i class="fa-solid fa-users w-6"></i> Khách hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-800 transition">
+                        <i class="fa-solid fa-couch w-6"></i> Sản phẩm
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-800 transition">
+                        <i class="fa-solid fa-file-invoice-dollar w-6"></i> Đơn hàng
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="p-4 border-t border-gray-800">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold">
+                    AD
+                </div>
+                <div class="text-sm">
+                    <p class="font-bold">@Session["Admin_Name"]</p>
+                    <p class="text-xs text-gray-400">Quản trị viên</p>
+                </div>
+            </div>
+            <a href="/Admin/Logout" class="block w-full text-center text-sm bg-red-600 hover:bg-red-700 py-2 rounded transition">Đăng xuất</a>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10">
+            <h2 class="text-xl font-semibold text-gray-800">@ViewBag.Title</h2>
+            <div><span class="text-sm text-gray-500">Hôm nay: @DateTime.Now.ToString("dd/MM/yyyy")</span></div>
+        </header>
+
+        <div class="p-8">
+            @RenderBody()
+        </div>
+    </main>
+
+</body>
+</html>

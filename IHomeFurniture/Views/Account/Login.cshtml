@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+    <div class="max-w-md w-full bg-white p-10 rounded-2xl shadow-sm border border-gray-100">
+        <h2 class="text-3xl font-bold text-center mb-8">Đăng nhập iHOME</h2>
+
+        @using (Html.BeginForm())
+        {
+            if (ViewBag.Error != null)
+            {
+                <div class="bg-red-50 text-red-500 p-3 rounded-lg text-sm mb-6 text-center border border-red-100">@ViewBag.Error</div>
+            }
+
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Tài khoản</label>
+                    <input type="text" name="TaiKhoan" required
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-1 focus:ring-black outline-none transition" />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Mật khẩu</label>
+                    <input type="password" name="MatKhau" required
+                           class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-1 focus:ring-black outline-none transition" />
+                </div>
+                <button type="submit" class="w-full bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md mt-2">
+                    ĐĂNG NHẬP
+                </button>
+            </div>
+        }
+
+        <div class="mt-8 text-center">
+            <p class="text-sm text-gray-500">
+                Lần đầu đến với iHome?
+                <a href="/Account/Register" class="text-black font-bold border-b border-black ml-1">Tạo tài khoản mới</a>
+            </p>
+        </div>
+    </div>
+</div>

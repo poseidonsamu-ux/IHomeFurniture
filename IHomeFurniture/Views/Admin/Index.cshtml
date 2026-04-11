@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Tổng quan thống kê";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+        <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500 font-medium">Khách hàng</p>
+            <h3 class="text-2xl font-bold text-gray-900">@ViewBag.TotalUsers</h3>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+        <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-couch"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500 font-medium">Sản phẩm</p>
+            <h3 class="text-2xl font-bold text-gray-900">@ViewBag.TotalProducts</h3>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-file-invoice"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500 font-medium">Đơn hàng</p>
+            <h3 class="text-2xl font-bold text-gray-900">@ViewBag.TotalOrders</h3>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-sack-dollar"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500 font-medium">Doanh thu</p>
+            <h3 class="text-2xl font-bold text-gray-900">@String.Format("{0:N0}", ViewBag.TotalRevenue)đ</h3>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center py-20">
+    <i class="fa-solid fa-screwdriver-wrench text-6xl text-gray-200 mb-4"></i>
+    <h2 class="text-2xl font-bold text-gray-800">Chào mừng đến với khu vực Quản Trị</h2>
+    <p class="text-gray-500 mt-2">Hãy chọn một chức năng ở thanh menu bên trái để bắt đầu làm việc.</p>
+</div>

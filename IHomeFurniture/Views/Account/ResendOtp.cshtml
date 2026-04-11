@@ -1,0 +1,22 @@
+﻿public ActionResult ResendOtp(string email)
+{
+    // Tìm khách hàng trong database qua Email
+    var kh = db.KHACHHANGs.FirstOrDefault(x => x.Email == email);
+
+    if (kh != null)
+    {
+        // 1. Tạo mã OTP 6 số mới
+        string newOtp = new Random().Next(100000, 999999).ToString();
+
+        // 2. Cập nhật lại mã và thời gian hết hạn mới (+3 phút)
+        kh.MaXacNhan = newOtp;
+        kh.ThoiGianHetHanOTP = DateTime.Now.AddMinutes(3);
+        db.SaveChanges();
+
+        // 3. Gọi hàm SendEmail đã viết để gửi mã mới về mail cho khách
+        SendEmail(email, newOtp);
+    }
+
+    // Sau khi gửi xong, quay lại trang nhập OTP để khách nhập mã mới
+    return RedirectToAction("VerifyOtp", new { email = email });
+}
