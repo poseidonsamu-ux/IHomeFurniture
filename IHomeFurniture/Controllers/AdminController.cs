@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
-using IHomeFurniture.Models; // Nhớ sửa theo tên project của bạn
+using System.IO;
+using IHomeFurniture.Models;
 
 namespace IHomeFurniture.Controllers
 {
@@ -10,7 +12,7 @@ namespace IHomeFurniture.Controllers
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
         // =====================================
-        // 1. ĐĂNG NHẬP DÀNH CHO ADMIN
+        // 1. ĐĂNG NHẬP & ĐĂNG XUẤT ADMIN
         // =====================================
         public ActionResult Login()
         {
@@ -37,14 +39,12 @@ namespace IHomeFurniture.Controllers
 
         public ActionResult Logout()
         {
-            Session["Admin_ID"] = null;
-            Session["Admin_Name"] = null;
-            Session["Admin_Role"] = null;
+            Session.Clear();
             return RedirectToAction("Login");
         }
 
         // =====================================
-        // 2. DASHBOARD (TRANG CHỦ ADMIN)
+        // 2. DASHBOARD (TRANG CHỦ TỔNG QUAN)
         // =====================================
         public ActionResult Index()
         {
@@ -69,7 +69,7 @@ namespace IHomeFurniture.Controllers
         }
 
         // =====================================
-        // 4. THÊM KHÁCH HÀNG (TỪ ADMIN)
+        // 4. THÊM KHÁCH HÀNG MỚI
         // =====================================
         public ActionResult ThemKhachHang()
         {
@@ -78,6 +78,7 @@ namespace IHomeFurniture.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ThemKhachHang(KHACHHANG kh)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -86,13 +87,14 @@ namespace IHomeFurniture.Controllers
                 kh.NgayTao = DateTime.Now;
                 kh.TrangThai = true;
                 kh.DaXacThucEmail = true;
+
                 db.KHACHHANGs.Add(kh);
                 db.SaveChanges();
                 return RedirectToAction("QuanLyKhachHang");
             }
             catch (Exception)
             {
-                ViewBag.Error = "Tài khoản hoặc Email đã tồn tại, hoặc mật khẩu chưa đủ mạnh!";
+                ViewBag.Error = "Tài khoản/Email đã tồn tại, hoặc dữ liệu không hợp lệ!";
                 return View(kh);
             }
         }
@@ -109,6 +111,7 @@ namespace IHomeFurniture.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SuaKhachHang(KHACHHANG model)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -127,12 +130,12 @@ namespace IHomeFurniture.Controllers
                     return RedirectToAction("QuanLyKhachHang");
                 }
             }
-            catch { ViewBag.Error = "Lỗi cập nhật dữ liệu!"; }
+            catch { ViewBag.Error = "Lỗi cập nhật dữ liệu. Vui lòng kiểm tra lại!"; }
             return View(model);
         }
 
         // =====================================
-        // 6. XÓA (KHÓA) KHÁCH HÀNG
+        // 6. XÓA MỀM (KHÓA) KHÁCH HÀNG
         // =====================================
         public ActionResult XoaKhachHang(int id)
         {
@@ -147,7 +150,7 @@ namespace IHomeFurniture.Controllers
         }
 
         // =====================================
-        // 7. XÓA VĨNH VIỄN (HARD DELETE)
+        // 7. XÓA VĨNH VIỄN KHÁCH HÀNG
         // =====================================
         public ActionResult XoaVinhVien(int id)
         {
@@ -163,10 +166,86 @@ namespace IHomeFurniture.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Không thể xóa vĩnh viễn vì khách hàng này đã có dữ liệu đơn hàng! Hãy sử dụng tính năng 'Khóa' thay thế.";
+                TempData["Error"] = "Không thể xóa vĩnh viễn vì khách hàng này đã phát sinh đơn hàng!";
             }
 
             return RedirectToAction("QuanLyKhachHang");
+        }
+
+        // =====================================
+        // 8. QUẢN LÝ SẢN PHẨM (NỘI THẤT)
+        // =====================================
+        public ActionResult QuanLySanPham()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+
+            // Lấy danh sách sản phẩm mới nhất
+            var danhSachSP = db.SANPHAMs.OrderByDescending(s => s.MaSP).ToList();
+            return View(danhSachSP);
+        }
+
+        // =====================================
+        // 9. THÊM SẢN PHẨM MỚI (NỘI THẤT)
+        // =====================================
+        public ActionResult ThemSanPham()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+
+            // Load đúng bảng DANHMUC và THUONGHIEU
+            ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc");
+            ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ThemSanPham(SANPHAM sp, HttpPostedFileBase HinhAnh)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+
+            try
+            {
+                if (HinhAnh != null && HinhAnh.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(HinhAnh.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+
+                    HinhAnh.SaveAs(path);
+                    sp.AnhBia = fileName;
+                }
+
+                // Gán các giá trị mặc định tránh lỗi NULL
+                sp.NgayCapNhat = DateTime.Now;
+                sp.TrangThai = true;
+                sp.LuotXem = 0;
+
+                db.SANPHAMs.Add(sp);
+                db.SaveChanges();
+
+                return RedirectToAction("QuanLySanPham");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi khi thêm sản phẩm: " + ex.Message;
+
+                // Nếu lỗi thì load lại Dropdown list đúng bảng
+                ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc", sp.MaDM);
+                ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH", sp.MaTH);
+
+                return View(sp);
+            }
+        }
+
+        // =====================================
+        // 10. QUẢN LÝ ĐƠN HÀNG
+        // =====================================
+        public ActionResult QuanLyDonHang()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+
+            var danhSachDH = db.DONDATHANGs.OrderByDescending(d => d.NgayDat).ToList();
+            return View(danhSachDH);
         }
     }
 }

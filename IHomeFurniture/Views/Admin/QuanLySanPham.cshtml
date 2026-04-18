@@ -1,0 +1,96 @@
+﻿@model IEnumerable<IHomeFurniture.Models.SANPHAM>
+@{
+    ViewBag.Title = "Quản lý Sản phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="min-h-screen bg-gray-50 py-8 px-8">
+    <div class="bg-white p-8 rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] border border-gray-100">
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 inline-block mr-4">Kho Sản Phẩm Nội Thất</h2>
+                <span class="bg-blue-50 text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full border border-blue-100">
+                    <i class="fa-solid fa-box mr-1"></i> Tổng: @(Model != null ? Model.Count() : 0) sản phẩm
+                </span>
+            </div>
+            <a href="/Admin/ThemSanPham" class="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                <i class="fa-solid fa-plus mr-2"></i> Thêm nội thất mới
+            </a>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-100">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 text-gray-600 uppercase text-xs font-bold tracking-wider">
+                        <th class="p-4 border-b border-gray-100">Mã SP</th>
+                        <th class="p-4 border-b border-gray-100">Sản phẩm</th>
+                        <th class="p-4 border-b border-gray-100">Danh mục</th>
+                        <th class="p-4 border-b border-gray-100 text-right">Giá bán</th>
+                        <th class="p-4 border-b border-gray-100 text-center">Tồn kho</th>
+                        <th class="p-4 border-b border-gray-100 text-center">Công cụ</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr class="border-b border-gray-50 hover:bg-blue-50/50 transition-colors duration-150 group">
+                                <td class="p-4 font-bold text-gray-500">#SP@(item.MaSP)</td>
+                                <td class="p-4 flex items-center space-x-4">
+                                    <div class="w-14 h-14 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-gray-200">
+                                        @if (!string.IsNullOrEmpty(item.AnhBia))
+                                        {
+                                            <img src="~/Images/@item.AnhBia" alt="@item.TenSP" class="w-full h-full object-cover" />
+                                        }
+                                        else
+                                        {
+                                            <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                                <i class="fa-solid fa-image"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-900 text-base">@item.TenSP</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">Thương hiệu: @(item.THUONGHIEU != null ? item.THUONGHIEU.TenTH : "Đang cập nhật")</p>
+                                    </div>
+                                </td>
+                                <td class="p-4">
+                                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
+                                        @(item.DANHMUC != null ? item.DANHMUC.TenDanhMuc : "Không có danh mục")
+                                    </span>
+                                </td>
+                                <td class="p-4 text-right font-bold text-red-500">
+                                    @String.Format("{0:N0}", item.GiaBan) đ
+                                </td>
+                                <td class="p-4 text-center">
+                                    <span class="@(item.SoLuongTon <= 5 ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700") font-bold px-3 py-1 rounded-lg">
+                                        @item.SoLuongTon
+                                    </span>
+                                </td>
+                                <td class="p-4 text-center space-x-2 text-xl">
+                                    <a href="@Url.Action("SuaSanPham", "Admin", new { id = item.MaSP })" class="inline-flex items-center justify-center w-9 h-9 bg-orange-50 text-orange-500 rounded-lg hover:bg-orange-500 hover:text-white transition-all shadow-sm" title="Sửa">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="@Url.Action("XoaSanPham", "Admin", new { id = item.MaSP })" class="inline-flex items-center justify-center w-9 h-9 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm" title="Xóa" onclick="return confirm('Sếp có chắc muốn xóa sản phẩm này không?')">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="p-10 text-center text-gray-500">
+                                <i class="fa-solid fa-box-open text-4xl mb-4 block text-gray-300"></i>
+                                Kho hàng đang trống, Sếp hãy thêm sản phẩm mới nhé!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

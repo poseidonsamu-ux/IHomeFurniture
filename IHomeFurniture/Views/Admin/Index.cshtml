@@ -3,50 +3,88 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
-        <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl">
+<div class="mb-8 flex justify-between items-center">
+    <div>
+        <h2 class="text-3xl font-bold text-gray-800 tracking-tight">Dashboard</h2>
+        <p class="text-gray-500 mt-1">Tổng quan hoạt động kinh doanh của cửa hàng.</p>
+    </div>
+    <div>
+        <button class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all duration-200">
+            <i class="fa-solid fa-download mr-2"></i> Xuất báo cáo
+        </button>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-5 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 cursor-pointer group">
+        <div class="w-16 h-16 bg-blue-50 group-hover:bg-blue-500 text-blue-600 group-hover:text-white rounded-2xl flex items-center justify-center text-2xl transition-colors duration-300">
             <i class="fa-solid fa-users"></i>
         </div>
         <div>
-            <p class="text-sm text-gray-500 font-medium">Khách hàng</p>
-            <h3 class="text-2xl font-bold text-gray-900">@ViewBag.TotalUsers</h3>
+            <p class="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wide">Khách hàng</p>
+            <h3 class="text-3xl font-extrabold text-gray-900">@ViewBag.TotalUsers</h3>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
-        <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl">
-            <i class="fa-solid fa-couch"></i>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-5 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 cursor-pointer group">
+        <div class="w-16 h-16 bg-green-50 group-hover:bg-green-500 text-green-600 group-hover:text-white rounded-2xl flex items-center justify-center text-2xl transition-colors duration-300">
+            <i class="fa-solid fa-book"></i>
         </div>
         <div>
-            <p class="text-sm text-gray-500 font-medium">Sản phẩm</p>
-            <h3 class="text-2xl font-bold text-gray-900">@ViewBag.TotalProducts</h3>
+            <p class="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wide">Sản phẩm</p>
+            <h3 class="text-3xl font-extrabold text-gray-900">@ViewBag.TotalProducts</h3>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
-        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-5 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 cursor-pointer group">
+        <div class="w-16 h-16 bg-orange-50 group-hover:bg-orange-500 text-orange-600 group-hover:text-white rounded-2xl flex items-center justify-center text-2xl transition-colors duration-300">
             <i class="fa-solid fa-file-invoice"></i>
         </div>
         <div>
-            <p class="text-sm text-gray-500 font-medium">Đơn hàng</p>
-            <h3 class="text-2xl font-bold text-gray-900">@ViewBag.TotalOrders</h3>
+            <p class="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wide">Đơn hàng</p>
+            <h3 class="text-3xl font-extrabold text-gray-900">@ViewBag.TotalOrders</h3>
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
-        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-2xl">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-5 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 cursor-pointer group">
+        <div class="w-16 h-16 bg-purple-50 group-hover:bg-purple-500 text-purple-600 group-hover:text-white rounded-2xl flex items-center justify-center text-2xl transition-colors duration-300">
             <i class="fa-solid fa-sack-dollar"></i>
         </div>
         <div>
-            <p class="text-sm text-gray-500 font-medium">Doanh thu</p>
-            <h3 class="text-2xl font-bold text-gray-900">@String.Format("{0:N0}", ViewBag.TotalRevenue)đ</h3>
+            <p class="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wide">Doanh thu</p>
+            <h3 class="text-3xl font-extrabold text-gray-900">@String.Format("{0:N0}", ViewBag.TotalRevenue)<span class="text-lg text-gray-400 ml-1">đ</span></h3>
         </div>
     </div>
 </div>
 
-<div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center py-20">
-    <i class="fa-solid fa-screwdriver-wrench text-6xl text-gray-200 mb-4"></i>
-    <h2 class="text-2xl font-bold text-gray-800">Chào mừng đến với khu vực Quản Trị</h2>
-    <p class="text-gray-500 mt-2">Hãy chọn một chức năng ở thanh menu bên trái để bắt đầu làm việc.</p>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="col-span-1 lg:col-span-2 bg-gradient-to-r from-blue-600 to-indigo-700 p-8 sm:p-10 rounded-3xl shadow-lg text-white relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-white opacity-10 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-3">Chào mừng trở lại, Admin! 👋</h2>
+            <p class="text-blue-100 mb-8 text-lg max-w-xl">Hôm nay là một ngày tuyệt vời để bứt phá doanh thu. Hãy bắt đầu bằng việc kiểm tra các đơn hàng mới nhất.</p>
+
+            <div class="flex flex-wrap gap-4">
+                <a href="/Admin/QuanLyDonHang" class="bg-white text-blue-700 font-bold px-7 py-3.5 rounded-xl hover:bg-gray-50 hover:shadow-lg transition-all duration-200">
+                    <i class="fa-solid fa-truck-fast mr-2"></i> Xử lý đơn hàng
+                </a>
+                <a href="/Admin/ThemSanPham" class="bg-blue-800 bg-opacity-40 text-white font-bold px-7 py-3.5 rounded-xl hover:bg-opacity-60 transition-all duration-200 border border-blue-400 backdrop-blur-sm">
+                    <i class="fa-solid fa-plus mr-2"></i> Thêm sách mới
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-span-1 bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center hover:shadow-md transition-shadow duration-300">
+        <div class="relative mb-5">
+            <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center border-4 border-white shadow-lg z-10 relative">
+                <i class="fa-solid fa-check-circle text-4xl text-green-500"></i>
+            </div>
+            <div class="absolute top-0 left-0 w-full h-full bg-green-400 rounded-full animate-ping opacity-20"></div>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800">Hệ thống ổn định</h3>
+        <p class="text-gray-500 mt-2 text-sm leading-relaxed">Máy chủ đang hoạt động mượt mà.<br />Không có cảnh báo bảo mật nào.</p>
+    </div>
 </div>

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<IHomeFurniture.Models.DONDATHANG>
+@{
+    ViewBag.Title = "Quản lý Đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="min-h-screen bg-gray-50 py-8 px-8">
+    <div class="bg-white p-8 rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] border border-gray-100">
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 inline-block mr-4">Quản Lý Đơn Hàng</h2>
+                <span class="bg-blue-50 text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full border border-blue-100">
+                    <i class="fa-solid fa-box-open mr-1"></i> Tổng: @(Model != null ? Model.Count() : 0) đơn
+                </span>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-100">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 text-gray-600 uppercase text-xs font-bold tracking-wider">
+                        <th class="p-4 border-b border-gray-100">Mã ĐH</th>
+                        <th class="p-4 border-b border-gray-100">Khách hàng</th>
+                        <th class="p-4 border-b border-gray-100">Ngày đặt</th>
+                        <th class="p-4 border-b border-gray-100 text-right">Tổng tiền</th>
+                        <th class="p-4 border-b border-gray-100 text-center">Trạng thái</th>
+                        <th class="p-4 border-b border-gray-100 text-center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr class="border-b border-gray-50 hover:bg-gray-50/80 transition-colors">
+                                <td class="p-4 font-bold text-blue-600">#ORD-@item.MaDonHang</td>
+                                <td class="p-4">
+                                    <p class="font-bold text-gray-900">@(item.KHACHHANG != null ? item.KHACHHANG.HoTen : "Khách vãng lai")</p>
+                                    <p class="text-xs text-gray-500">@item.DienThoaiNhan</p>
+                                </td>
+                                <td class="p-4 text-gray-600">
+                                    @(item.NgayDat.HasValue ? item.NgayDat.Value.ToString("dd/MM/yyyy HH:mm") : "")
+                                </td>
+                                <td class="p-4 text-right font-bold text-red-500">
+                                    @String.Format("{0:N0}", item.TongTien) đ
+                                </td>
+                                <td class="p-4 text-center">
+                                    @if (item.MaTT == 1)
+                                    {
+                                        <span class="bg-yellow-100 text-yellow-700 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Chờ xác nhận</span>
+                                    }
+                                    else if (item.MaTT == 4)
+                                    {
+                                        <span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-check-double mr-1"></i> Đã giao</span>
+                                    }
+                                    else if (item.MaTT == 5)
+                                    {
+                                        <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-xmark mr-1"></i> Đã hủy</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">
+                                            <i class="fa-solid fa-truck mr-1"></i> @(item.TRANGTHAIDONHANG != null ? item.TRANGTHAIDONHANG.TenTrangThai : "Đang xử lý")
+                                        </span>
+                                    }
+                                </td>
+                                <td class="p-4 text-center space-x-2">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-blue-500 hover:text-white transition font-medium text-xs"><i class="fa-solid fa-eye mr-1"></i> Chi tiết</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-gray-500">
+                                <i class="fa-solid fa-box-open text-4xl mb-3 text-gray-300 block"></i>
+                                Chưa có đơn hàng nào trong hệ thống.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

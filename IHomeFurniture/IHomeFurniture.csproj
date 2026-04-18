@@ -275,6 +275,9 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\QuanLyKhachHang.cshtml" />
     <Content Include="Views\Admin\SuaKhachHang.cshtml" />
+    <Content Include="Views\Admin\QuanLySanPham.cshtml" />
+    <Content Include="Views\Admin\ThemSanPham.cshtml" />
+    <Content Include="Views\Admin\QuanLyDonHang.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
