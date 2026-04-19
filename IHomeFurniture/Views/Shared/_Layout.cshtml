@@ -4,96 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - iHome</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
+
 <body class="bg-white text-gray-800">
 
-    <nav class="flex justify-between items-center px-10 py-6 border-b border-gray-100 sticky top-0 bg-white z-50">
-        <div class="text-2xl font-bold tracking-tighter text-black">
-            <a href="@Url.Action("Index", "Home")">iHOME.</a>
-        </div>
+    <!-- NAVBAR -->
+    <nav class="group sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-100 transition-all duration-300 hover:bg-white">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
 
-        <ul class="hidden lg:flex space-x-8 font-medium">
-            <li><a href="@Url.Action("Index", "Home")" class="hover:text-gray-500 transition">Trang chủ</a></li>
-            <li><a href="/Product" class="hover:text-gray-500 transition">Sản phẩm</a></li>
-            <li><a href="#" class="hover:text-gray-500 transition">Bộ sưu tập</a></li>
-            <li><a href="#" class="hover:text-gray-500 transition">Liên hệ</a></li>
-        </ul>
-
-        <form action="/Search" method="get" class="hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-full w-64">
-            <button type="submit"><i class="fa-solid fa-magnifying-glass text-gray-400 mr-2"></i></button>
-            <input type="text" name="searchTerm" placeholder="Tìm kiếm..." class="bg-transparent border-none focus:outline-none text-sm w-full">
-        </form>
-
-        <div class="flex items-center space-x-6">
-            @if (Session["TaiKhoan"] == null)
-            {
-                <a href="@Url.Action("Login", "Account")" class="flex items-center space-x-2 hover:text-gray-500 transition text-sm font-medium">
-                    <i class="fa-regular fa-user text-lg"></i>
-                    <span>Đăng nhập</span>
-                </a>
-            }
-            else
-            {
-                <span class="text-sm font-medium">Chào, @Session["HoTen"]!</span>
-                <a href="@Url.Action("Logout", "Account")" class="text-xs text-red-500">Thoát</a>
-            }
-
-            <a href="/Cart" class="flex items-center space-x-2 hover:text-gray-500 transition text-sm font-medium relative">
-                <i class="fa-solid fa-cart-shopping text-lg"></i>
-                <span>Giỏ hàng</span>
-                <span class="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            <a href="@Url.Action("Index", "Home")" class="text-2xl font-black tracking-[0.2em] transition-transform duration-300 hover:scale-105">
+                iHOME<span class="text-orange-500">.</span>
             </a>
+
+            <ul class="hidden lg:flex items-center space-x-10 text-[13px] uppercase tracking-[0.15em] font-semibold text-gray-400">
+                <li>
+                    <a href="@Url.Action("Index", "Home")" class="relative py-2 transition-colors hover:text-black group/link">
+                        Trang chủ
+                        <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Product" class="relative py-2 transition-colors hover:text-black group/link">
+                        Sản phẩm
+                        <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="relative py-2 transition-colors hover:text-black group/link">
+                        Bộ sưu tập
+                        <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="relative py-2 transition-colors hover:text-black group/link">
+                        Liên hệ
+                        <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="flex items-center space-x-4">
+
+                <div class="hidden md:flex items-center">
+                    <form action="/Search" method="get" class="flex items-center bg-gray-50 border border-gray-100 px-4 py-2 rounded-full focus-within:bg-white focus-within:border-gray-200 transition-all duration-300">
+                        <button type="submit" class="text-gray-400 hover:text-black transition-colors">
+                            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                        </button>
+                        <input type="text" name="searchTerm" placeholder="TÌM KIẾM..."
+                               class="bg-transparent outline-none ml-2 w-28 focus:w-44 transition-all duration-500 text-[11px] font-bold tracking-widest text-gray-700">
+                    </form>
+                </div>
+
+                <div class="h-8 w-[1px] bg-gray-200 mx-2"></div>
+
+                <div class="flex items-center">
+                    @if (Session["TaiKhoan"] == null)
+                    {
+                        <a href="@Url.Action("Login", "Account")" class="group flex items-center gap-2 hover:text-gray-500 transition-colors">
+                            <i class="fa-regular fa-user text-xl"></i>
+                            <span class="uppercase tracking-widest text-[12px] font-bold mt-0.5">Tài khoản</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="flex items-center gap-3">
+                            <div class="flex flex-col items-end leading-none">
+                                <span class="text-[9px] uppercase text-gray-400 mb-1 tracking-tighter">Thành viên</span>
+                                <span class="text-xs font-bold tracking-wide">@Session["HoTen"]</span>
+                            </div>
+                            <a href="@Url.Action("Logout", "Account")" class="text-gray-300 hover:text-red-500 transition-colors">
+                                <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                <a href="/Cart" class="relative group ml-2">
+                    <div class="flex items-center bg-black text-white px-5 py-2.5 rounded-full hover:bg-zinc-800 transition-all shadow-sm active:scale-95">
+                        <i class="fa-solid fa-cart-shopping text-sm mr-2.5"></i>
+                        <span class="uppercase tracking-widest text-[11px] font-bold">Giỏ hàng</span>
+
+                        <span class="absolute -top-1 -right-1 bg-[#ff6b00] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm animate-pulse">
+                            2
+                        </span>
+                    </div>
+                </a>
+
+            </div>
         </div>
     </nav>
 
+    <!-- CONTENT -->
     <main>
         @RenderBody()
     </main>
 
-    <footer class="bg-black text-white py-16 px-10">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-800 pb-12">
-            <div class="col-span-1 md:col-span-1">
-                <div class="text-2xl font-bold mb-6 text-white">iHOME.</div>
-                <p class="text-gray-400">Kiến tạo không gian, dựng xây hạnh phúc.</p>
+    <!-- FOOTER -->
+    <footer class="bg-zinc-950 text-white pt-24 pb-12 border-t border-zinc-800">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+
+                <div class="space-y-6">
+                    <a href="/" class="text-2xl font-black tracking-[0.2em]">iHOME<span class="text-orange-500">.</span></a>
+                    <p class="text-zinc-400 text-sm leading-relaxed font-light">
+                        Mang đến giải pháp nội thất tối giản, hiện đại và tinh tế. Chúng tôi tin rằng không gian sống chính là nơi nuôi dưỡng tâm hồn.
+                    </p>
+                    <div class="flex space-x-5">
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-brands fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8">Cửa hàng</h4>
+                    <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                        <li><a href="#" class="hover:text-white transition-colors">Tất cả sản phẩm</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Bộ sưu tập mới</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Đồ trang trí</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Ưu đãi đặc biệt</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8">Hỗ trợ khách hàng</h4>
+                    <ul class="space-y-4 text-sm text-zinc-400 font-light">
+                        <li><a href="#" class="hover:text-white transition-colors">Chính sách vận chuyển</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Chính sách đổi trả</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hướng dẫn bảo quản</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Liên hệ / Khiếu nại</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8">Newsletter</h4>
+                    <p class="text-zinc-400 text-sm mb-6 font-light">Đăng ký để nhận thông tin về bộ sưu tập mới nhất.</p>
+                    <form class="relative">
+                        <input type="email" placeholder="Email của bạn"
+                               class="w-full bg-transparent border-b border-zinc-700 pb-3 outline-none focus:border-white transition-colors text-sm font-light">
+                        <button type="submit" class="absolute right-0 bottom-3 text-zinc-400 hover:text-white">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div>
-                <h5 class="font-bold mb-6">Hỗ trợ</h5>
-                <ul class="text-gray-400 space-y-3">
-                    <li><a href="#" class="hover:text-white transition">Giao hàng</a></li>
-                    <li><a href="#" class="hover:text-white transition">Bảo hành</a></li>
-                    <li><a href="#" class="hover:text-white transition">Đổi trả</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-bold mb-6">Công ty</h5>
-                <ul class="text-gray-400 space-y-3">
-                    <li><a href="#" class="hover:text-white transition">Giới thiệu</a></li>
-                    <li><a href="#" class="hover:text-white transition">Showroom</a></li>
-                    <li><a href="#" class="hover:text-white transition">Blog</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-bold mb-6">Đăng ký nhận tin</h5>
-                <form action="/Newsletter/Subscribe" method="post" class="flex border-b border-gray-500 py-2">
-                    <input type="email" name="email" placeholder="Email của bạn" class="bg-transparent border-none focus:outline-none w-full text-white">
-                    <button type="submit" class="font-bold text-white">GỬI</button>
-                </form>
-            </div>
-        </div>
-        <div class="mt-10 text-gray-500 text-sm flex justify-between">
-            <p>© 2026 iHome Interior. All rights reserved.</p>
-            <div class="flex space-x-4">
-                <a href="#" class="hover:text-white transition">FB</a>
-                <a href="#" class="hover:text-white transition">IG</a>
-                <a href="#" class="hover:text-white transition">YT</a>
+
+            <div class="pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-zinc-600 uppercase tracking-widest font-medium">
+                <p>© 2026 iHome Interior Design. All rights reserved.</p>
+                <div class="flex space-x-8">
+                    <a href="#" class="hover:text-zinc-300">Privacy Policy</a>
+                    <a href="#" class="hover:text-zinc-300">Terms of Service</a>
+                </div>
             </div>
         </div>
     </footer>
