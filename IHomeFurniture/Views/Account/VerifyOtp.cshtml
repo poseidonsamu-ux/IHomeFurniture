@@ -1,46 +1,77 @@
 ﻿@{
-    ViewBag.Title = "Xác nhận OTP";
+    ViewBag.Title = "Xác nhận OTP | iHOME";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="flex items-center justify-center min-h-screen bg-gray-50">
-    <div class="max-w-md w-full bg-white p-10 rounded-3xl shadow-xl border border-gray-100 text-center">
-        <div class="mb-6">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-envelope-open-text text-2xl text-black"></i>
-            </div>
-            <h2 class="text-2xl font-bold">Xác thực Email</h2>
-            <p class="text-gray-400 text-sm mt-2">Mã OTP 6 số đã được gửi tới <br> <span class="text-black font-semibold">@ViewBag.Email</span></p>
+<div class="min-h-screen flex items-center justify-center bg-[#fafafa] px-4 py-20 relative overflow-hidden">
+
+    <div class="absolute top-0 left-0 w-full h-full opacity-40 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-50 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-100 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div class="max-w-[460px] w-full relative z-10 text-center">
+
+        <div class="mb-10">
+            <h1 class="text-6xl font-black text-black tracking-tighter leading-none mb-4">
+                XÁC THỰC <br /> <span class="text-orange-500">EMAIL.</span>
+            </h1>
+            <p class="text-zinc-400 text-[11px] uppercase tracking-[0.4em] font-bold">Mã bảo mật đã được gửi</p>
         </div>
 
-        @using (Html.BeginForm())
-        {
-            <input type="hidden" name="email" value="@ViewBag.Email" />
+        <div class="bg-white p-10 rounded-3xl border border-zinc-100 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
 
-            if (ViewBag.Error != null)
-            {
-                <p class="text-red-500 text-sm mb-4 bg-red-50 py-2 rounded-lg">@ViewBag.Error</p>
-            }
-
-            <input type="text" name="otp" maxlength="6" required
-                   class="w-full text-center text-4xl tracking-widest font-mono font-bold py-4 border-2 border-gray-100 rounded-2xl focus:border-black focus:outline-none mb-6 transition-all"
-                   placeholder="000000" autofocus />
-
-            <div class="flex items-center justify-center space-x-2 mb-8">
-                <i class="fa-regular fa-clock text-gray-400"></i>
-                <span id="timer" class="text-xl font-bold text-black">03:00</span>
+            <div class="mb-8">
+                <div class="w-20 h-20 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-orange-100 shadow-inner">
+                    <i class="fa-solid fa-envelope-open-text text-3xl text-orange-500 animate-pulse"></i>
+                </div>
+                <p class="text-zinc-400 text-sm font-medium leading-relaxed">
+                    Mã OTP 6 số đã được gửi tới <br>
+                    <span class="text-black font-black underline underline-offset-4 decoration-orange-300">@ViewBag.Email</span>
+                </p>
             </div>
 
-            <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-bold hover:bg-gray-900 transition-all shadow-lg active:scale-95">
-                XÁC NHẬN NGAY
-            </button>
-        }
+            @using (Html.BeginForm())
+            {
+                <input type="hidden" name="email" value="@ViewBag.Email" />
 
-        <div id="resend-container" class="hidden mt-8 pt-6 border-t border-gray-100">
-            <p class="text-sm text-gray-400">Chưa nhận được mã?</p>
-            <a href="@Url.Action("ResendOtp", new { email = ViewBag.Email })"
-               class="inline-block mt-2 text-black font-bold border-b-2 border-black hover:opacity-60 transition">
-                GỬI LẠI MÃ MỚI
+                if (ViewBag.Error != null)
+                {
+                    <div class="bg-red-50 text-red-500 p-3 rounded-xl text-[11px] font-bold mb-6 flex items-center justify-center gap-2 border border-red-100">
+                        <i class="fa-solid fa-circle-exclamation text-xs"></i> @ViewBag.Error
+                    </div>
+                }
+
+                <div class="relative group mb-8">
+                    <input type="text" name="otp" maxlength="6" required autofocus
+                           class="w-full text-center text-5xl tracking-[0.4em] font-black py-6 bg-zinc-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-black focus:outline-none transition-all duration-300 placeholder:text-zinc-200"
+                           placeholder="000000" />
+                </div>
+
+                <div class="flex items-center justify-center gap-2.5 mb-8">
+                    <i class="fa-regular fa-clock text-zinc-300 text-lg"></i>
+                    <span id="timer" class="text-2xl font-black text-black tabular-nums tracking-tighter">03:00</span>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-zinc-900 hover:bg-orange-600 text-white py-4 rounded-full font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xl shadow-zinc-200 hover:shadow-orange-200 active:scale-95 flex items-center justify-center gap-3 mt-6">
+                    <span>Xác Nhận Mã OPT</span>
+                    <i class="fa-solid fa-arrow-right-long text-xs transition-transform group-hover:translate-x-1"></i>
+                </button>
+            }
+
+            <div id="resend-container" class="hidden mt-10 pt-8 border-t border-zinc-100">
+                <p class="text-xs text-zinc-400 font-medium mb-3">Chưa nhận được mã?</p>
+                <a href="@Url.Action("ResendOtp", new { email = ViewBag.Email })"
+                   class="inline-block text-black font-black text-[11px] uppercase tracking-widest border-b-2 border-orange-500 pb-0.5 hover:text-orange-500 transition-colors">
+                    Gửi lại mã mới
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <a href="/Account/Register" class="text-zinc-400 hover:text-black text-[11px] font-bold uppercase tracking-widest transition-all">
+                <i class="fa-solid fa-chevron-left mr-1 text-[10px]"></i> Quay lại đăng ký
             </a>
         </div>
     </div>
@@ -55,12 +86,12 @@
         let mins = Math.floor(timeLeft / 60);
         let secs = timeLeft % 60;
 
-        timerDisplay.innerText = `0${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        timerDisplay.innerText = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
 
         if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.innerText = "Hết hạn";
-            timerDisplay.classList.add('text-red-500');
+            timerDisplay.classList.replace('text-black', 'text-red-500');
             resendContainer.classList.remove('hidden');
         }
         timeLeft--;

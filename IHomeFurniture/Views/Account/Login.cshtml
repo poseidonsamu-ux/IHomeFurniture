@@ -1,41 +1,72 @@
 ﻿@{
-    ViewBag.Title = "Đăng nhập";
+    ViewBag.Title = "Đăng nhập | iHOME";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-    <div class="max-w-md w-full bg-white p-10 rounded-2xl shadow-sm border border-gray-100">
-        <h2 class="text-3xl font-bold text-center mb-8">Đăng nhập iHOME</h2>
+<div class="min-h-screen flex items-center justify-center bg-white px-4 py-20 relative overflow-hidden">
 
-        @using (Html.BeginForm())
-        {
-            if (ViewBag.Error != null)
+    <div class="absolute top-0 left-0 w-full h-full opacity-40 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-50 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-zinc-100 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div class="max-w-[480px] w-full relative z-10">
+
+        <div class="mb-12">
+            <h1 class="text-7xl font-black text-black tracking-tighter leading-none mb-4">
+                ĐĂNG <br /> <span class="text-orange-500">NHẬP.</span>
+            </h1>
+            <p class="text-zinc-400 text-xs tracking-[0.4em] uppercase font-bold ml-1">Truy cập không gian iHome</p>
+        </div>
+
+        <div class="bg-white p-10 rounded-2xl border border-zinc-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+
+            @using (Html.BeginForm())
             {
-                <div class="bg-red-50 text-red-500 p-3 rounded-lg text-sm mb-6 text-center border border-red-100">@ViewBag.Error</div>
+                if (ViewBag.Error != null)
+                {
+                    <div class="bg-red-50 border border-red-100 text-red-500 p-4 rounded-xl text-xs font-bold mb-8 flex items-center gap-3">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>@ViewBag.Error</span>
+                    </div>
+                }
+
+                <div class="space-y-8">
+                    <div class="space-y-2">
+                        <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 ml-1">Tài khoản</label>
+                        <div class="relative group">
+                            <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>
+                            <input type="text" name="TaiKhoan" required
+                                   placeholder="Username hoặc Email"
+                                   class="w-full bg-zinc-50 border border-zinc-100 rounded-xl py-4 pl-12 pr-4 text-black outline-none focus:bg-white focus:border-orange-500/50 focus:ring-4 focus:ring-orange-500/5 transition-all placeholder:text-zinc-300 text-sm font-medium" />
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center px-1">
+                            <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400">Mật Khẩu</label>
+                            <a href="#" class="text-[10px] text-zinc-300 hover:text-orange-500 transition-colors uppercase tracking-widest font-black">Quên?</a>
+                        </div>
+                        <div class="relative group">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>
+                            <input type="password" name="MatKhau" required
+                                   placeholder="••••••••"
+                                   class="w-full bg-zinc-50 border border-zinc-100 rounded-xl py-4 pl-12 pr-4 text-black outline-none focus:bg-white focus:border-orange-500/50 focus:ring-4 focus:ring-orange-500/5 transition-all placeholder:text-zinc-300 text-sm font-medium" />
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-zinc-900 hover:bg-orange-600 text-white py-4 rounded-full font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-xl shadow-zinc-200 hover:shadow-orange-200 active:scale-95 flex items-center justify-center gap-3 mt-6">
+                        <span>Đăng nhập ngay</span>
+                        <i class="fa-solid fa-arrow-right-long text-xs transition-transform group-hover:translate-x-1"></i>
+                    </button>
+                </div>
             }
 
-            <div class="space-y-5">
-                <div>
-                    <label class="block text-sm font-semibold mb-2 text-gray-700">Tài khoản</label>
-                    <input type="text" name="TaiKhoan" required
-                           class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-1 focus:ring-black outline-none transition" />
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-2 text-gray-700">Mật khẩu</label>
-                    <input type="password" name="MatKhau" required
-                           class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-1 focus:ring-black outline-none transition" />
-                </div>
-                <button type="submit" class="w-full bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition-all shadow-md mt-2">
-                    ĐĂNG NHẬP
-                </button>
+            <div class="mt-10 text-center">
+                <span class="text-zinc-400 text-xs tracking-wide">Bạn là thành viên mới?</span>
+                <a href="/Account/Register" class="text-black font-black text-xs uppercase tracking-widest ml-2 border-b-2 border-orange-500 pb-0.5 hover:text-orange-500 transition-colors">Đăng ký</a>
             </div>
-        }
-
-        <div class="mt-8 text-center">
-            <p class="text-sm text-gray-500">
-                Lần đầu đến với iHome?
-                <a href="/Account/Register" class="text-black font-bold border-b border-black ml-1">Tạo tài khoản mới</a>
-            </p>
         </div>
     </div>
 </div>
