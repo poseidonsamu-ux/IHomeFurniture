@@ -1,0 +1,148 @@
+﻿@model IHomeFurniture.Models.SANPHAM
+@{
+    ViewBag.Title = Model.TenSP + " | iHOME";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var sanPhamCungLoai = ViewBag.SanPhamCungLoai as IEnumerable<IHomeFurniture.Models.SANPHAM>;
+}
+
+<div class="bg-gray-50 py-4 border-b border-gray-100">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-12 text-[11px] uppercase tracking-widest text-gray-500 font-medium">
+        <a href="/" class="hover:text-black transition-colors">Trang chủ</a>
+        <span class="mx-2">/</span>
+        <a href="/Product" class="hover:text-black transition-colors">Sản phẩm</a>
+        <span class="mx-2">/</span>
+        <span class="text-black font-bold line-clamp-1 inline-block align-bottom">@Model.TenSP</span>
+    </div>
+</div>
+
+<section class="py-16">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+            <div class="relative bg-zinc-100 rounded-sm aspect-square overflow-hidden group shadow-sm">
+                <img src="~/Images/@Model.AnhBia" alt="@Model.TenSP" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 cursor-zoom-in">
+
+                @if (Model.GiaKhuyenMai > 0 && Model.GiaKhuyenMai < Model.GiaBan)
+                {
+                    <div class="absolute top-6 left-6 bg-orange-500 text-white text-xs font-bold px-4 py-2 uppercase tracking-widest shadow-lg shadow-orange-500/30">Sale</div>
+                }
+            </div>
+
+            <div class="flex flex-col justify-center">
+                <div class="mb-4 text-xs uppercase tracking-[0.2em] text-zinc-400 font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-tag text-orange-500"></i>
+                    Thương hiệu: <span class="text-black">@(Model.THUONGHIEU != null ? Model.THUONGHIEU.TenTH : "Đang cập nhật")</span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-light text-black mb-6 leading-tight">@Model.TenSP</h1>
+
+                <div class="flex items-center gap-5 mb-8">
+                    @if (Model.GiaKhuyenMai > 0 && Model.GiaKhuyenMai < Model.GiaBan)
+                    {
+                        <span class="text-4xl font-bold text-orange-500 drop-shadow-sm">@String.Format("{0:N0}", Model.GiaKhuyenMai)đ</span>
+                        <span class="text-xl text-zinc-400 line-through decoration-zinc-300">@String.Format("{0:N0}", Model.GiaBan)đ</span>
+                    }
+                    else
+                    {
+                        <span class="text-4xl font-bold text-black drop-shadow-sm">@String.Format("{0:N0}", Model.GiaBan)đ</span>
+                    }
+                </div>
+
+                <div class="prose prose-sm text-zinc-500 leading-relaxed font-light mb-10 line-clamp-4">
+                    @(string.IsNullOrEmpty(Model.MoTa) ? "Đang cập nhật mô tả chi tiết cho sản phẩm này..." : Model.MoTa)
+                </div>
+
+                <hr class="border-zinc-100 mb-10">
+
+                <form action="/Cart/Add" method="post" class="space-y-8">
+                    <input type="hidden" name="productId" value="@Model.MaSP" />
+
+                    <div class="flex items-center gap-6 bg-zinc-50 p-4 rounded-2xl w-fit border border-zinc-100">
+                        <span class="text-[11px] uppercase tracking-widest font-bold text-zinc-500 ml-2">Số lượng:</span>
+                        <div class="flex items-center bg-white border border-zinc-200 rounded-full w-32 shadow-sm">
+                            <button type="button" onclick="updateQty(-1)" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">-</button>
+                            <input type="number" id="qty" name="quantity" value="1" min="1" max="@Model.SoLuongTon" class="w-12 h-10 text-center text-sm font-black border-none outline-none bg-transparent" readonly>
+                            <button type="button" onclick="updateQty(1)" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">+</button>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-zinc-400 font-medium uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-box-open"></i> Kho hiện còn: <strong class="text-black text-sm">@Model.SoLuongTon</strong> sản phẩm
+                    </p>
+
+                    <div class="flex gap-4 pt-2">
+                        @if (Model.SoLuongTon > 0)
+                        {
+                            <button type="submit" class="flex-1 bg-black text-white h-16 rounded-full text-[11px] uppercase tracking-[0.2em] font-black hover:bg-orange-600 transition-all duration-300 shadow-xl shadow-zinc-200 hover:shadow-orange-200 active:scale-95 flex items-center justify-center gap-3">
+                                <span>Thêm vào giỏ</span>
+                                <i class="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-1"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" disabled class="flex-1 bg-zinc-100 text-zinc-400 h-16 rounded-full text-[11px] uppercase tracking-[0.2em] font-black cursor-not-allowed flex items-center justify-center gap-3 border border-zinc-200">
+                                <i class="fa-solid fa-ban"></i> Tạm hết hàng
+                            </button>
+                        }
+                    </div>
+                </form>
+
+                <div class="mt-12 grid grid-cols-2 gap-4 bg-orange-50/50 p-6 rounded-2xl border border-orange-100/50">
+                    <div class="flex items-center gap-3 text-xs font-bold text-zinc-800 tracking-wide uppercase">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-orange-500">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        Giao hàng hỏa tốc
+                    </div>
+                    <div class="flex items-center gap-3 text-xs font-bold text-zinc-800 tracking-wide uppercase">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-orange-500">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        Bảo hành 12 tháng
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (sanPhamCungLoai != null && sanPhamCungLoai.Any())
+{
+    <section class="py-24 bg-white border-t border-zinc-100">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <h3 class="text-3xl font-light tracking-tighter mb-12">Có thể Sếp sẽ <span class="font-bold italic">thích</span></h3>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                @foreach (var item in sanPhamCungLoai)
+                {
+                    <div class="group cursor-pointer" onclick="window.location.href='/Product/Detail/@item.MaSP'">
+                        <div class="relative overflow-hidden aspect-[4/5] bg-zinc-50 rounded-sm mb-4">
+                            <img src="~/Images/@item.AnhBia" alt="@item.TenSP" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-zinc-800 line-clamp-1 group-hover:text-orange-500 transition-colors">@item.TenSP</h4>
+                            <div class="mt-2">
+                                <span class="text-sm font-bold text-black">@String.Format("{0:N0}", item.GiaBan)đ</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    // Script tăng giảm số lượng mượt mà
+    function updateQty(change) {
+        const input = document.getElementById('qty');
+        let current = parseInt(input.value);
+        let max = parseInt(input.getAttribute('max'));
+
+        let newVal = current + change;
+        if (newVal >= 1 && newVal <= max) {
+            input.value = newVal;
+        }
+    }
+</script>
