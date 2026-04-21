@@ -21,8 +21,10 @@
 
         <div class="bg-white p-10 rounded-2xl border border-zinc-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
 
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
+
                 if (ViewBag.Error != null)
                 {
                     <div class="bg-red-50 border border-red-100 text-red-500 p-4 rounded-xl text-xs font-bold mb-8 flex items-center gap-3">
@@ -45,7 +47,8 @@
                     <div class="space-y-2">
                         <div class="flex justify-between items-center px-1">
                             <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400">Mật Khẩu</label>
-                            <a href="#" class="text-[10px] text-zinc-300 hover:text-orange-500 transition-colors uppercase tracking-widest font-black">Quên?</a>
+                            @* 1. link quên mật khẩu màu xanh dương chuẩn bài *@
+                            <a href="/Account/ForgotPassword" class="text-[10px] text-blue-600 hover:text-blue-800 transition-colors uppercase tracking-widest font-black">Quên mật khẩu</a>
                         </div>
                         <div class="relative group">
                             <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>

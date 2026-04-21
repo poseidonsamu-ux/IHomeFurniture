@@ -12,24 +12,18 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        // ==========================================
-        // 1. ĐĂNG KÝ (GET - Hiển thị giao diện)
-        // ==========================================
+        // 1. đăng ký
         public ActionResult Register()
         {
             return View();
         }
 
-        // ==========================================
-        // 1. ĐĂNG KÝ (POST - Xử lý dữ liệu)
-        // ==========================================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterVM model)
         {
             if (ModelState.IsValid)
             {
-                // KIỂM TRA TÀI KHOẢN/EMAIL TRÙNG
                 var check = db.KHACHHANGs.FirstOrDefault(s => s.TaiKhoan == model.TaiKhoan || s.Email == model.Email);
                 if (check != null)
                 {
@@ -37,14 +31,12 @@ namespace IHomeFurniture.Controllers
                     return View(model);
                 }
 
-                // KIỂM TRA ĐỘ DÀI MẬT KHẨU
                 if (model.MatKhau.Length < 8)
                 {
                     ViewBag.Error = "Mật khẩu phải có độ dài từ 8 ký tự trở lên!";
                     return View(model);
                 }
 
-                // KIỂM TRA KÝ TỰ ĐẶC BIỆT
                 if (!Regex.IsMatch(model.MatKhau, @"[^a-zA-Z0-9]"))
                 {
                     ViewBag.Error = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt (VD: @, #, $, !,...)";
@@ -82,9 +74,7 @@ namespace IHomeFurniture.Controllers
             return View(model);
         }
 
-        // ==========================================
-        // 2. XÁC THỰC OTP
-        // ==========================================
+        // 2. xác thực otp
         public ActionResult VerifyOtp(string email)
         {
             ViewBag.Email = email;
@@ -117,9 +107,7 @@ namespace IHomeFurniture.Controllers
             return View();
         }
 
-        // ==========================================
-        // 3. GỬI LẠI MÃ OTP
-        // ==========================================
+        // 3. gửi lại mã otp
         public ActionResult ResendOtp(string email)
         {
             var kh = db.KHACHHANGs.FirstOrDefault(x => x.Email == email);
@@ -134,9 +122,7 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("VerifyOtp", new { email = email });
         }
 
-        // ==========================================
-        // 4. ĐĂNG NHẬP
-        // ==========================================
+        // 4. đăng nhập
         public ActionResult Login()
         {
             return View();
@@ -166,18 +152,14 @@ namespace IHomeFurniture.Controllers
             return View();
         }
 
-        // ==========================================
-        // 5. ĐĂNG XUẤT
-        // ==========================================
+        // 5. đăng xuất
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
-        // ==========================================
-        // 6. HÀM GỬI MAIL 
-        // ==========================================
+        // 6. hàm gửi mail 
         private bool SendEmail(string toEmail, string otp)
         {
             try
@@ -194,14 +176,11 @@ namespace IHomeFurniture.Controllers
                         </div>
                         <div style='padding: 30px; line-height: 1.6;'>
                             <p>Chào bạn,</p>
-                            <p>Mã OTP để hoàn tất quá trình đăng ký tài khoản của bạn là:</p>
+                            <p>Mã OTP của bạn là:</p>
                             <div style='background: #f9f9f9; padding: 20px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 10px; color: #000; border: 1px dashed #ccc; margin: 20px 0;'>
                                 {otp}
                             </div>
-                            <p style='color: #666;'>Mã này sẽ hết hạn sau <strong>3 phút</strong>.</p>
-                        </div>
-                        <div style='background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #999;'>
-                            © 2026 iHome Interior. All rights reserved.
+                            <p style='color: #666;'>Mã này sẽ hết hạn sau thời gian quy định.</p>
                         </div>
                     </div>";
 
@@ -222,6 +201,129 @@ namespace IHomeFurniture.Controllers
                 return true;
             }
             catch { return false; }
+        }
+
+        // 7. hồ sơ tài khoản (chỉ cho phép khi đã login)
+        [HttpGet]
+        public ActionResult ProfileUser()
+        {
+            if (Session["MaKH"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int maKH = (int)Session["MaKH"];
+            var user = db.KHACHHANGs.Find(maKH);
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProfileUser(KHACHHANG model)
+        {
+            if (Session["MaKH"] == null) return RedirectToAction("Login", "Account");
+
+            try
+            {
+                var user = db.KHACHHANGs.Find(model.MaKH);
+                if (user != null)
+                {
+                    user.HoTen = model.HoTen;
+                    user.DienThoai = model.DienThoai;
+                    user.DiaChi = model.DiaChi;
+                    user.GioiTinh = model.GioiTinh;
+
+                    db.SaveChanges();
+
+                    Session["HoTen"] = user.HoTen;
+
+                    ViewBag.Success = "Cập nhật thông tin thành công!";
+                    return View(user);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Có lỗi xảy ra khi cập nhật!";
+            }
+            return View(model);
+        }
+
+        // 8. quên mật khẩu - nhập email
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(string Email)
+        {
+            var user = db.KHACHHANGs.FirstOrDefault(k => k.Email == Email);
+            if (user != null)
+            {
+                string otp = new Random().Next(100000, 999999).ToString();
+
+                user.MaXacNhan = otp;
+                user.ThoiGianHetHanOTP = DateTime.Now.AddMinutes(5);
+                db.SaveChanges();
+
+                SendEmail(user.Email, otp);
+
+                return RedirectToAction("ResetPassword", new { email = user.Email });
+            }
+
+            ViewBag.Error = "Email này chưa được đăng ký trong hệ thống!";
+            return View();
+        }
+
+        // 9. đặt lại mật khẩu mới (xác thực otp)
+        [HttpGet]
+        public ActionResult ResetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email)) return RedirectToAction("Login");
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(string email, string otp, string newPassword, string confirmPassword)
+        {
+            ViewBag.Email = email;
+
+            if (newPassword != confirmPassword)
+            {
+                ViewBag.Error = "Mật khẩu xác nhận không khớp!";
+                return View();
+            }
+
+            if (newPassword.Length < 8)
+            {
+                ViewBag.Error = "Mật khẩu quá yếu! Phải từ 8 ký tự trở lên.";
+                return View();
+            }
+
+            var user = db.KHACHHANGs.FirstOrDefault(k => k.Email == email && k.MaXacNhan == otp);
+
+            if (user != null)
+            {
+                if (user.ThoiGianHetHanOTP < DateTime.Now)
+                {
+                    ViewBag.Error = "Mã OTP đã hết hạn! Vui lòng quay lại bước Quên mật khẩu.";
+                    return View();
+                }
+
+                user.MatKhau = newPassword;
+                user.MaXacNhan = null;
+                db.SaveChanges();
+
+                TempData["Success"] = "Lấy lại mật khẩu thành công! Mời Sếp đăng nhập.";
+                return RedirectToAction("Login");
+            }
+
+            ViewBag.Error = "Mã OTP không chính xác!";
+            return View();
         }
     }
 }
