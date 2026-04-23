@@ -6,17 +6,16 @@
 <div class="mb-8 flex justify-between items-center">
     <div>
         <h2 class="text-3xl font-bold text-gray-800 tracking-tight">Dashboard</h2>
-        <p class="text-gray-500 mt-1">Tổng quan hoạt động kinh doanh của cửa hàng.</p>
+        <p class="text-gray-500 mt-1">Tổng quan hoạt động kinh doanh của iHome Furniture.</p>
     </div>
     <div>
-        <button class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all duration-200">
+        <a href="/Admin/XuatBaoCaoDoanhThu" class="inline-block bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-blue-500/30 transition-all duration-200">
             <i class="fa-solid fa-download mr-2"></i> Xuất báo cáo
-        </button>
+        </a>
     </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-5 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 cursor-pointer group">
         <div class="w-16 h-16 bg-blue-50 group-hover:bg-blue-500 text-blue-600 group-hover:text-white rounded-2xl flex items-center justify-center text-2xl transition-colors duration-300">
             <i class="fa-solid fa-users"></i>
@@ -29,7 +28,7 @@
 
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-5 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 cursor-pointer group">
         <div class="w-16 h-16 bg-green-50 group-hover:bg-green-500 text-green-600 group-hover:text-white rounded-2xl flex items-center justify-center text-2xl transition-colors duration-300">
-            <i class="fa-solid fa-book"></i>
+            <i class="fa-solid fa-couch"></i> 
         </div>
         <div>
             <p class="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wide">Sản phẩm</p>
@@ -63,7 +62,7 @@
         <div class="absolute -top-24 -right-24 w-72 h-72 bg-white opacity-10 rounded-full blur-3xl"></div>
 
         <div class="relative z-10">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-3">Chào mừng trở lại, Admin! 👋</h2>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-3">Chào mừng trở lại, @Session["Admin_Name"]! 👋</h2>
             <p class="text-blue-100 mb-8 text-lg max-w-xl">Hôm nay là một ngày tuyệt vời để bứt phá doanh thu. Hãy bắt đầu bằng việc kiểm tra các đơn hàng mới nhất.</p>
 
             <div class="flex flex-wrap gap-4">
@@ -71,7 +70,7 @@
                     <i class="fa-solid fa-truck-fast mr-2"></i> Xử lý đơn hàng
                 </a>
                 <a href="/Admin/ThemSanPham" class="bg-blue-800 bg-opacity-40 text-white font-bold px-7 py-3.5 rounded-xl hover:bg-opacity-60 transition-all duration-200 border border-blue-400 backdrop-blur-sm">
-                    <i class="fa-solid fa-plus mr-2"></i> Thêm sách mới
+                    <i class="fa-solid fa-plus mr-2"></i> Thêm sản phẩm
                 </a>
             </div>
         </div>

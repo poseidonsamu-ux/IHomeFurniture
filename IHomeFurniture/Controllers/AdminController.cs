@@ -11,9 +11,7 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        // =====================================
-        // 1. ĐĂNG NHẬP & ĐĂNG XUẤT ADMIN
-        // =====================================
+        // 1. Đăng nhập & đăng xuất admin
         public ActionResult Login()
         {
             if (Session["Admin_ID"] != null) return RedirectToAction("Index");
@@ -43,9 +41,7 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("Login");
         }
 
-        // =====================================
-        // 2. DASHBOARD (TRANG CHỦ TỔNG QUAN)
-        // =====================================
+        // 2. Dashboard (trang chủ tổng quan)
         public ActionResult Index()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -58,9 +54,7 @@ namespace IHomeFurniture.Controllers
             return View();
         }
 
-        // =====================================
-        // 3. QUẢN LÝ KHÁCH HÀNG
-        // =====================================
+        // 3. Quản lý khách hàng
         public ActionResult QuanLyKhachHang()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -68,9 +62,7 @@ namespace IHomeFurniture.Controllers
             return View(danhSachKH);
         }
 
-        // =====================================
-        // 4. THÊM KHÁCH HÀNG MỚI
-        // =====================================
+        // 4. Thêm khách hàng mới
         public ActionResult ThemKhachHang()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -99,9 +91,7 @@ namespace IHomeFurniture.Controllers
             }
         }
 
-        // =====================================
-        // 5. SỬA THÔNG TIN KHÁCH HÀNG
-        // =====================================
+        // 5. Sửa thông tin khách hàng
         public ActionResult SuaKhachHang(int id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -134,9 +124,7 @@ namespace IHomeFurniture.Controllers
             return View(model);
         }
 
-        // =====================================
-        // 6. XÓA MỀM (KHÓA) KHÁCH HÀNG
-        // =====================================
+        // 6. Xóa mềm (khóa) khách hàng
         public ActionResult XoaKhachHang(int id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -149,9 +137,7 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("QuanLyKhachHang");
         }
 
-        // =====================================
-        // 7. XÓA VĨNH VIỄN KHÁCH HÀNG
-        // =====================================
+        // 7. Xóa vĩnh viễn khách hàng
         public ActionResult XoaVinhVien(int id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -172,9 +158,7 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("QuanLyKhachHang");
         }
 
-        // =====================================
-        // 8. QUẢN LÝ SẢN PHẨM (NỘI THẤT)
-        // =====================================
+        // 8. Quản lý sản phẩm (nội thất)
         public ActionResult QuanLySanPham()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -184,9 +168,7 @@ namespace IHomeFurniture.Controllers
             return View(danhSachSP);
         }
 
-        // =====================================
-        // 9. THÊM SẢN PHẨM MỚI (NỘI THẤT)
-        // =====================================
+        // 9. Thêm sản phẩm mới (nội thất)
         public ActionResult ThemSanPham()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -237,15 +219,56 @@ namespace IHomeFurniture.Controllers
             }
         }
 
-        // =====================================
-        // 10. QUẢN LÝ ĐƠN HÀNG
-        // =====================================
+        // 10. Quản lý đơn hàng
         public ActionResult QuanLyDonHang()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
 
             var danhSachDH = db.DONDATHANGs.OrderByDescending(d => d.NgayDat).ToList();
             return View(danhSachDH);
+        }
+
+        
+        // 11. Xuất báo cáo danh sách đơn hàng (tất cả trạng thái)
+        public ActionResult XuatBaoCaoDoanhThu()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+
+            // BƯỚC QUAN TRỌNG: Xóa .Where để lấy toàn bộ 100% đơn hàng trong database
+            var danhSachDonHang = db.DONDATHANGs.OrderByDescending(d => d.NgayDat).ToList();
+
+            StringWriter sw = new StringWriter();
+
+            // Thêm cột "Trang Thai" vào đầu trang Excel
+            sw.WriteLine("Ma Don Hang,Ngay Dat,Khach Hang,So Dien Thoai,Tong Tien (VND),Trang Thai");
+
+            foreach (var don in danhSachDonHang)
+            {
+                string tenKhachHang = don.KHACHHANG != null ? don.KHACHHANG.HoTen : "Khach Le";
+                string ngayDat = don.NgayDat.HasValue ? don.NgayDat.Value.ToString("dd/MM/yyyy HH:mm") : "";
+                string tongTien = don.TongTien.HasValue ? don.TongTien.Value.ToString("0") : "0";
+
+                // Lấy tên trạng thái (Đã giao, Đã hủy, Chờ xác nhận...)
+                string trangThai = don.TRANGTHAIDONHANG != null ? don.TRANGTHAIDONHANG.TenTrangThai : "Khong xac dinh";
+
+                // Ghi dữ liệu bao gồm cả trạng thái đơn hàng
+                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5}",
+                    don.MaDonHang,
+                    ngayDat,
+                    tenKhachHang,
+                    don.DienThoaiNhan,
+                    tongTien,
+                    trangThai));
+            }
+
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment;filename=DanhSachDonHang_TongHop.csv");
+            Response.ContentType = "text/csv";
+            Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
+            Response.Write(sw.ToString());
+            Response.End();
+
+            return new EmptyResult();
         }
     }
 }
