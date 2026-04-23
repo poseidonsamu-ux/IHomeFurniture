@@ -19,7 +19,6 @@
 
 <section class="py-24 px-6 max-w-[1600px] mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 ">
-        @* Ô lớn bên trái *@
         <div class="md:col-span-6 relative group overflow-hidden rounded-sm">
             <img src="https://images.unsplash.com/photo-1583847268964-b28dc2f51ac9" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
             <div class="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-all"></div>
@@ -29,7 +28,6 @@
             </div>
         </div>
 
-        @* 2 ô nhỏ bên phải *@
         <div class="md:col-span-6 grid grid-rows-2 gap-6">
             <div class="relative group overflow-hidden rounded-sm">
                 <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
@@ -60,14 +58,12 @@
                 <p class="text-zinc-500 text-sm">Những thiết kế được tuyển chọn kỹ lưỡng, mang phong cách tối giản nhưng không kém phần sang trọng.</p>
             </div>
             <div class="flex gap-4">
-                @* Sau này có thể dùng Ajax để filter *@
                 <button class="px-6 py-2 border-b-2 border-black text-sm font-bold">Tất cả</button>
                 <button class="px-6 py-2 text-zinc-400 text-sm hover:text-black transition-colors">Ghế</button>
                 <button class="px-6 py-2 text-zinc-400 text-sm hover:text-black transition-colors">Bàn</button>
             </div>
         </div>
 
-        @* Grid Sản phẩm - Dễ dàng thay bằng @foreach từ Model database *@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
             @for (int i = 1; i <= 8; i++)
             {
@@ -76,10 +72,7 @@
                         <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80"
                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
 
-                        @* Label mới/Sale *@
                         <div class="absolute top-4 left-4 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-widest">New</div>
-
-                        @* Overlay Button *@
                         <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/60 to-transparent">
                             <button class="w-full bg-white text-black py-3 text-xs font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
@@ -97,10 +90,64 @@
             }
         </div>
 
-        @* Nút xem thêm (Phân trang Ajax sau này) *@
         <div class="mt-20 text-center">
             <a href="/Product" class="inline-block px-12 py-4 border border-zinc-200 text-zinc-800 text-xs font-bold tracking-[0.2em] hover:bg-black hover:text-white transition-all">
                 XEM TẤT CẢ SẢN PHẨM
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 bg-zinc-50 px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+            <div class="max-w-md">
+                <h2 class="text-4xl font-bold tracking-tighter mb-4 italic">Góc Cảm Hứng</h2>
+                <p class="text-zinc-500 text-sm">Cập nhật những xu hướng thiết kế nội thất mới nhất và mẹo vặt trang trí không gian sống.</p>
+            </div>
+            <div>
+                <a href="/News" class="text-xs font-bold uppercase tracking-[0.2em] underline underline-offset-4 hover:text-orange-600 transition-colors">Đọc tất cả bài viết</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <a href="/News/ChiTiet/1" class="block group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Blog Image">
+                    <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Xu Hướng 2026</div>
+                </div>
+                <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
+                    <span><i class="fa-regular fa-calendar mr-1"></i> 20 Thg 4, 2026</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i> 1.2k views</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Minimalism 2.0: Tối giản nhưng không đơn điệu</h3>
+                <p class="text-zinc-500 text-sm line-clamp-2">Khám phá cách kết hợp vật liệu tự nhiên và ánh sáng để tạo nên một không gian sống tối giản nhưng vẫn toát lên vẻ ấm cúng và sang trọng...</p>
+            </a>
+
+            <a href="/News/ChiTiet/2" class="block group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1593696140826-c58b021acf8b?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Blog Image">
+                    <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Mẹo Vặt</div>
+                </div>
+                <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
+                    <span><i class="fa-regular fa-calendar mr-1"></i> 15 Thg 4, 2026</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i> 850 views</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Bí quyết chọn Sofa góc cho căn hộ chung cư nhỏ</h3>
+                <p class="text-zinc-500 text-sm line-clamp-2">Diện tích khiêm tốn không có nghĩa là bạn phải hy sinh sự thoải mái. Hãy cùng tìm hiểu cách bố trí sofa chữ L để tối ưu không gian phòng khách...</p>
+            </a>
+
+            <a href="/News/ChiTiet/3" class="block group cursor-pointer">
+                <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Blog Image">
+                    <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Review</div>
+                </div>
+                <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
+                    <span><i class="fa-regular fa-calendar mr-1"></i> 10 Thg 4, 2026</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i> 2.1k views</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Vì sao gỗ Sồi Nga luôn là lựa chọn hàng đầu?</h3>
+                <p class="text-zinc-500 text-sm line-clamp-2">Sở hữu vân gỗ sắc nét và độ bền bỉ đáng kinh ngạc, không khó hiểu khi các sản phẩm nội thất từ gỗ Sồi Nga luôn trong tình trạng cháy hàng...</p>
             </a>
         </div>
     </div>

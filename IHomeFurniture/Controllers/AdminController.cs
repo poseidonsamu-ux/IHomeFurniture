@@ -270,5 +270,100 @@ namespace IHomeFurniture.Controllers
 
             return new EmptyResult();
         }
+
+        // 12. Danh sách tin tức
+        public ActionResult QuanLyTinTuc()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
+            return View(list);
+        }
+
+        // 13. Thêm tin tức mới
+        public ActionResult ThemTinTuc()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ThemTinTuc(TINTUC tin, HttpPostedFileBase fAnhTin)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(fAnhTin.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
+                    fAnhTin.SaveAs(path);
+                    tin.AnhTin = fileName;
+                }
+                tin.NgayDang = DateTime.Now;
+                tin.LuotXem = 0;
+
+                db.TINTUCs.Add(tin);
+                db.SaveChanges();
+                return RedirectToAction("QuanLyTinTuc");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi: " + ex.Message;
+                return View(tin);
+            }
+        }
+
+        // 14. Xóa tin tức
+        public ActionResult XoaTinTuc(int id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            var tin = db.TINTUCs.Find(id);
+            if (tin != null)
+            {
+                db.TINTUCs.Remove(tin);
+                db.SaveChanges();
+            }
+            return RedirectToAction("QuanLyTinTuc");
+        }
+
+        // 15. Sửa tin tức (Giao diện)
+        public ActionResult SuaTinTuc(int id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            var tin = db.TINTUCs.Find(id);
+            if (tin == null) return HttpNotFound();
+            return View(tin);
+        }
+
+        // 15. Sửa tin tức (Xử lý lưu database)
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SuaTinTuc(TINTUC model, HttpPostedFileBase fAnhTin)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                var tin = db.TINTUCs.Find(model.MaTin);
+                if (tin != null)
+                {
+                    tin.TieuDe = model.TieuDe;
+                    tin.NoiDung = model.NoiDung;
+
+                    // Nếu admin có chọn ảnh mới thì mới thay, không thì giữ ảnh cũ
+                    if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                    {
+                        string fileName = Path.GetFileName(fAnhTin.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
+                        fAnhTin.SaveAs(path);
+                        tin.AnhTin = fileName;
+                    }
+                    db.SaveChanges();
+                    return RedirectToAction("QuanLyTinTuc");
+                }
+            }
+            catch (Exception ex) { ViewBag.Error = "Lỗi cập nhật: " + ex.Message; }
+            return View(model);
+        }
     }
 }
