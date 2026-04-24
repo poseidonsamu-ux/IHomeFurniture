@@ -32,7 +32,8 @@
                         <td class="py-5 font-medium text-zinc-500">#@item.MaTin</td>
                         <td class="py-5">
                             <div class="flex items-center space-x-4">
-                                <img src="~/Images/News/@item.AnhTin" class="w-16 h-12 object-cover rounded-lg shadow-sm" onerror="this.src='https://placehold.co/100x80?text=No+Img'">
+                                @* Đã sửa đường dẫn ảnh ở dòng bên dưới *@
+                                <img src="@Url.Content("~/Uploads/TinTuc/" + item.AnhTin)" class="w-16 h-12 object-cover rounded-lg shadow-sm" onerror="this.src='https://placehold.co/100x80?text=No+Img'">
                                 <div>
                                     <p class="font-bold text-zinc-800 leading-tight">@item.TieuDe</p>
                                     <p class="text-[11px] text-zinc-400 mt-1 uppercase">Bản tin iHome Interior</p>

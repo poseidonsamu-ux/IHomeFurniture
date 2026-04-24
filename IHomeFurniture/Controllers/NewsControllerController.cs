@@ -8,30 +8,24 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        // 1. TRANG DANH SÁCH TẤT CẢ BÀI VIẾT
+        // 1. Lấy danh sách tin tức mới nhất
         public ActionResult Index()
         {
-            // Lấy danh sách tin tức mới nhất đưa lên đầu
             var listTin = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
             return View(listTin);
         }
 
-        // 2. TRANG ĐỌC CHI TIẾT 1 BÀI VIẾT (Đã fix chống sập web)
+        // 2. Xem chi tiết bài viết và tăng lượt xem
         public ActionResult ChiTiet(int? id)
         {
-            // Chống cháy: Nếu người ta gõ thiếu ID, đá họ về lại trang chủ
-            if (id == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            // 1. Kiểm tra ID tránh sập web
+            if (id == null) return RedirectToAction("Index", "Home");
 
+            // 2. Tìm bài viết theo ID
             var tin = db.TINTUCs.Find(id);
-            if (tin == null)
-            {
-                return HttpNotFound(); // Báo lỗi 404 nếu không tìm thấy bài
-            }
+            if (tin == null) return HttpNotFound();
 
-            // Mỗi lần có người click vào đọc, tăng lượt xem lên 1
+            // 3. Tăng lượt xem bài viết
             tin.LuotXem = (tin.LuotXem ?? 0) + 1;
             db.SaveChanges();
 

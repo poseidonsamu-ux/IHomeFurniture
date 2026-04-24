@@ -327,42 +327,41 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("QuanLyTinTuc");
         }
 
-        // 15. Sửa tin tức (Giao diện)
+        // 15. Hiển thị form sửa bài viết
         public ActionResult SuaTinTuc(int id)
         {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
             var tin = db.TINTUCs.Find(id);
-            if (tin == null) return HttpNotFound();
             return View(tin);
         }
 
-        // 15. Sửa tin tức (Xử lý lưu database)
+        // 15.1. Xử lý lưu dữ liệu, ngày đăng và ảnh
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult SuaTinTuc(TINTUC model, HttpPostedFileBase fAnhTin)
         {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            try
-            {
-                var tin = db.TINTUCs.Find(model.MaTin);
-                if (tin != null)
-                {
-                    tin.TieuDe = model.TieuDe;
-                    tin.NoiDung = model.NoiDung;
+            // 1. Tìm tin tức trong DB theo MaTin (khớp với HiddenFor trong View)
+            var tin = db.TINTUCs.Find(model.MaTin);
 
-                    // Nếu admin có chọn ảnh mới thì mới thay, không thì giữ ảnh cũ
-                    if (fAnhTin != null && fAnhTin.ContentLength > 0)
-                    {
-                        string fileName = Path.GetFileName(fAnhTin.FileName);
-                        string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
-                        fAnhTin.SaveAs(path);
-                        tin.AnhTin = fileName;
-                    }
-                    db.SaveChanges();
-                    return RedirectToAction("QuanLyTinTuc");
+            if (tin != null)
+            {
+                // 2. Cập nhật Tiêu đề, Nội dung và Ngày đăng từ giao diện
+                tin.TieuDe = model.TieuDe;
+                tin.NoiDung = model.NoiDung;
+                tin.NgayDang = model.NgayDang;
+
+                // 3. Kiểm tra và lưu ảnh mới nếu có tải lên
+                if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                {
+                    string fileName = System.IO.Path.GetFileName(fAnhTin.FileName);
+                    string path = Server.MapPath("~/Uploads/TinTuc/" + fileName);
+                    fAnhTin.SaveAs(path);
+                    tin.AnhTin = fileName;
                 }
+
+                // 4. Lưu thay đổi vào database
+                db.SaveChanges();
+                return RedirectToAction("QuanLyTinTuc");
             }
-            catch (Exception ex) { ViewBag.Error = "Lỗi cập nhật: " + ex.Message; }
             return View(model);
         }
     }

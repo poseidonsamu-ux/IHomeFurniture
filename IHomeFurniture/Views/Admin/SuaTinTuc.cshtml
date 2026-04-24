@@ -15,9 +15,18 @@
     {
         @Html.HiddenFor(m => m.MaTin)
         <div class="bg-white p-10 rounded-3xl border border-zinc-100 shadow-sm space-y-6">
-            <div>
-                <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Tiêu đề bài viết</label>
-                <input type="text" name="TieuDe" value="@Model.TieuDe" required class="w-full p-4 bg-zinc-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none font-bold" />
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Tiêu đề bài viết</label>
+                    <input type="text" name="TieuDe" value="@Model.TieuDe" required class="w-full p-4 bg-zinc-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none font-bold" />
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Ngày đăng</label>
+                    <input type="datetime-local" name="NgayDang"
+                           value="@(Model.NgayDang.HasValue ? Model.NgayDang.Value.ToString("yyyy-MM-ddTHH:mm") : "")"
+                           required class="w-full p-4 bg-zinc-50 border-none rounded-2xl focus:ring-2 focus:ring-black outline-none font-bold text-zinc-700" />
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -27,7 +36,7 @@
                 </div>
                 <div class="text-center">
                     <p class="text-[10px] text-zinc-400 uppercase mb-2">Ảnh hiện tại</p>
-                    <img src="~/Images/News/@Model.AnhTin" class="h-24 mx-auto rounded-lg shadow-md" />
+                    <img src="@Url.Content("~/Images/News/" + Model.AnhTin)" onerror="this.src='https://placehold.co/100x80?text=No+Img'" class="h-24 mx-auto rounded-lg shadow-md object-cover" />
                 </div>
             </div>
 
