@@ -1,0 +1,82 @@
+﻿@model IHomeFurniture.Models.SANPHAM
+@{
+    ViewBag.Title = "Chỉnh sửa sản phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="max-w-5xl mx-auto p-4">
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800 tracking-tight">CẬP NHẬT SẢN PHẨM</h2>
+            <p class="text-gray-500">Mã sản phẩm: <span class="font-bold text-blue-600">#SP@Model.MaSP</span></p>
+        </div>
+        <a href="/Admin/QuanLySanPham" class="text-zinc-400 hover:text-black transition-colors text-sm font-medium">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    @using (Html.BeginForm("SuaSanPham", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.MaSP)
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-zinc-100 space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Tên sản phẩm</label>
+                        <input type="text" name="TenSP" value="@Model.TenSP" required class="w-full p-4 bg-zinc-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none font-bold text-lg" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Mô tả sản phẩm</label>
+                        <textarea name="MoTa" id="MoTaEditor" class="w-full">@Model.MoTa</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-zinc-100 space-y-6">
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Giá bán (VND)</label>
+                        <input type="number" name="GiaBan" value="@Model.GiaBan" class="w-full p-4 bg-zinc-50 border-none rounded-2xl font-bold text-blue-600" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Số lượng tồn</label>
+                        <input type="number" name="SoLuongTon" value="@Model.SoLuongTon" class="w-full p-4 bg-zinc-50 border-none rounded-2xl font-bold" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Danh mục</label>
+                        @* Đã fix lỗi @class tại đây *@
+                        @Html.DropDownList("MaDM", null, new { @class = "w-full p-4 bg-zinc-50 border-none rounded-2xl outline-none" })
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Thương hiệu</label>
+                        @* Đã fix lỗi @class tại đây *@
+                        @Html.DropDownList("MaTH", null, new { @class = "w-full p-4 bg-zinc-50 border-none rounded-2xl outline-none" })
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-zinc-100">
+                    <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4">Hình ảnh đại diện</label>
+                    <div class="mb-4">
+                        <img src="~/Images/@Model.AnhBia" class="w-full h-48 object-cover rounded-2xl shadow-inner border border-zinc-100" />
+                    </div>
+                    <input type="file" name="HinhAnh" class="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold shadow-xl shadow-blue-500/20 transition-all uppercase tracking-widest">
+                    Lưu thay đổi
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@* Nhúng bộ soạn thảo nội dung *@
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('MoTaEditor');
+</script>

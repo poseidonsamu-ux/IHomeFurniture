@@ -162,8 +162,6 @@ namespace IHomeFurniture.Controllers
         public ActionResult QuanLySanPham()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-
-            // Lấy danh sách sản phẩm mới nhất
             var danhSachSP = db.SANPHAMs.OrderByDescending(s => s.MaSP).ToList();
             return View(danhSachSP);
         }
@@ -172,11 +170,8 @@ namespace IHomeFurniture.Controllers
         public ActionResult ThemSanPham()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-
-            // Load đúng bảng DANHMUC và THUONGHIEU
             ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc");
             ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH");
-
             return View();
         }
 
@@ -185,36 +180,27 @@ namespace IHomeFurniture.Controllers
         public ActionResult ThemSanPham(SANPHAM sp, HttpPostedFileBase HinhAnh)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-
             try
             {
                 if (HinhAnh != null && HinhAnh.ContentLength > 0)
                 {
                     string fileName = Path.GetFileName(HinhAnh.FileName);
                     string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-
                     HinhAnh.SaveAs(path);
                     sp.AnhBia = fileName;
                 }
-
-                // Gán các giá trị mặc định tránh lỗi NULL
                 sp.NgayCapNhat = DateTime.Now;
                 sp.TrangThai = true;
                 sp.LuotXem = 0;
-
                 db.SANPHAMs.Add(sp);
                 db.SaveChanges();
-
                 return RedirectToAction("QuanLySanPham");
             }
             catch (Exception ex)
             {
                 ViewBag.Error = "Lỗi khi thêm sản phẩm: " + ex.Message;
-
-                // Nếu lỗi thì load lại Dropdown list đúng bảng
                 ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc", sp.MaDM);
                 ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH", sp.MaTH);
-
                 return View(sp);
             }
         }
@@ -223,51 +209,31 @@ namespace IHomeFurniture.Controllers
         public ActionResult QuanLyDonHang()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-
             var danhSachDH = db.DONDATHANGs.OrderByDescending(d => d.NgayDat).ToList();
             return View(danhSachDH);
         }
 
-        
-        // 11. Xuất báo cáo danh sách đơn hàng (tất cả trạng thái)
+        // 11. Xuất báo cáo danh sách đơn hàng
         public ActionResult XuatBaoCaoDoanhThu()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-
-            // BƯỚC QUAN TRỌNG: Xóa .Where để lấy toàn bộ 100% đơn hàng trong database
             var danhSachDonHang = db.DONDATHANGs.OrderByDescending(d => d.NgayDat).ToList();
-
             StringWriter sw = new StringWriter();
-
-            // Thêm cột "Trang Thai" vào đầu trang Excel
             sw.WriteLine("Ma Don Hang,Ngay Dat,Khach Hang,So Dien Thoai,Tong Tien (VND),Trang Thai");
-
             foreach (var don in danhSachDonHang)
             {
                 string tenKhachHang = don.KHACHHANG != null ? don.KHACHHANG.HoTen : "Khach Le";
                 string ngayDat = don.NgayDat.HasValue ? don.NgayDat.Value.ToString("dd/MM/yyyy HH:mm") : "";
                 string tongTien = don.TongTien.HasValue ? don.TongTien.Value.ToString("0") : "0";
-
-                // Lấy tên trạng thái (Đã giao, Đã hủy, Chờ xác nhận...)
                 string trangThai = don.TRANGTHAIDONHANG != null ? don.TRANGTHAIDONHANG.TenTrangThai : "Khong xac dinh";
-
-                // Ghi dữ liệu bao gồm cả trạng thái đơn hàng
-                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5}",
-                    don.MaDonHang,
-                    ngayDat,
-                    tenKhachHang,
-                    don.DienThoaiNhan,
-                    tongTien,
-                    trangThai));
+                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5}", don.MaDonHang, ngayDat, tenKhachHang, don.DienThoaiNhan, tongTien, trangThai));
             }
-
             Response.ClearContent();
             Response.AddHeader("content-disposition", "attachment;filename=DanhSachDonHang_TongHop.csv");
             Response.ContentType = "text/csv";
             Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             Response.Write(sw.ToString());
             Response.End();
-
             return new EmptyResult();
         }
 
@@ -302,7 +268,6 @@ namespace IHomeFurniture.Controllers
                 }
                 tin.NgayDang = DateTime.Now;
                 tin.LuotXem = 0;
-
                 db.TINTUCs.Add(tin);
                 db.SaveChanges();
                 return RedirectToAction("QuanLyTinTuc");
@@ -327,40 +292,87 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("QuanLyTinTuc");
         }
 
-        // 15. Hiển thị form sửa bài viết
-        public ActionResult SuaTinTuc(int id)
+        // 15. Sửa tin tức (Giao diện)
+        public ActionResult SuaTinTuc(int? id)
         {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            if (id == null) return RedirectToAction("QuanLyTinTuc");
+
             var tin = db.TINTUCs.Find(id);
+            if (tin == null) return HttpNotFound();
             return View(tin);
         }
 
-        // 15.1. Xử lý lưu dữ liệu, ngày đăng và ảnh
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult SuaTinTuc(TINTUC model, HttpPostedFileBase fAnhTin)
         {
-            // 1. Tìm tin tức trong DB theo MaTin (khớp với HiddenFor trong View)
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
             var tin = db.TINTUCs.Find(model.MaTin);
-
             if (tin != null)
             {
-                // 2. Cập nhật Tiêu đề, Nội dung và Ngày đăng từ giao diện
                 tin.TieuDe = model.TieuDe;
                 tin.NoiDung = model.NoiDung;
-                tin.NgayDang = model.NgayDang;
-
-                // 3. Kiểm tra và lưu ảnh mới nếu có tải lên
                 if (fAnhTin != null && fAnhTin.ContentLength > 0)
                 {
-                    string fileName = System.IO.Path.GetFileName(fAnhTin.FileName);
-                    string path = Server.MapPath("~/Uploads/TinTuc/" + fileName);
+                    string fileName = Path.GetFileName(fAnhTin.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
                     fAnhTin.SaveAs(path);
                     tin.AnhTin = fileName;
                 }
-
-                // 4. Lưu thay đổi vào database
                 db.SaveChanges();
                 return RedirectToAction("QuanLyTinTuc");
+            }
+            return View(model);
+        }
+
+        // 16. Sửa sản phẩm (Giao diện)
+        public ActionResult SuaSanPham(int? id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            if (id == null) return RedirectToAction("QuanLySanPham");
+
+            var sp = db.SANPHAMs.Find(id);
+            if (sp == null) return HttpNotFound();
+
+            ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc", sp.MaDM);
+            ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH", sp.MaTH);
+            return View(sp);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SuaSanPham(SANPHAM model, HttpPostedFileBase HinhAnh)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                var sp = db.SANPHAMs.Find(model.MaSP);
+                if (sp != null)
+                {
+                    sp.TenSP = model.TenSP;
+                    sp.GiaBan = model.GiaBan;
+                    sp.SoLuongTon = model.SoLuongTon;
+                    sp.MaDM = model.MaDM;
+                    sp.MaTH = model.MaTH;
+                    sp.MoTa = model.MoTa;
+                    sp.NgayCapNhat = DateTime.Now;
+                    if (HinhAnh != null && HinhAnh.ContentLength > 0)
+                    {
+                        string fileName = Path.GetFileName(HinhAnh.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                        HinhAnh.SaveAs(path);
+                        sp.AnhBia = fileName;
+                    }
+                    db.SaveChanges();
+                    return RedirectToAction("QuanLySanPham");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi cập nhật: " + ex.Message;
+                ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc", model.MaDM);
+                ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH", model.MaTH);
             }
             return View(model);
         }
