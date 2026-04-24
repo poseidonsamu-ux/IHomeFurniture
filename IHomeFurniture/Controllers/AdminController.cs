@@ -376,5 +376,40 @@ namespace IHomeFurniture.Controllers
             }
             return View(model);
         }
+
+        // 17. Xem chi tiết đơn hàng (Cập nhật: Load danh sách trạng thái để chỉnh sửa)
+        public ActionResult ChiTietDonHang(int? id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            if (id == null) return RedirectToAction("QuanLyDonHang");
+
+            var donHang = db.DONDATHANGs.Find(id);
+            if (donHang == null) return HttpNotFound();
+
+            // Lấy chi tiết các món hàng
+            var chiTiet = db.CHITIETDATHANGs.Where(d => d.MaDonHang == id).ToList();
+            ViewBag.ListChiTiet = chiTiet;
+
+            // QUAN TRỌNG: Load danh sách trạng thái vào Dropdown, chọn sẵn trạng thái hiện tại của đơn
+            ViewBag.MaTT = new SelectList(db.TRANGTHAIDONHANGs.ToList(), "MaTT", "TenTrangThai", donHang.MaTT);
+
+            return View(donHang);
+        }
+
+        // 18. Xử lý cập nhật trạng thái đơn hàng (POST)
+        [HttpPost]
+        public ActionResult CapNhatTrangThai(int MaDonHang, int MaTT)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+
+            var donHang = db.DONDATHANGs.Find(MaDonHang);
+            if (donHang != null)
+            {
+                donHang.MaTT = MaTT; // Cập nhật mã trạng thái mới
+                db.SaveChanges();
+            }
+            // Quay lại trang chi tiết để xem kết quả
+            return RedirectToAction("ChiTietDonHang", new { id = MaDonHang });
+        }
     }
 }

@@ -289,6 +289,7 @@
     <Content Include="Views\Admin\ThemTinTuc.cshtml" />
     <Content Include="Views\Admin\SuaTinTuc.cshtml" />
     <Content Include="Views\Admin\SuaSanPham.cshtml" />
+    <Content Include="Views\Admin\ChiTietDonHang.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
