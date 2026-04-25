@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Liên hệ | iHOME";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg-zinc-50 py-16 md:py-24 border-b border-zinc-100 text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-30 pointer-events-none">
+        <div class="absolute top-[20%] right-[10%] w-[40%] h-[150%] bg-orange-50 blur-[100px] rotate-[-45deg]"></div>
+    </div>
+    <div class="relative z-10">
+        <h1 class="text-4xl md:text-5xl font-light text-black mb-4">
+            Liên <span class="font-bold">Hệ</span>
+        </h1>
+        <p class="text-zinc-400 text-xs tracking-[0.3em] uppercase font-bold">Kết nối với không gian của bạn</p>
+    </div>
+</div>
+
+<section class="py-20 max-w-[1200px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-20">
+
+    <div class="lg:w-1/3 space-y-12">
+        <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-location-dot text-orange-500 text-base"></i> Cửa hàng chính
+            </h3>
+            <p class="text-zinc-500 text-sm leading-relaxed pl-6">
+                123 Đường Tôn Dật Tiên, Phường Tân Phú<br />
+                Quận 7, TP. Hồ Chí Minh
+            </p>
+        </div>
+
+        <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-phone text-orange-500 text-base"></i> Thông tin liên lạc
+            </h3>
+            <p class="text-zinc-500 text-sm leading-relaxed pl-6">
+                Hotline: <a href="tel:0123456789" class="hover:text-black transition-colors font-medium">0123 456 789</a><br />
+                Email: <a href="mailto:hello@ihome.vn" class="hover:text-black transition-colors font-medium">hello@ihome.vn</a>
+            </p>
+        </div>
+
+        <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-black mb-4 flex items-center gap-2">
+                <i class="fa-regular fa-clock text-orange-500 text-base"></i> Giờ mở cửa
+            </h3>
+            <p class="text-zinc-500 text-sm leading-relaxed pl-6">
+                Thứ 2 - Thứ 6: 08:00 - 21:00<br />
+                Thứ 7 - Chủ Nhật: 09:00 - 22:00
+            </p>
+        </div>
+    </div>
+
+    <div class="lg:w-2/3 bg-white">
+        <form id="contactForm" class="space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="relative">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Họ và tên</label>
+                    <input type="text" name="HoTen" required class="w-full bg-transparent border-b border-zinc-200 py-2 text-sm focus:outline-none focus:border-orange-500 transition-colors placeholder-zinc-300" placeholder="Nguyễn Văn A">
+                </div>
+                <div class="relative">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Email</label>
+                    <input type="email" name="Email" required class="w-full bg-transparent border-b border-zinc-200 py-2 text-sm focus:outline-none focus:border-orange-500 transition-colors placeholder-zinc-300" placeholder="email@domain.com">
+                </div>
+            </div>
+
+            <div class="relative">
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Chủ đề</label>
+                <input type="text" name="ChuDe" required class="w-full bg-transparent border-b border-zinc-200 py-2 text-sm focus:outline-none focus:border-orange-500 transition-colors placeholder-zinc-300" placeholder="Bạn cần hỗ trợ tư vấn nội thất, bảo hành...?">
+            </div>
+
+            <div class="relative">
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Nội dung tin nhắn</label>
+                <textarea rows="4" name="NoiDung" required class="w-full bg-transparent border-b border-zinc-200 py-2 text-sm focus:outline-none focus:border-orange-500 transition-colors placeholder-zinc-300 resize-none" placeholder="Hãy mô tả chi tiết yêu cầu của bạn..."></textarea>
+            </div>
+
+            <button type="submit" class="bg-black text-white px-10 py-4 rounded-full text-[11px] font-black uppercase tracking-[0.2em] hover:bg-orange-500 transition-all shadow-lg active:scale-95 flex items-center gap-3">
+                <span>Gửi tin nhắn</span>
+                <i class="fa-solid fa-paper-plane text-sm"></i>
+            </button>
+        </form>
+    </div>
+</section>
+
+<div class="w-full h-[450px] bg-zinc-200 grayscale hover:grayscale-0 transition-all duration-1000 mt-10">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.023528448981!2d106.71970221415663!3d10.732668892351233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8b0561582b%3A0xc3b2e3e57f2bb179!2sCrescent%20Mall!5e0!3m2!1svi!2s!4v1655184852329!5m2!1svi!2s"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy">
+    </iframe>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // 1. Hiện popup loading
+            Swal.fire({
+                title: 'Đang gửi tin nhắn...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // 2. Gửi dữ liệu qua C#
+            var formData = new FormData(this);
+
+            fetch('/Contact/SendMail', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 3. Nếu thành công -> Tích xanh
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: data.message,
+                            confirmButtonColor: '#000000',
+                            confirmButtonText: 'Đóng'
+                        });
+                        document.getElementById('contactForm').reset();
+                    } else {
+                        // Lỗi mật khẩu hoặc C# -> X đỏ
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Úi, có lỗi rồi!',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi mạng!',
+                        text: 'Không kết nối được với máy chủ.'
+                    });
+                });
+        });
+    </script>
+}

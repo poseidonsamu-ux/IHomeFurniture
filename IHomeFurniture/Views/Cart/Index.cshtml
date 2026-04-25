@@ -1,0 +1,83 @@
+﻿@model IEnumerable<IHomeFurniture.Models.CartItem>
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg-zinc-50 py-12 border-b border-zinc-100 text-center">
+    <h1 class="text-3xl md:text-4xl font-light text-black mb-2">Giỏ <span class="font-bold">Hàng</span></h1>
+    <p class="text-zinc-400 text-xs tracking-[0.2em] uppercase font-bold">Kiểm tra lại sản phẩm của bạn</p>
+</div>
+
+<div class="max-w-[1200px] mx-auto px-6 py-12">
+    @if (Model != null && Model.Any())
+    {
+        <div class="flex flex-col lg:flex-row gap-10">
+            <div class="flex-1">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-zinc-200 text-xs uppercase tracking-widest text-zinc-400">
+                            <th class="pb-4 font-bold">Sản phẩm</th>
+                            <th class="pb-4 font-bold text-center">Số lượng</th>
+                            <th class="pb-4 font-bold text-right">Tổng cộng</th>
+                            <th class="pb-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="border-b border-zinc-100">
+                                <td class="py-6 flex items-center gap-4">
+                                    <img src="~/Images/@item.Image" alt="@item.ProductName" class="w-20 h-24 object-cover rounded-sm" />
+                                    <div>
+                                        <a href="/Product/Detail/@item.ProductId" class="font-bold text-black hover:text-orange-500 transition-colors block mb-1">@item.ProductName</a>
+                                        <span class="text-sm text-zinc-500">@String.Format("{0:N0}", item.Price)đ</span>
+                                    </div>
+                                </td>
+                                <td class="py-6 text-center">
+                                    <span class="px-4 py-2 bg-zinc-100 text-sm font-bold rounded-sm">@item.Quantity</span>
+                                </td>
+                                <td class="py-6 text-right font-bold text-orange-500">
+                                    @String.Format("{0:N0}", item.TotalPrice)đ
+                                </td>
+                                <td class="py-6 text-right text-xl">
+                                    <a href="@Url.Action("RemoveFromCart", "Cart", new { productId = item.ProductId })" class="text-zinc-300 hover:text-red-500 transition-colors" title="Xóa">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w-full lg:w-[350px] bg-zinc-50 p-8 rounded-sm h-fit">
+                <h3 class="text-lg font-bold border-b border-zinc-200 pb-4 mb-6">Tóm tắt đơn hàng</h3>
+                <div class="flex justify-between mb-4 text-sm text-zinc-600">
+                    <span>Tạm tính</span>
+                    <span class="font-bold text-black">@String.Format("{0:N0}", ViewBag.TotalAmount)đ</span>
+                </div>
+                <div class="flex justify-between mb-6 text-sm text-zinc-600">
+                    <span>Vận chuyển</span>
+                    <span>Liên hệ sau</span>
+                </div>
+                <div class="flex justify-between border-t border-zinc-200 pt-6 mb-8 text-lg">
+                    <span class="font-bold">Tổng cộng</span>
+                    <span class="font-bold text-orange-500">@String.Format("{0:N0}", ViewBag.TotalAmount)đ</span>
+                </div>
+                <button class="w-full bg-black text-white py-4 rounded-sm text-xs uppercase tracking-widest font-bold hover:bg-orange-500 transition-colors shadow-lg">
+                    Tiến hành thanh toán
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-20">
+            <i class="fa-solid fa-basket-shopping text-6xl text-zinc-200 mb-6 block"></i>
+            <h2 class="text-2xl font-bold mb-2">Giỏ hàng trống</h2>
+            <p class="text-zinc-500 mb-8">Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
+            <a href="/Product/Index" class="inline-block bg-black text-white px-8 py-3 rounded-sm text-xs uppercase tracking-widest font-bold hover:bg-orange-500 transition-colors">Tiếp tục mua sắm</a>
+        </div>
+    }
+</div>

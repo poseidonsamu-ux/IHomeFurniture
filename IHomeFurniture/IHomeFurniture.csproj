@@ -130,6 +130,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewsControllerController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="Models\ANHSANPHAM.cs">
       <DependentUpon>IHomeModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\CHITIETDATHANG.cs">
       <DependentUpon>IHomeModel.tt</DependentUpon>
     </Compile>
@@ -219,6 +222,11 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ban_an_01.jpg" />
+    <Content Include="Images\ghe_ergo_01.jpg" />
+    <Content Include="Images\giuong_king_01.jpg" />
+    <Content Include="Images\ke_sach_01.jpg" />
+    <Content Include="Images\sofa_da_01.jpg" />
     <Content Include="Models\IHomeModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>IHomeModel.edmx</DependentUpon>
@@ -290,6 +298,8 @@
     <Content Include="Views\Admin\SuaTinTuc.cshtml" />
     <Content Include="Views\Admin\SuaSanPham.cshtml" />
     <Content Include="Views\Admin\ChiTietDonHang.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Contact\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
