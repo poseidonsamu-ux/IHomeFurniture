@@ -193,10 +193,86 @@
         </div>
     </footer>
 
+    <div id="HopChatAi" class="fixed bottom-24 right-6 w-80 bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-zinc-100 hidden z-[100] overflow-hidden flex-col">
+        <div class="bg-black text-white p-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center font-black text-xs shadow-md">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <span class="font-bold text-[11px] uppercase tracking-widest">iHome Assistant</span>
+            </div>
+            <button onclick="DongChat()" class="hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+
+        <div id="KhungHienThiChat" class="h-[350px] p-5 overflow-y-auto flex flex-col gap-4 bg-zinc-50/50 scroll-smooth">
+            <div class="self-start bg-white border border-zinc-100 text-zinc-800 px-4 py-3 rounded-2xl rounded-tl-sm text-[13px] shadow-sm max-w-[85%] leading-relaxed">
+                Chào bạn! Mình là trợ lý AI của iHome. Bạn cần tìm sofa, bàn ăn hay nội thất gì, cứ hỏi mình nhé! 🛋️✨
+            </div>
+        </div>
+
+        <div class="p-3 bg-white border-t border-zinc-100 flex items-center gap-2">
+            <input type="text" id="O_NhapTinChat" class="flex-1 p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-[13px] outline-none focus:ring-2 focus:ring-black transition-shadow" placeholder="Nhập câu hỏi..." onkeypress="KiemTraEnterChat(event)">
+            <button onclick="GuiTinNhanAi()" class="w-11 h-11 bg-black text-white rounded-xl hover:bg-zinc-800 flex items-center justify-center shadow-md transition-transform active:scale-95 shrink-0">
+                <i class="fa-solid fa-paper-plane text-sm"></i>
+            </button>
+        </div>
+    </div>
+
+    <button onclick="MoChat()" class="fixed bottom-6 right-6 w-14 h-14 bg-orange-500 text-white rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.3)] flex items-center justify-center hover:scale-110 transition-transform z-50 group">
+        <i class="fa-solid fa-comment-dots text-2xl group-hover:rotate-12 transition-transform"></i>
+        <span class="absolute -top-1 -right-1 bg-red-500 w-3 h-3 rounded-full border-2 border-white animate-pulse"></span>
+    </button>
     @RenderSection("scripts", required: false)
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        /* ================= CHAT AI SCRIPT ================= */
+        function MoChat() {
+            $("#HopChatAi").removeClass("hidden").addClass("flex");
+            setTimeout(() => { $("#O_NhapTinChat").focus(); }, 100);
+        }
+
+        function DongChat() {
+            $("#HopChatAi").addClass("hidden").removeClass("flex");
+        }
+
+        function KiemTraEnterChat(e) {
+            if (e.key === 'Enter') GuiTinNhanAi();
+        }
+
+        function GuiTinNhanAi() {
+            let cauHoiKhach = $("#O_NhapTinChat").val();
+            if (cauHoiKhach.trim() === "") return;
+
+            // Hiện tin nhắn của khách
+            $("#KhungHienThiChat").append(`<div class="self-end bg-black text-white px-4 py-3 rounded-2xl rounded-tr-sm text-[13px] shadow-sm max-w-[85%] leading-relaxed">${cauHoiKhach}</div>`);
+            $("#O_NhapTinChat").val("");
+            $("#KhungHienThiChat").scrollTop($("#KhungHienThiChat")[0].scrollHeight);
+
+            // Hiện hiệu ứng AI đang nghĩ...
+            let idDangGo = "ai_" + Date.now();
+            $("#KhungHienThiChat").append(`<div id="${idDangGo}" class="self-start bg-white border border-zinc-100 text-zinc-500 px-4 py-3 rounded-2xl rounded-tl-sm text-[13px] shadow-sm max-w-[85%]"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Đang kiểm tra kho...</div>`);
+            $("#KhungHienThiChat").scrollTop($("#KhungHienThiChat")[0].scrollHeight);
+
+            // TUI ĐÃ SỬA LẠI ĐƯỜNG DẪN Ở ĐÂY THÀNH ChatBoxAi RỒI NHÉ
+            $.ajax({
+                type: "POST",
+                url: "/ChatBoxAi/GuiTinNhan",
+                data: { cauHoi: cauHoiKhach },
+                success: function (duLieuTraVe) {
+                    $("#" + idDangGo).remove();
+                    let htmlTraLoi = duLieuTraVe.traloi.replace(/\n/g, "<br>");
+                    $("#KhungHienThiChat").append(`<div class="self-start bg-white border border-zinc-100 text-zinc-800 px-4 py-3 rounded-2xl rounded-tl-sm text-[13px] shadow-sm max-w-[85%] leading-relaxed">${htmlTraLoi}</div>`);
+                    $("#KhungHienThiChat").scrollTop($("#KhungHienThiChat")[0].scrollHeight);
+                },
+                error: function () {
+                    $("#" + idDangGo).remove();
+                    $("#KhungHienThiChat").append(`<div class="self-start bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-2xl rounded-tl-sm text-[13px] shadow-sm max-w-[85%]">Lỗi kết nối với AI. Sếp thử lại sau nhé!</div>`);
+                    $("#KhungHienThiChat").scrollTop($("#KhungHienThiChat")[0].scrollHeight);
+                }
+            });
+        }
+
         /* ================= BẢNG THÔNG BÁO THÀNH CÔNG ================= */
         function showCartModal() {
             const modal = document.getElementById('cart-success-modal');
@@ -227,7 +303,6 @@
             event.preventDefault();
             event.stopPropagation();
 
-            // Gán ID sản phẩm và reset số lượng về 1
             document.getElementById('modal-product-id').value = productId;
             document.getElementById('modal-quantity').value = 1;
 
@@ -268,11 +343,9 @@
 
         /* ================= GỌI AJAX THÊM VÀO GIỎ ================= */
         function confirmAddToCart() {
-            // Lấy dữ liệu
             const productId = document.getElementById('modal-product-id').value;
             const quantity = document.getElementById('modal-quantity').value;
 
-            // Đổi nút thành "Đang xử lý..." để khách không bấm 2 lần
             const confirmBtn = document.getElementById('confirm-btn');
             const originalText = confirmBtn.innerHTML;
             confirmBtn.innerHTML = 'Đang xử lý...';
@@ -284,19 +357,15 @@
                 data: { productId: productId, quantity: quantity },
                 success: function (response) {
                     if (response.success) {
-                        // Trả lại trạng thái nút
                         confirmBtn.innerHTML = originalText;
                         confirmBtn.disabled = false;
 
-                        // 1. Cập nhật số trên icon giỏ hàng ở thanh Menu
                         $("#cart-count").text(response.cartCount);
                         $("#cart-count").addClass("animate-bounce");
                         setTimeout(() => $("#cart-count").removeClass("animate-bounce"), 1000);
 
-                        // 2. Tắt bảng số lượng đi
                         closeQuantityModal();
 
-                        // 3. Đợi bảng số lượng tắt hẳn (300ms) rồi bật bảng thành công lên
                         setTimeout(() => {
                             showCartModal();
                         }, 300);
