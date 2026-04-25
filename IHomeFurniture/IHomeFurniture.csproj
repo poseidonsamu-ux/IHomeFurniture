@@ -253,6 +253,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Uploads\TinTuc\huong-dan-bao-quan-noi-that-go-mdf.jpg" />
+    <Content Include="Uploads\TinTuc\sofa-nho-gon-cho-chung-cu-50m_c7f9fefbc0fb498cbd2d4b27aa79aa47_1024x1024.jpg" />
+    <Content Include="Uploads\TinTuc\xu_huong_thiet_ke_noi_that_2026_jmg1.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -294,7 +297,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Uploads\SanPham\" />
-    <Folder Include="Uploads\TinTuc\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
