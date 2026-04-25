@@ -9,18 +9,24 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        public ActionResult Index(int? categoryId, string priceRange, int page = 1)
+        public ActionResult Index(int? categoryId, string priceRange, string searchTerm, int page = 1)
         {
             int pageSize = 8;
             var query = db.SANPHAMs.Where(s => s.TrangThai == true).AsQueryable();
 
-            // 1. Lọc danh mục
+            // 1. Lọc theo từ khóa (Từ ô Tìm kiếm hoặc Menu Bộ sưu tập truyền xuống)
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(s => s.TenSP.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            // 2. Lọc danh mục
             if (categoryId.HasValue)
             {
                 query = query.Where(s => s.MaDM == categoryId.Value);
             }
 
-            // 2. Lọc giá
+            // 3. Lọc giá
             if (!string.IsNullOrEmpty(priceRange))
             {
                 if (priceRange == "under2") query = query.Where(s => s.GiaBan < 2000000);
@@ -29,7 +35,7 @@ namespace IHomeFurniture.Controllers
                 else if (priceRange == "over10") query = query.Where(s => s.GiaBan > 10000000);
             }
 
-            // Sắp xếp
+            // Sắp xếp mới nhất
             query = query.OrderByDescending(s => s.NgayCapNhat);
 
             // Phân trang
@@ -37,11 +43,13 @@ namespace IHomeFurniture.Controllers
             int totalPage = (int)Math.Ceiling((double)totalRow / pageSize);
             var sanPhams = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
+            // Gửi dữ liệu qua View
             ViewBag.TotalPage = totalPage;
             ViewBag.CurrentPage = page;
             ViewBag.TotalItem = totalRow;
             ViewBag.CategoryId = categoryId;
             ViewBag.PriceRange = priceRange;
+            ViewBag.SearchTerm = searchTerm; // Kẹp thêm từ khóa để giữ bộ lọc
 
             return View(sanPhams);
         }

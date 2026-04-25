@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@{
+    // Đếm số lượng sản phẩm đang có trong Giỏ hàng (Session)
+    int totalCartItems = 0;
+    if (Session["Cart"] != null)
+    {
+        var currentCart = Session["Cart"] as List<IHomeFurniture.Models.CartItem>;
+        if (currentCart != null)
+        {
+            totalCartItems = currentCart.Sum(x => x.Quantity);
+        }
+    }
+}
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +30,6 @@
 
 <body class="bg-white text-gray-800">
 
-    <!-- NAVBAR -->
     <nav class="group sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-100 transition-all duration-300 hover:bg-white">
         <div class="max-w-[1440px] mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
 
@@ -39,14 +50,29 @@
                         <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="relative py-2 transition-colors hover:text-black group/link">
+                <li class="relative group/dropdown py-4">
+                    <a href="#" class="relative py-2 transition-colors hover:text-black group/link cursor-pointer flex items-center gap-1.5">
                         Bộ sưu tập
+                        <i class="fa-solid fa-chevron-down text-[9px] mt-0.5 text-zinc-400 transition-transform duration-300 group-hover/dropdown:rotate-180"></i>
                         <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
                     </a>
+
+                    <div class="absolute top-full left-0 w-52 bg-white border border-gray-100 shadow-xl rounded-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform translate-y-2 group-hover/dropdown:translate-y-0 overflow-hidden z-50">
+                        <ul class="py-2 text-[11px] font-bold text-gray-500 tracking-[0.1em] uppercase">
+                            <li><a href="/Product/Index?searchTerm=Sofa" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Sofa</a></li>
+                            <li><a href="/Product/Index?searchTerm=Bàn" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Bàn</a></li>
+                            <li><a href="/Product/Index?searchTerm=Ghế" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Ghế</a></li>
+                            <li><a href="/Product/Index?searchTerm=Giường" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Giường</a></li>
+                            <li><a href="/Product/Index?searchTerm=Tủ" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Tủ</a></li>
+                            <li><a href="/Product/Index?searchTerm=Kệ" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Kệ & Giá đỡ</a></li>
+                            <li><a href="/Product/Index?searchTerm=Đèn" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Đèn trang trí</a></li>
+                            <li><a href="/Product/Index?searchTerm=Thảm" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Thảm</a></li>
+                            <li><a href="/Product/Index?searchTerm=Gương" class="block px-6 py-3 hover:bg-orange-50 hover:text-orange-500 transition-colors"><i class="fa-solid fa-angle-right text-[9px] mr-2 opacity-50"></i> Gương</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li>
-                    <a href="#" class="relative py-2 transition-colors hover:text-black group/link">
+                    <a href="/Contact" class="relative py-2 transition-colors hover:text-black group/link">
                         Liên hệ
                         <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
                     </a>
@@ -94,8 +120,8 @@
                         <i class="fa-solid fa-cart-shopping text-sm mr-2.5"></i>
                         <span class="uppercase tracking-widest text-[11px] font-bold">Giỏ hàng</span>
 
-                        <span class="absolute -top-1 -right-1 bg-[#ff6b00] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm animate-pulse">
-                            2
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-[#ff6b00] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm animate-pulse">
+                            @totalCartItems
                         </span>
                     </div>
                 </a>
@@ -104,12 +130,10 @@
         </div>
     </nav>
 
-    <!-- CONTENT -->
     <main>
         @RenderBody()
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-zinc-950 text-white pt-24 pb-12 border-t border-zinc-800">
         <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
@@ -170,5 +194,167 @@
     </footer>
 
     @RenderSection("scripts", required: false)
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        /* ================= BẢNG THÔNG BÁO THÀNH CÔNG ================= */
+        function showCartModal() {
+            const modal = document.getElementById('cart-success-modal');
+            const content = document.getElementById('cart-modal-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeCartModal() {
+            const modal = document.getElementById('cart-success-modal');
+            const content = document.getElementById('cart-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        /* ================= BẢNG CHỌN SỐ LƯỢNG ================= */
+        function openQuantityModal(event, productId) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // Gán ID sản phẩm và reset số lượng về 1
+            document.getElementById('modal-product-id').value = productId;
+            document.getElementById('modal-quantity').value = 1;
+
+            const modal = document.getElementById('quantity-modal');
+            const content = document.getElementById('quantity-modal-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeQuantityModal() {
+            const modal = document.getElementById('quantity-modal');
+            const content = document.getElementById('quantity-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        function increaseQty() {
+            const input = document.getElementById('modal-quantity');
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decreaseQty() {
+            const input = document.getElementById('modal-quantity');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        /* ================= GỌI AJAX THÊM VÀO GIỎ ================= */
+        function confirmAddToCart() {
+            // Lấy dữ liệu
+            const productId = document.getElementById('modal-product-id').value;
+            const quantity = document.getElementById('modal-quantity').value;
+
+            // Đổi nút thành "Đang xử lý..." để khách không bấm 2 lần
+            const confirmBtn = document.getElementById('confirm-btn');
+            const originalText = confirmBtn.innerHTML;
+            confirmBtn.innerHTML = 'Đang xử lý...';
+            confirmBtn.disabled = true;
+
+            $.ajax({
+                type: "POST",
+                url: "/Cart/AddToCart",
+                data: { productId: productId, quantity: quantity },
+                success: function (response) {
+                    if (response.success) {
+                        // Trả lại trạng thái nút
+                        confirmBtn.innerHTML = originalText;
+                        confirmBtn.disabled = false;
+
+                        // 1. Cập nhật số trên icon giỏ hàng ở thanh Menu
+                        $("#cart-count").text(response.cartCount);
+                        $("#cart-count").addClass("animate-bounce");
+                        setTimeout(() => $("#cart-count").removeClass("animate-bounce"), 1000);
+
+                        // 2. Tắt bảng số lượng đi
+                        closeQuantityModal();
+
+                        // 3. Đợi bảng số lượng tắt hẳn (300ms) rồi bật bảng thành công lên
+                        setTimeout(() => {
+                            showCartModal();
+                        }, 300);
+                    }
+                },
+                error: function () {
+                    confirmBtn.innerHTML = originalText;
+                    confirmBtn.disabled = false;
+                    alert("Có lỗi xảy ra, vui lòng thử lại.");
+                }
+            });
+        }
+    </script>
+
+    <div id="quantity-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div id="quantity-modal-content" class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-xs mx-4 transform scale-95 transition-all duration-300 relative">
+
+            <button onclick="closeQuantityModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">Chọn số lượng</h3>
+            <p class="text-sm text-gray-500 text-center mb-6">Bạn muốn mua bao nhiêu sản phẩm?</p>
+
+            <input type="hidden" id="modal-product-id" value="" />
+
+            <div class="flex items-center justify-center gap-4 mb-8">
+                <button onclick="decreaseQty()" class="w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xl flex items-center justify-center transition-colors shadow-sm">-</button>
+                <input type="number" id="modal-quantity" value="1" min="1" class="w-16 text-center font-bold text-2xl border-none outline-none bg-transparent" readonly />
+                <button onclick="increaseQty()" class="w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xl flex items-center justify-center transition-colors shadow-sm">+</button>
+            </div>
+
+            <button id="confirm-btn" onclick="confirmAddToCart()" class="w-full bg-black text-white py-3.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-orange-500 transition-colors shadow-lg active:scale-95">
+                Xác nhận thêm
+            </button>
+        </div>
+    </div>
+
+    <div id="cart-success-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div id="cart-modal-content" class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-4 transform scale-95 transition-all duration-300">
+
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
+                <i class="fa-solid fa-check text-3xl text-green-500"></i>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Thành công!</h3>
+            <p class="text-gray-500 text-sm mb-8">Sản phẩm đã được thêm vào giỏ hàng.</p>
+
+            <div class="flex gap-3">
+                <button onclick="closeCartModal()" class="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-[10px] uppercase tracking-widest rounded-xl transition-colors">
+                    Mua tiếp
+                </button>
+                <a href="/Cart/Index" class="flex-1 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl transition-colors flex items-center justify-center shadow-md">
+                    Xem giỏ hàng
+                </a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
