@@ -41,7 +41,7 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("Login");
         }
 
-        // 2. Dashboard (trang chủ tổng quan)
+        // 2. Dashboard
         public ActionResult Index()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -78,7 +78,7 @@ namespace IHomeFurniture.Controllers
             {
                 kh.NgayTao = DateTime.Now;
                 kh.TrangThai = true;
-                kh.DaXacThucEmail = true;
+                kh.DaXacThucEmail = true; // Admin tạo mặc định là đã xác thực luôn
 
                 db.KHACHHANGs.Add(kh);
                 db.SaveChanges();
@@ -86,17 +86,20 @@ namespace IHomeFurniture.Controllers
             }
             catch (Exception)
             {
-                ViewBag.Error = "Tài khoản/Email đã tồn tại, hoặc dữ liệu không hợp lệ!";
+                ViewBag.Error = "Tài khoản/Email đã tồn tại!";
                 return View(kh);
             }
         }
 
         // 5. Sửa thông tin khách hàng
-        public ActionResult SuaKhachHang(int id)
+        public ActionResult SuaKhachHang(int? id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            if (id == null) return RedirectToAction("QuanLyKhachHang");
+
             var kh = db.KHACHHANGs.Find(id);
             if (kh == null) return HttpNotFound();
+
             return View(kh);
         }
 
@@ -116,11 +119,15 @@ namespace IHomeFurniture.Controllers
                     kh.DiaChi = model.DiaChi;
                     kh.TrangThai = model.TrangThai;
 
+                    // --- ĐÃ FIX TẠI ĐÂY ---
+                    // Cho phép Admin cập nhật trạng thái xác thực Email
+                    kh.DaXacThucEmail = model.DaXacThucEmail;
+
                     db.SaveChanges();
                     return RedirectToAction("QuanLyKhachHang");
                 }
             }
-            catch { ViewBag.Error = "Lỗi cập nhật dữ liệu. Vui lòng kiểm tra lại!"; }
+            catch { ViewBag.Error = "Lỗi cập nhật dữ liệu!"; }
             return View(model);
         }
 
@@ -152,13 +159,12 @@ namespace IHomeFurniture.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Không thể xóa vĩnh viễn vì khách hàng này đã phát sinh đơn hàng!";
+                TempData["Error"] = "Không thể xóa vĩnh viễn vì có đơn hàng liên quan!";
             }
-
             return RedirectToAction("QuanLyKhachHang");
         }
 
-        // 8. Quản lý sản phẩm (nội thất)
+        // 8. Quản lý sản phẩm
         public ActionResult QuanLySanPham()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -166,7 +172,7 @@ namespace IHomeFurniture.Controllers
             return View(danhSachSP);
         }
 
-        // 9. Thêm sản phẩm mới (nội thất)
+        // 9. Thêm sản phẩm mới
         public ActionResult ThemSanPham()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -198,7 +204,7 @@ namespace IHomeFurniture.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi khi thêm sản phẩm: " + ex.Message;
+                ViewBag.Error = "Lỗi: " + ex.Message;
                 ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc", sp.MaDM);
                 ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH", sp.MaTH);
                 return View(sp);
@@ -213,7 +219,7 @@ namespace IHomeFurniture.Controllers
             return View(danhSachDH);
         }
 
-        // 11. Xuất báo cáo danh sách đơn hàng
+        // 11. Xuất báo cáo CSV
         public ActionResult XuatBaoCaoDoanhThu()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -222,14 +228,14 @@ namespace IHomeFurniture.Controllers
             sw.WriteLine("Ma Don Hang,Ngay Dat,Khach Hang,So Dien Thoai,Tong Tien (VND),Trang Thai");
             foreach (var don in danhSachDonHang)
             {
-                string tenKhachHang = don.KHACHHANG != null ? don.KHACHHANG.HoTen : "Khach Le";
+                string tenKH = don.KHACHHANG != null ? don.KHACHHANG.HoTen : "Khach Le";
                 string ngayDat = don.NgayDat.HasValue ? don.NgayDat.Value.ToString("dd/MM/yyyy HH:mm") : "";
                 string tongTien = don.TongTien.HasValue ? don.TongTien.Value.ToString("0") : "0";
-                string trangThai = don.TRANGTHAIDONHANG != null ? don.TRANGTHAIDONHANG.TenTrangThai : "Khong xac dinh";
-                sw.WriteLine(string.Format("{0},{1},{2},{3},{4},{5}", don.MaDonHang, ngayDat, tenKhachHang, don.DienThoaiNhan, tongTien, trangThai));
+                string trangThai = don.TRANGTHAIDONHANG != null ? don.TRANGTHAIDONHANG.TenTrangThai : "N/A";
+                sw.WriteLine($"{don.MaDonHang},{ngayDat},{tenKH},{don.DienThoaiNhan},{tongTien},{trangThai}");
             }
             Response.ClearContent();
-            Response.AddHeader("content-disposition", "attachment;filename=DanhSachDonHang_TongHop.csv");
+            Response.AddHeader("content-disposition", "attachment;filename=DoanhThu.csv");
             Response.ContentType = "text/csv";
             Response.BinaryWrite(System.Text.Encoding.UTF8.GetPreamble());
             Response.Write(sw.ToString());
@@ -292,7 +298,7 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("QuanLyTinTuc");
         }
 
-        // 15. Sửa tin tức (Giao diện)
+        // 15. Sửa tin tức
         public ActionResult SuaTinTuc(int? id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -305,6 +311,7 @@ namespace IHomeFurniture.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult SuaTinTuc(TINTUC model, HttpPostedFileBase fAnhTin)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -326,7 +333,7 @@ namespace IHomeFurniture.Controllers
             return View(model);
         }
 
-        // 16. Sửa sản phẩm (Giao diện)
+        // 16. Sửa sản phẩm
         public ActionResult SuaSanPham(int? id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -342,6 +349,7 @@ namespace IHomeFurniture.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult SuaSanPham(SANPHAM model, HttpPostedFileBase HinhAnh)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -370,14 +378,14 @@ namespace IHomeFurniture.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi cập nhật: " + ex.Message;
+                ViewBag.Error = "Lỗi: " + ex.Message;
                 ViewBag.MaDM = new SelectList(db.DANHMUCs.ToList(), "MaDM", "TenDanhMuc", model.MaDM);
                 ViewBag.MaTH = new SelectList(db.THUONGHIEUx.ToList(), "MaTH", "TenTH", model.MaTH);
             }
             return View(model);
         }
 
-        // 17. Xem chi tiết đơn hàng (Cập nhật: Load danh sách trạng thái để chỉnh sửa)
+        // 17. Chi tiết đơn hàng
         public ActionResult ChiTietDonHang(int? id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -386,17 +394,14 @@ namespace IHomeFurniture.Controllers
             var donHang = db.DONDATHANGs.Find(id);
             if (donHang == null) return HttpNotFound();
 
-            // Lấy chi tiết các món hàng
             var chiTiet = db.CHITIETDATHANGs.Where(d => d.MaDonHang == id).ToList();
             ViewBag.ListChiTiet = chiTiet;
-
-            // QUAN TRỌNG: Load danh sách trạng thái vào Dropdown, chọn sẵn trạng thái hiện tại của đơn
             ViewBag.MaTT = new SelectList(db.TRANGTHAIDONHANGs.ToList(), "MaTT", "TenTrangThai", donHang.MaTT);
 
             return View(donHang);
         }
 
-        // 18. Xử lý cập nhật trạng thái đơn hàng (POST)
+        // 18. Cập nhật trạng thái đơn hàng
         [HttpPost]
         public ActionResult CapNhatTrangThai(int MaDonHang, int MaTT)
         {
@@ -405,10 +410,9 @@ namespace IHomeFurniture.Controllers
             var donHang = db.DONDATHANGs.Find(MaDonHang);
             if (donHang != null)
             {
-                donHang.MaTT = MaTT; // Cập nhật mã trạng thái mới
+                donHang.MaTT = MaTT;
                 db.SaveChanges();
             }
-            // Quay lại trang chi tiết để xem kết quả
             return RedirectToAction("ChiTietDonHang", new { id = MaDonHang });
         }
     }

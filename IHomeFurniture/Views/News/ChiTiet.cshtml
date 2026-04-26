@@ -23,11 +23,13 @@
             <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-black">TIN TỨC NỘI THẤT</span>
         </div>
 
-        @* Ảnh Bìa (Kiểm tra nếu có ảnh thì hiện) *@
         @if (!string.IsNullOrEmpty(Model.AnhTin))
         {
             <div class="rounded-2xl overflow-hidden mb-12 shadow-lg">
-                <img src="~/Images/News/@Model.AnhTin" alt="@Model.TieuDe" class="w-full h-auto object-cover max-h-[500px]" />
+                <img src="@Url.Content("~/Images/News/" + Model.AnhTin)"
+                     onerror="this.src='https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80'"
+                     alt="@Model.TieuDe"
+                     class="w-full h-auto object-cover max-h-[500px]" />
             </div>
         }
 

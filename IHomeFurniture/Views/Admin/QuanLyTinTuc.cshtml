@@ -32,7 +32,8 @@
                         <td class="py-5 font-medium text-zinc-500">#@item.MaTin</td>
                         <td class="py-5">
                             <div class="flex items-center space-x-4">
-                                <img src="@Url.Content("~/Uploads/TinTuc/" + item.AnhTin)" class="w-16 h-12 object-cover rounded-lg shadow-sm" onerror="this.src='https://placehold.co/100x80?text=No+Img'">
+                                @* ĐÃ FIX: Sửa lại đường dẫn thành ~/Images/News/ cho khớp với Controller *@
+                                <img src="@Url.Content("~/Images/News/" + item.AnhTin)" class="w-16 h-12 object-cover rounded-lg shadow-sm" onerror="this.src='https://placehold.co/100x80?text=No+Img'">
                                 <div>
                                     <p class="font-bold text-zinc-800 leading-tight">@item.TieuDe</p>
                                     <p class="text-[11px] text-zinc-400 mt-1 uppercase">Bản tin iHome Interior</p>
@@ -47,11 +48,9 @@
                         </td>
                         <td class="py-5">
                             <div class="flex justify-center space-x-2">
-                                @* Nút Sửa màu xanh lam *@
                                 <a href="/Admin/SuaTinTuc/@item.MaTin" class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
                                     <i class="fa-solid fa-pen-to-square text-sm"></i>
                                 </a>
-                                @* Nút Xóa màu đỏ *@
                                 <a href="/Admin/XoaTinTuc/@item.MaTin" onclick="return confirm('Xóa bài này nhé Sếp?')" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm">
                                     <i class="fa-solid fa-trash-can text-sm"></i>
                                 </a>

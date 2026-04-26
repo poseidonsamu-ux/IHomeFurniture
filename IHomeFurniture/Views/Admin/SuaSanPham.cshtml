@@ -15,8 +15,10 @@
         </a>
     </div>
 
-    @using (Html.BeginForm("SuaSanPham", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @* ĐÃ FIX: Thêm id vào routeValues và thêm AntiForgeryToken bên dưới *@
+    @using (Html.BeginForm("SuaSanPham", "Admin", new { id = Model.MaSP }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.MaSP)
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -48,13 +50,11 @@
 
                     <div>
                         <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Danh mục</label>
-                        @* Đã fix lỗi @class tại đây *@
                         @Html.DropDownList("MaDM", null, new { @class = "w-full p-4 bg-zinc-50 border-none rounded-2xl outline-none" })
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Thương hiệu</label>
-                        @* Đã fix lỗi @class tại đây *@
                         @Html.DropDownList("MaTH", null, new { @class = "w-full p-4 bg-zinc-50 border-none rounded-2xl outline-none" })
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <input type="file" name="HinhAnh" class="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                 </div>
 
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold shadow-xl shadow-blue-500/20 transition-all uppercase tracking-widest">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold shadow-xl shadow-blue-500/20 transition-all uppercase tracking-widest active:scale-95">
                     Lưu thay đổi
                 </button>
             </div>

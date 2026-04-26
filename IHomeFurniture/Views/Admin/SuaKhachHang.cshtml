@@ -4,52 +4,82 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="p-10">
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-        <h2 class="text-2xl font-bold mb-6">Cập nhật thông tin: <span class="text-blue-600">@Model.TaiKhoan</span></h2>
-
-        @using (Html.BeginForm("SuaKhachHang", "Admin", FormMethod.Post))
-        {
-            @Html.HiddenFor(m => m.MaKH)
-
-            if (ViewBag.Error != null)
-            {
-                <div class="bg-red-50 text-red-500 p-3 rounded mb-4">@ViewBag.Error</div>
-            }
-
-            <div class="grid grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-sm font-semibold mb-2">Họ Tên</label>
-                    @Html.TextBoxFor(m => m.HoTen, new { @class = "w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" })
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-2">Số Điện Thoại</label>
-                    @Html.TextBoxFor(m => m.DienThoai, new { @class = "w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" })
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <label class="block text-sm font-semibold mb-2">Email</label>
-                @Html.TextBoxFor(m => m.Email, new { @class = "w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" })
-            </div>
-
-            <div class="mb-6">
-                <label class="block text-sm font-semibold mb-2">Địa Chỉ</label>
-                @Html.TextAreaFor(m => m.DiaChi, new { @class = "w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none", rows = "3" })
-            </div>
-
-            <div class="mb-8">
-                <label class="block text-sm font-semibold mb-2">Trạng Thái Tài Khoản</label>
-                @Html.DropDownListFor(m => m.TrangThai, new SelectList(new[] {
-                    new { Value = true, Text = "Bình thường (Mở khóa)" },
-                    new { Value = false, Text = "Khóa tài khoản" }
-                }, "Value", "Text", Model.TrangThai), new { @class = "w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" })
-            </div>
-
-            <div class="flex space-x-4">
-                <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition">CẬP NHẬT LƯU</button>
-                <a href="/Admin/QuanLyKhachHang" class="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition">Hủy bỏ</a>
-            </div>
-        }
+@if (Model == null)
+{
+    <div class="p-10 text-center">
+        <div class="bg-red-50 text-red-500 p-6 rounded-2xl inline-block">
+            <h2 class="text-xl font-bold">Lỗi: Không tìm thấy khách hàng!</h2>
+            <a href="/Admin/QuanLyKhachHang" class="mt-4 inline-block underline">Quay lại danh sách</a>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="p-10">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="text-2xl font-bold mb-6">Cập nhật thông tin: <span class="text-blue-600">@Model.TaiKhoan</span></h2>
+
+            @using (Html.BeginForm("SuaKhachHang", "Admin", new { id = Model.MaKH }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.MaKH)
+
+                if (ViewBag.Error != null)
+                {
+                    <div class="bg-red-50 text-red-500 p-3 rounded mb-4 font-medium border border-red-100">
+                        <i class="fa-solid fa-circle-exclamation mr-2"></i>@ViewBag.Error
+                    </div>
+                }
+
+                <div class="grid grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">Họ Tên</label>
+                        @Html.TextBoxFor(m => m.HoTen, new { @class = "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" })
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">Số Điện Thoại</label>
+                        @Html.TextBoxFor(m => m.DienThoai, new { @class = "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" })
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Email</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all" })
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold mb-2 text-gray-700">Địa Chỉ</label>
+                    @Html.TextAreaFor(m => m.DiaChi, new { @class = "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all", rows = "3" })
+                </div>
+
+                @* CHỖ THAY ĐỔI: Chia 2 cột cho Trạng thái tài khoản và Xác thực Email *@
+                <div class="grid grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">Trạng Thái Tài Khoản</label>
+                        @Html.DropDownListFor(m => m.TrangThai, new SelectList(new[] {
+                            new { Value = true, Text = "Bình thường (Mở khóa)" },
+                            new { Value = false, Text = "Khóa tài khoản" }
+                        }, "Value", "Text", Model.TrangThai), new { @class = "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all bg-gray-50" })
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">Xác thực Email</label>
+                        @Html.DropDownListFor(m => m.DaXacThucEmail, new SelectList(new[] {
+                            new { Value = true, Text = "Đã xác thực" },
+                            new { Value = false, Text = "Chưa xác thực" }
+                        }, "Value", "Text", Model.DaXacThucEmail), new { @class = "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all bg-gray-50" })
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 pt-4 border-t border-gray-50">
+                    <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-100 transition-all active:scale-95">
+                        CẬP NHẬT LƯU
+                    </button>
+                    <a href="/Admin/QuanLyKhachHang" class="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                        Hủy bỏ
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
