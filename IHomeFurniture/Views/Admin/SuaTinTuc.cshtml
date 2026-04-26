@@ -8,12 +8,17 @@
 <div class="max-w-5xl mx-auto">
     <div class="mb-8 flex items-center justify-between">
         <h2 class="text-3xl font-bold text-gray-800">SỬA BÀI VIẾT</h2>
-        <a href="/Admin/QuanLyTinTuc" class="text-sm text-zinc-400 hover:text-black"> Quay lại danh sách</a>
+        <a href="/Admin/QuanLyTinTuc" class="text-sm text-zinc-400 hover:text-black transition-colors">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Quay lại danh sách
+        </a>
     </div>
 
-    @using (Html.BeginForm("SuaTinTuc", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @* ĐÃ FIX: Thêm new { id = Model.MaTin } và AntiForgeryToken bên dưới *@
+    @using (Html.BeginForm("SuaTinTuc", "Admin", new { id = Model.MaTin }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.MaTin)
+
         <div class="bg-white p-10 rounded-3xl border border-zinc-100 shadow-sm space-y-6">
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -46,7 +51,7 @@
                 <script>CKEDITOR.replace('NoiDung');</script>
             </div>
 
-            <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-bold shadow-xl hover:bg-zinc-800 transition-all uppercase tracking-widest">
+            <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-bold shadow-xl hover:bg-zinc-800 transition-all uppercase tracking-widest active:scale-95">
                 Lưu thay đổi bài viết
             </button>
         </div>

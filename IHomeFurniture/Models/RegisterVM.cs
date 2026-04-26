@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IHomeFurniture.Models // Kiểm tra kỹ namespace của bạn
+namespace IHomeFurniture.Models
 {
     public class RegisterVM
     {
@@ -10,6 +10,13 @@ namespace IHomeFurniture.Models // Kiểm tra kỹ namespace của bạn
         [Required(ErrorMessage = "Email không được để trống")]
         [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Số điện thoại không được để trống")]
+        [RegularExpression(@"^(0|84)(3|5|7|8|9)([0-9]{8})$", ErrorMessage = "Số điện thoại không đúng định dạng")]
+        public string SoDienThoai { get; set; }
+
+        [Required(ErrorMessage = "Địa chỉ không được để trống")]
+        public string DiaChi { get; set; }
 
         [Required(ErrorMessage = "Tài khoản không được để trống")]
         // Ràng buộc: Không bắt đầu bằng số, không ký tự đặc biệt, ít nhất 8 ký tự

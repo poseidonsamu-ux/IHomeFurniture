@@ -13,11 +13,13 @@ namespace IHomeFurniture.Controllers
 
         public ActionResult Index()
         {
-            // 2. Lấy 8 sản phẩm mới nhất (sắp xếp giảm dần theo ngày cập nhật hoặc mã SP)
-            // Sếp có thể đổi s.MaSP thành s.NgayCapNhat nếu trong Database có cột đó nha
+            // 1. Lấy 8 sản phẩm mới nhất (sắp xếp giảm dần theo mã SP) làm Model chính
             var sanPhamMoi = db.SANPHAMs.OrderByDescending(s => s.MaSP).Take(8).ToList();
 
-            // 3. Đẩy danh sách 8 sản phẩm này ra ngoài giao diện Index.cshtml
+            // 2. Lấy 3 tin tức mới nhất (Truyền qua ViewBag để hiển thị ở Góc Cảm Hứng)
+            ViewBag.TinTucMoi = db.TINTUCs.OrderByDescending(t => t.NgayDang).Take(3).ToList();
+
+            // 3. Đẩy danh sách sản phẩm ra ngoài giao diện
             return View(sanPhamMoi);
         }
 

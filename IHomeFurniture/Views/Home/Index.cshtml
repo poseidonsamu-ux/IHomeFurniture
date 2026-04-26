@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<IHomeFurniture.Models.SANPHAM>
+@{
     ViewBag.Title = "Trang chủ | iHOME Interior";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -65,28 +66,35 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
-            @for (int i = 1; i <= 8; i++)
+            @if (Model != null && Model.Any())
             {
-                <div class="group">
-                    <div class="relative overflow-hidden aspect-[4/5] bg-zinc-100 rounded-sm mb-4">
-                        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80"
-                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                foreach (var sp in Model)
+                {
+                    <div class="group">
+                        <div class="relative overflow-hidden aspect-[4/5] bg-zinc-100 rounded-sm mb-4">
+                            <img src="~/Images/@sp.AnhBia"
+                                 onerror="this.src='https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80'"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
 
-                        <div class="absolute top-4 left-4 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-widest">New</div>
-                        <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/60 to-transparent">
-                            <button class="w-full bg-white text-black py-3 text-xs font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
-                            </button>
+                            <div class="absolute top-4 left-4 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-widest">New</div>
+                            <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/60 to-transparent">
+                                <button class="w-full bg-white text-black py-3 text-xs font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="/Product/Details/@sp.MaSP" class="text-sm font-medium text-zinc-800 hover:underline decoration-zinc-300 underline-offset-4">@sp.TenSP</a>
+                            <div class="flex items-center gap-3 mt-1">
+                                <span class="text-sm font-bold text-black">@string.Format("{0:N0}đ", sp.GiaBan)</span>
+                                @if (sp.GiaKhuyenMai > 0)
+                                {
+                                    <span class="text-[11px] text-zinc-400 line-through">@string.Format("{0:N0}đ", sp.GiaKhuyenMai)</span>
+                                }
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <a href="#" class="text-sm font-medium text-zinc-800 hover:underline decoration-zinc-300 underline-offset-4">Ghế Eames Trắng Thụy Sỹ</a>
-                        <div class="flex items-center gap-3 mt-1">
-                            <span class="text-sm font-bold text-black">2.450.000đ</span>
-                            <span class="text-[11px] text-zinc-400 line-through">3.100.000đ</span>
-                        </div>
-                    </div>
-                </div>
+                }
             }
         </div>
 
@@ -111,44 +119,33 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <a href="/News/ChiTiet/1" class="block group cursor-pointer">
-                <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
-                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Blog Image">
-                    <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Xu Hướng 2026</div>
-                </div>
-                <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
-                    <span><i class="fa-regular fa-calendar mr-1"></i> 20 Thg 4, 2026</span>
-                    <span><i class="fa-regular fa-eye mr-1"></i> 1.2k views</span>
-                </div>
-                <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Minimalism 2.0: Tối giản nhưng không đơn điệu</h3>
-                <p class="text-zinc-500 text-sm line-clamp-2">Khám phá cách kết hợp vật liệu tự nhiên và ánh sáng để tạo nên một không gian sống tối giản nhưng vẫn toát lên vẻ ấm cúng và sang trọng...</p>
-            </a>
+            @{ var listTinTuc = ViewBag.TinTucMoi as IEnumerable<IHomeFurniture.Models.TINTUC>; }
 
-            <a href="/News/ChiTiet/2" class="block group cursor-pointer">
-                <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
-                    <img src="https://images.unsplash.com/photo-1593696140826-c58b021acf8b?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Blog Image">
-                    <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Mẹo Vặt</div>
-                </div>
-                <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
-                    <span><i class="fa-regular fa-calendar mr-1"></i> 15 Thg 4, 2026</span>
-                    <span><i class="fa-regular fa-eye mr-1"></i> 850 views</span>
-                </div>
-                <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Bí quyết chọn Sofa góc cho căn hộ chung cư nhỏ</h3>
-                <p class="text-zinc-500 text-sm line-clamp-2">Diện tích khiêm tốn không có nghĩa là bạn phải hy sinh sự thoải mái. Hãy cùng tìm hiểu cách bố trí sofa chữ L để tối ưu không gian phòng khách...</p>
-            </a>
-
-            <a href="/News/ChiTiet/3" class="block group cursor-pointer">
-                <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
-                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Blog Image">
-                    <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Review</div>
-                </div>
-                <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
-                    <span><i class="fa-regular fa-calendar mr-1"></i> 10 Thg 4, 2026</span>
-                    <span><i class="fa-regular fa-eye mr-1"></i> 2.1k views</span>
-                </div>
-                <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">Vì sao gỗ Sồi Nga luôn là lựa chọn hàng đầu?</h3>
-                <p class="text-zinc-500 text-sm line-clamp-2">Sở hữu vân gỗ sắc nét và độ bền bỉ đáng kinh ngạc, không khó hiểu khi các sản phẩm nội thất từ gỗ Sồi Nga luôn trong tình trạng cháy hàng...</p>
-            </a>
+            @if (listTinTuc != null && listTinTuc.Any())
+            {
+                foreach (var item in listTinTuc)
+                {
+                    <a href="/News/ChiTiet/@item.MaTin" class="block group cursor-pointer">
+                        <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
+                            <img src="~/Images/News/@item.AnhTin"
+                                 onerror="this.src='https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80'"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                 alt="@item.TieuDe">
+                            <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Blog</div>
+                        </div>
+                        <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">
+                            <span><i class="fa-regular fa-calendar mr-1"></i> @(item.NgayDang.HasValue ? item.NgayDang.Value.ToString("dd/MM/yyyy") : "Mới nhất")</span>
+                            <span><i class="fa-regular fa-eye mr-1"></i> @(item.LuotXem ?? 0) views</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 group-hover:text-orange-600 transition-colors">@item.TieuDe</h3>
+                        <p class="text-zinc-500 text-sm line-clamp-2">@item.TomTat</p>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="col-span-3 text-center text-zinc-400 py-10">Đang cập nhật bài viết mới...</div>
+            }
         </div>
     </div>
 </section>

@@ -68,13 +68,31 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 ml-1">Tên tài khoản</label>
+                            <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 ml-1">Số điện thoại</label>
                             <div class="relative group">
-                                <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>
-                                @Html.TextBoxFor(m => m.TaiKhoan, new { @class = "w-full bg-zinc-50 border border-zinc-100 rounded-xl py-4 pl-12 pr-4 text-black outline-none input-focus-effect transition-all placeholder:text-zinc-300 text-sm font-medium", placeholder = "user123" })
+                                <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>
+                                @Html.TextBoxFor(m => m.SoDienThoai, new { @class = "w-full bg-zinc-50 border border-zinc-100 rounded-xl py-4 pl-12 pr-4 text-black outline-none input-focus-effect transition-all placeholder:text-zinc-300 text-sm font-medium", placeholder = "09xxx..." })
                             </div>
-                            @Html.ValidationMessageFor(m => m.TaiKhoan, "", new { @class = "text-red-500 text-[10px] font-bold mt-1 ml-1" })
+                            @Html.ValidationMessageFor(m => m.SoDienThoai, "", new { @class = "text-red-500 text-[10px] font-bold mt-1 ml-1" })
                         </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 ml-1">Tên tài khoản</label>
+                        <div class="relative group">
+                            <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>
+                            @Html.TextBoxFor(m => m.TaiKhoan, new { @class = "w-full bg-zinc-50 border border-zinc-100 rounded-xl py-4 pl-12 pr-4 text-black outline-none input-focus-effect transition-all placeholder:text-zinc-300 text-sm font-medium", placeholder = "user123" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.TaiKhoan, "", new { @class = "text-red-500 text-[10px] font-bold mt-1 ml-1" })
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[11px] uppercase tracking-widest font-black text-zinc-400 ml-1">Địa chỉ</label>
+                        <div class="relative group">
+                            <i class="fa-solid fa-location-dot absolute left-4 top-[1.2rem] text-zinc-300 group-focus-within:text-orange-500 transition-colors"></i>
+                            @Html.TextAreaFor(m => m.DiaChi, new { @class = "w-full bg-zinc-50 border border-zinc-100 rounded-xl py-4 pl-12 pr-4 text-black outline-none input-focus-effect transition-all placeholder:text-zinc-300 text-sm font-medium min-h-[100px]", placeholder = "Số nhà, tên đường, phường/xã..." })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.DiaChi, "", new { @class = "text-red-500 text-[10px] font-bold mt-1 ml-1" })
                     </div>
 
                     <div class="space-y-2">
