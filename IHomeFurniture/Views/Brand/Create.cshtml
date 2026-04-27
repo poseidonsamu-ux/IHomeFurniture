@@ -1,0 +1,25 @@
+﻿@model IHomeFurniture.Models.THUONGHIEU
+
+@{
+    ViewBag.Title = "Thêm Brand";
+    // ĐỔI DÒNG NÀY LUÔN
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="max-w-xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-sm mt-10">
+    <div class="mb-6 pb-4 border-b">
+        <h2 class="text-xl font-black uppercase">Thêm Brand Mới</h2>
+    </div>
+
+    <form action="/Brand/Create" method="post" class="space-y-6">
+        <div>
+            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">Tên Thương Hiệu</label>
+            <input type="text" name="TenTH" required placeholder="Nhập tên..." class="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500" />
+        </div>
+
+        <div class="flex gap-4">
+            <a href="/Brand/Index" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-center py-3 rounded-lg font-bold transition">Hủy</a>
+            <button type="submit" class="w-2/3 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold uppercase transition">Lưu</button>
+        </div>
+    </form>
+</div>

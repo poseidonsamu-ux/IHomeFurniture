@@ -1,64 +1,49 @@
 ﻿@model IEnumerable<IHomeFurniture.Models.TINTUC>
 @{
-    ViewBag.Title = "Quản lý tin tức";
+    ViewBag.Title = "Quản lý Tin Tức";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-800">Danh sách Tin tức <span class="ml-2 px-3 py-1 bg-blue-50 text-blue-600 text-xs rounded-full">Tổng: @Model.Count() bài</span></h2>
-        </div>
-        <a href="/Admin/ThemTinTuc" class="bg-black hover:bg-zinc-800 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all">
-            + Thêm mới
-        </a>
-    </div>
+<div class="flex justify-between items-center mb-8">
+    <h2 class="text-2xl font-black uppercase tracking-tight">Danh sách Tin Tức</h2>
+    <a href="/Admin/ThemTinTuc" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-blue-200">
+        <i class="fa-solid fa-plus"></i> Viết bài mới
+    </a>
+</div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="text-zinc-400 text-[13px] uppercase tracking-wide border-b border-zinc-100">
-                    <th class="pb-4 font-semibold w-16">ID</th>
-                    <th class="pb-4 font-semibold">TIN TỨC / HÌNH ẢNH</th>
-                    <th class="pb-4 font-semibold">NGÀY ĐĂNG</th>
-                    <th class="pb-4 font-semibold">LƯỢT XEM</th>
-                    <th class="pb-4 font-semibold text-center">HÀNH ĐỘNG</th>
+<div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-bold">
+                <th class="p-4 w-20 text-center">ID</th>
+                <th class="p-4 w-32">Hình ảnh</th>
+                <th class="p-4">Tiêu đề bài viết</th>
+                <th class="p-4 w-40">Ngày đăng</th>
+                <th class="p-4 w-32 text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 text-sm">
+            @foreach (var item in Model)
+            {
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 text-center font-semibold text-gray-500">#@item.MaTin</td>
+                    <td class="p-4">
+                        <img src="~/Images/News/@item.AnhTin" class="w-20 h-12 object-cover rounded-lg border border-gray-100" />
+                    </td>
+                    <td class="p-4 font-bold text-gray-800">@item.TieuDe</td>
+                    <td class="p-4 text-gray-500">@item.NgayDang.Value.ToString("dd/MM/yyyy")</td>
+                    <td class="p-4">
+                        <div class="flex justify-center gap-2">
+                            <a href="/Admin/SuaTinTuc/@item.MaTin" class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition" title="Sửa">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a href="/Admin/XoaTinTuc/@item.MaTin" class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition" onclick="return confirm('Xóa bài này là mất luôn đó Sếp?')" title="Xóa">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody class="divide-y divide-zinc-50">
-                @foreach (var item in Model)
-                {
-                    <tr class="hover:bg-zinc-50/50 transition-colors">
-                        <td class="py-5 font-medium text-zinc-500">#@item.MaTin</td>
-                        <td class="py-5">
-                            <div class="flex items-center space-x-4">
-                                @* ĐÃ FIX: Sửa lại đường dẫn thành ~/Images/News/ cho khớp với Controller *@
-                                <img src="@Url.Content("~/Images/News/" + item.AnhTin)" class="w-16 h-12 object-cover rounded-lg shadow-sm" onerror="this.src='https://placehold.co/100x80?text=No+Img'">
-                                <div>
-                                    <p class="font-bold text-zinc-800 leading-tight">@item.TieuDe</p>
-                                    <p class="text-[11px] text-zinc-400 mt-1 uppercase">Bản tin iHome Interior</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-5 text-sm text-zinc-600">
-                            @(item.NgayDang.HasValue ? item.NgayDang.Value.ToString("dd/MM/yyyy HH:mm") : "---")
-                        </td>
-                        <td class="py-5">
-                            <span class="text-blue-600 font-bold bg-blue-50 px-3 py-1 rounded-lg text-xs">@item.LuotXem</span>
-                        </td>
-                        <td class="py-5">
-                            <div class="flex justify-center space-x-2">
-                                <a href="/Admin/SuaTinTuc/@item.MaTin" class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                                    <i class="fa-solid fa-pen-to-square text-sm"></i>
-                                </a>
-                                <a href="/Admin/XoaTinTuc/@item.MaTin" onclick="return confirm('Xóa bài này nhé Sếp?')" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm">
-                                    <i class="fa-solid fa-trash-can text-sm"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>

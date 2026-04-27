@@ -434,6 +434,79 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="IHomeFurnitureModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="IHomeFurnitureEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ADMINs" EntityType="IHomeFurnitureModel.ADMIN" />
+          <EntitySet Name="ANHSANPHAMs" EntityType="IHomeFurnitureModel.ANHSANPHAM" />
+          <EntitySet Name="CHITIETDATHANGs" EntityType="IHomeFurnitureModel.CHITIETDATHANG" />
+          <EntitySet Name="DANHGIAs" EntityType="IHomeFurnitureModel.DANHGIA" />
+          <EntitySet Name="DANHMUCs" EntityType="IHomeFurnitureModel.DANHMUC" />
+          <EntitySet Name="DONDATHANGs" EntityType="IHomeFurnitureModel.DONDATHANG" />
+          <EntitySet Name="KHACHHANGs" EntityType="IHomeFurnitureModel.KHACHHANG" />
+          <EntitySet Name="KHUYENMAIs" EntityType="IHomeFurnitureModel.KHUYENMAI" />
+          <EntitySet Name="LIENHEs" EntityType="IHomeFurnitureModel.LIENHE" />
+          <EntitySet Name="PHUONGTHUCTHANHTOANs" EntityType="IHomeFurnitureModel.PHUONGTHUCTHANHTOAN" />
+          <EntitySet Name="SANPHAMs" EntityType="IHomeFurnitureModel.SANPHAM" />
+          <EntitySet Name="SANPHAM_YEUTHICH" EntityType="IHomeFurnitureModel.SANPHAM_YEUTHICH" />
+          <EntitySet Name="THUONGHIEUx" EntityType="IHomeFurnitureModel.THUONGHIEU" />
+          <EntitySet Name="TINTUCs" EntityType="IHomeFurnitureModel.TINTUC" />
+          <EntitySet Name="TRANGTHAIDONHANGs" EntityType="IHomeFurnitureModel.TRANGTHAIDONHANG" />
+          <AssociationSet Name="FK_TT_AD" Association="IHomeFurnitureModel.FK_TT_AD">
+            <End Role="ADMIN" EntitySet="ADMINs" />
+            <End Role="TINTUC" EntitySet="TINTUCs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Anh_SP" Association="IHomeFurnitureModel.FK_Anh_SP">
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+            <End Role="ANHSANPHAM" EntitySet="ANHSANPHAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CTDH_DDH" Association="IHomeFurnitureModel.FK_CTDH_DDH">
+            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
+            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CTDH_SP" Association="IHomeFurnitureModel.FK_CTDH_SP">
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DG_KH" Association="IHomeFurnitureModel.FK_DG_KH">
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+            <End Role="DANHGIA" EntitySet="DANHGIAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DG_SP" Association="IHomeFurnitureModel.FK_DG_SP">
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+            <End Role="DANHGIA" EntitySet="DANHGIAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SP_DM" Association="IHomeFurnitureModel.FK_SP_DM">
+            <End Role="DANHMUC" EntitySet="DANHMUCs" />
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DDH_KH" Association="IHomeFurnitureModel.FK_DDH_KH">
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DDH_KM" Association="IHomeFurnitureModel.FK_DDH_KM">
+            <End Role="KHUYENMAI" EntitySet="KHUYENMAIs" />
+            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DDH_PTTT" Association="IHomeFurnitureModel.FK_DDH_PTTT">
+            <End Role="PHUONGTHUCTHANHTOAN" EntitySet="PHUONGTHUCTHANHTOANs" />
+            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DDH_TTDH" Association="IHomeFurnitureModel.FK_DDH_TTDH">
+            <End Role="TRANGTHAIDONHANG" EntitySet="TRANGTHAIDONHANGs" />
+            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_YT_KH" Association="IHomeFurnitureModel.FK_YT_KH">
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+            <End Role="SANPHAM_YEUTHICH" EntitySet="SANPHAM_YEUTHICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SP_TH" Association="IHomeFurnitureModel.FK_SP_TH">
+            <End Role="THUONGHIEU" EntitySet="THUONGHIEUx" />
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_YT_SP" Association="IHomeFurnitureModel.FK_YT_SP">
+            <End Role="SANPHAM" EntitySet="SANPHAMs" />
+            <End Role="SANPHAM_YEUTHICH" EntitySet="SANPHAM_YEUTHICH" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="ADMIN">
           <Key>
             <PropertyRef Name="MaAd" />
@@ -446,7 +519,7 @@
           <Property Name="Avatar" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Quyen" Type="Int32" />
           <Property Name="TrangThai" Type="Boolean" />
-          <NavigationProperty Name="TINTUCs" Relationship="Self.FK_TT_AD" FromRole="ADMIN" ToRole="TINTUC" />
+          <NavigationProperty Name="TINTUCs" Relationship="IHomeFurnitureModel.FK_TT_AD" FromRole="ADMIN" ToRole="TINTUC" />
         </EntityType>
         <EntityType Name="ANHSANPHAM">
           <Key>
@@ -454,9 +527,9 @@
           </Key>
           <Property Name="MaAnh" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MaSP" Type="Int32" />
-          <Property Name="DuongDan" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DuongDan" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="LaAnhChinh" Type="Boolean" />
-          <NavigationProperty Name="SANPHAM" Relationship="Self.FK_Anh_SP" FromRole="ANHSANPHAM" ToRole="SANPHAM" />
+          <NavigationProperty Name="SANPHAM" Relationship="IHomeFurnitureModel.FK_Anh_SP" FromRole="ANHSANPHAM" ToRole="SANPHAM" />
         </EntityType>
         <EntityType Name="CHITIETDATHANG">
           <Key>
@@ -467,8 +540,8 @@
           <Property Name="MaSP" Type="Int32" Nullable="false" />
           <Property Name="SoLuong" Type="Int32" />
           <Property Name="DonGia" Type="Decimal" Precision="19" Scale="4" />
-          <NavigationProperty Name="DONDATHANG" Relationship="Self.FK_CTDH_DDH" FromRole="CHITIETDATHANG" ToRole="DONDATHANG" />
-          <NavigationProperty Name="SANPHAM" Relationship="Self.FK_CTDH_SP" FromRole="CHITIETDATHANG" ToRole="SANPHAM" />
+          <NavigationProperty Name="DONDATHANG" Relationship="IHomeFurnitureModel.FK_CTDH_DDH" FromRole="CHITIETDATHANG" ToRole="DONDATHANG" />
+          <NavigationProperty Name="SANPHAM" Relationship="IHomeFurnitureModel.FK_CTDH_SP" FromRole="CHITIETDATHANG" ToRole="SANPHAM" />
         </EntityType>
         <EntityType Name="DANHGIA">
           <Key>
@@ -481,18 +554,18 @@
           <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NgayDG" Type="DateTime" Precision="3" />
           <Property Name="TrangThai" Type="Boolean" />
-          <NavigationProperty Name="KHACHHANG" Relationship="Self.FK_DG_KH" FromRole="DANHGIA" ToRole="KHACHHANG" />
-          <NavigationProperty Name="SANPHAM" Relationship="Self.FK_DG_SP" FromRole="DANHGIA" ToRole="SANPHAM" />
+          <NavigationProperty Name="KHACHHANG" Relationship="IHomeFurnitureModel.FK_DG_KH" FromRole="DANHGIA" ToRole="KHACHHANG" />
+          <NavigationProperty Name="SANPHAM" Relationship="IHomeFurnitureModel.FK_DG_SP" FromRole="DANHGIA" ToRole="SANPHAM" />
         </EntityType>
         <EntityType Name="DANHMUC">
           <Key>
             <PropertyRef Name="MaDM" />
           </Key>
           <Property Name="MaDM" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TenDanhMuc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenDanhMuc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Slug" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="TrangThai" Type="Boolean" />
-          <NavigationProperty Name="SANPHAMs" Relationship="Self.FK_SP_DM" FromRole="DANHMUC" ToRole="SANPHAM" />
+          <NavigationProperty Name="SANPHAMs" Relationship="IHomeFurnitureModel.FK_SP_DM" FromRole="DANHMUC" ToRole="SANPHAM" />
         </EntityType>
         <EntityType Name="DONDATHANG">
           <Key>
@@ -510,21 +583,21 @@
           <Property Name="MaPT" Type="Int32" />
           <Property Name="MaTT" Type="Int32" />
           <Property Name="MaKM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CHITIETDATHANGs" Relationship="Self.FK_CTDH_DDH" FromRole="DONDATHANG" ToRole="CHITIETDATHANG" />
-          <NavigationProperty Name="KHACHHANG" Relationship="Self.FK_DDH_KH" FromRole="DONDATHANG" ToRole="KHACHHANG" />
-          <NavigationProperty Name="KHUYENMAI" Relationship="Self.FK_DDH_KM" FromRole="DONDATHANG" ToRole="KHUYENMAI" />
-          <NavigationProperty Name="PHUONGTHUCTHANHTOAN" Relationship="Self.FK_DDH_PTTT" FromRole="DONDATHANG" ToRole="PHUONGTHUCTHANHTOAN" />
-          <NavigationProperty Name="TRANGTHAIDONHANG" Relationship="Self.FK_DDH_TTDH" FromRole="DONDATHANG" ToRole="TRANGTHAIDONHANG" />
+          <NavigationProperty Name="CHITIETDATHANGs" Relationship="IHomeFurnitureModel.FK_CTDH_DDH" FromRole="DONDATHANG" ToRole="CHITIETDATHANG" />
+          <NavigationProperty Name="KHACHHANG" Relationship="IHomeFurnitureModel.FK_DDH_KH" FromRole="DONDATHANG" ToRole="KHACHHANG" />
+          <NavigationProperty Name="KHUYENMAI" Relationship="IHomeFurnitureModel.FK_DDH_KM" FromRole="DONDATHANG" ToRole="KHUYENMAI" />
+          <NavigationProperty Name="PHUONGTHUCTHANHTOAN" Relationship="IHomeFurnitureModel.FK_DDH_PTTT" FromRole="DONDATHANG" ToRole="PHUONGTHUCTHANHTOAN" />
+          <NavigationProperty Name="TRANGTHAIDONHANG" Relationship="IHomeFurnitureModel.FK_DDH_TTDH" FromRole="DONDATHANG" ToRole="TRANGTHAIDONHANG" />
         </EntityType>
         <EntityType Name="KHACHHANG">
           <Key>
             <PropertyRef Name="MaKH" />
           </Key>
           <Property Name="MaKH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TaiKhoan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HoTen" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TaiKhoan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MatKhau" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DiaChi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="DienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="NgaySinh" Type="DateTime" Precision="0" />
@@ -535,22 +608,22 @@
           <Property Name="MaXacNhan" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ThoiGianHetHanOTP" Type="DateTime" Precision="3" />
           <Property Name="DaXacThucEmail" Type="Boolean" />
-          <NavigationProperty Name="DANHGIAs" Relationship="Self.FK_DG_KH" FromRole="KHACHHANG" ToRole="DANHGIA" />
-          <NavigationProperty Name="DONDATHANGs" Relationship="Self.FK_DDH_KH" FromRole="KHACHHANG" ToRole="DONDATHANG" />
-          <NavigationProperty Name="SANPHAM_YEUTHICH" Relationship="Self.FK_YT_KH" FromRole="KHACHHANG" ToRole="SANPHAM_YEUTHICH" />
+          <NavigationProperty Name="DANHGIAs" Relationship="IHomeFurnitureModel.FK_DG_KH" FromRole="KHACHHANG" ToRole="DANHGIA" />
+          <NavigationProperty Name="DONDATHANGs" Relationship="IHomeFurnitureModel.FK_DDH_KH" FromRole="KHACHHANG" ToRole="DONDATHANG" />
+          <NavigationProperty Name="SANPHAM_YEUTHICH" Relationship="IHomeFurnitureModel.FK_YT_KH" FromRole="KHACHHANG" ToRole="SANPHAM_YEUTHICH" />
         </EntityType>
         <EntityType Name="KHUYENMAI">
           <Key>
             <PropertyRef Name="MaKM" />
           </Key>
-          <Property Name="MaKM" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MaKM" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="TenKM" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="PhanTramGiam" Type="Int32" />
           <Property Name="GiamToiDa" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="NgayBatDau" Type="DateTime" Precision="3" />
           <Property Name="NgayKetThuc" Type="DateTime" Precision="3" />
           <Property Name="SoLuong" Type="Int32" />
-          <NavigationProperty Name="DONDATHANGs" Relationship="Self.FK_DDH_KM" FromRole="KHUYENMAI" ToRole="DONDATHANG" />
+          <NavigationProperty Name="DONDATHANGs" Relationship="IHomeFurnitureModel.FK_DDH_KM" FromRole="KHUYENMAI" ToRole="DONDATHANG" />
         </EntityType>
         <EntityType Name="LIENHE">
           <Key>
@@ -570,15 +643,15 @@
             <PropertyRef Name="MaPT" />
           </Key>
           <Property Name="MaPT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TenPhuongThuc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="DONDATHANGs" Relationship="Self.FK_DDH_PTTT" FromRole="PHUONGTHUCTHANHTOAN" ToRole="DONDATHANG" />
+          <Property Name="TenPhuongThuc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DONDATHANGs" Relationship="IHomeFurnitureModel.FK_DDH_PTTT" FromRole="PHUONGTHUCTHANHTOAN" ToRole="DONDATHANG" />
         </EntityType>
         <EntityType Name="SANPHAM">
           <Key>
             <PropertyRef Name="MaSP" />
           </Key>
           <Property Name="MaSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TenSP" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenSP" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Slug" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AnhBia" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -593,12 +666,12 @@
           <Property Name="TrangThai" Type="Boolean" />
           <Property Name="MaDM" Type="Int32" />
           <Property Name="MaTH" Type="Int32" />
-          <NavigationProperty Name="ANHSANPHAMs" Relationship="Self.FK_Anh_SP" FromRole="SANPHAM" ToRole="ANHSANPHAM" />
-          <NavigationProperty Name="CHITIETDATHANGs" Relationship="Self.FK_CTDH_SP" FromRole="SANPHAM" ToRole="CHITIETDATHANG" />
-          <NavigationProperty Name="DANHGIAs" Relationship="Self.FK_DG_SP" FromRole="SANPHAM" ToRole="DANHGIA" />
-          <NavigationProperty Name="DANHMUC" Relationship="Self.FK_SP_DM" FromRole="SANPHAM" ToRole="DANHMUC" />
-          <NavigationProperty Name="THUONGHIEU" Relationship="Self.FK_SP_TH" FromRole="SANPHAM" ToRole="THUONGHIEU" />
-          <NavigationProperty Name="SANPHAM_YEUTHICH" Relationship="Self.FK_YT_SP" FromRole="SANPHAM" ToRole="SANPHAM_YEUTHICH" />
+          <NavigationProperty Name="ANHSANPHAMs" Relationship="IHomeFurnitureModel.FK_Anh_SP" FromRole="SANPHAM" ToRole="ANHSANPHAM" />
+          <NavigationProperty Name="CHITIETDATHANGs" Relationship="IHomeFurnitureModel.FK_CTDH_SP" FromRole="SANPHAM" ToRole="CHITIETDATHANG" />
+          <NavigationProperty Name="DANHGIAs" Relationship="IHomeFurnitureModel.FK_DG_SP" FromRole="SANPHAM" ToRole="DANHGIA" />
+          <NavigationProperty Name="DANHMUC" Relationship="IHomeFurnitureModel.FK_SP_DM" FromRole="SANPHAM" ToRole="DANHMUC" />
+          <NavigationProperty Name="THUONGHIEU" Relationship="IHomeFurnitureModel.FK_SP_TH" FromRole="SANPHAM" ToRole="THUONGHIEU" />
+          <NavigationProperty Name="SANPHAM_YEUTHICH" Relationship="IHomeFurnitureModel.FK_YT_SP" FromRole="SANPHAM" ToRole="SANPHAM_YEUTHICH" />
         </EntityType>
         <EntityType Name="SANPHAM_YEUTHICH">
           <Key>
@@ -608,27 +681,27 @@
           <Property Name="MaKH" Type="Int32" Nullable="false" />
           <Property Name="MaSP" Type="Int32" Nullable="false" />
           <Property Name="NgayThem" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="KHACHHANG" Relationship="Self.FK_YT_KH" FromRole="SANPHAM_YEUTHICH" ToRole="KHACHHANG" />
-          <NavigationProperty Name="SANPHAM" Relationship="Self.FK_YT_SP" FromRole="SANPHAM_YEUTHICH" ToRole="SANPHAM" />
+          <NavigationProperty Name="KHACHHANG" Relationship="IHomeFurnitureModel.FK_YT_KH" FromRole="SANPHAM_YEUTHICH" ToRole="KHACHHANG" />
+          <NavigationProperty Name="SANPHAM" Relationship="IHomeFurnitureModel.FK_YT_SP" FromRole="SANPHAM_YEUTHICH" ToRole="SANPHAM" />
         </EntityType>
         <EntityType Name="THUONGHIEU">
           <Key>
             <PropertyRef Name="MaTH" />
           </Key>
           <Property Name="MaTH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TenTH" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenTH" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Slug" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Logo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="DiaChi" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="DienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SANPHAMs" Relationship="Self.FK_SP_TH" FromRole="THUONGHIEU" ToRole="SANPHAM" />
+          <NavigationProperty Name="SANPHAMs" Relationship="IHomeFurnitureModel.FK_SP_TH" FromRole="THUONGHIEU" ToRole="SANPHAM" />
         </EntityType>
         <EntityType Name="TINTUC">
           <Key>
             <PropertyRef Name="MaTin" />
           </Key>
           <Property Name="MaTin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TieuDe" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TieuDe" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Slug" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="TomTat" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -636,19 +709,19 @@
           <Property Name="NgayDang" Type="DateTime" Precision="3" />
           <Property Name="LuotXem" Type="Int32" />
           <Property Name="MaAd" Type="Int32" />
-          <NavigationProperty Name="ADMIN" Relationship="Self.FK_TT_AD" FromRole="TINTUC" ToRole="ADMIN" />
+          <NavigationProperty Name="ADMIN" Relationship="IHomeFurnitureModel.FK_TT_AD" FromRole="TINTUC" ToRole="ADMIN" />
         </EntityType>
         <EntityType Name="TRANGTHAIDONHANG">
           <Key>
             <PropertyRef Name="MaTT" />
           </Key>
           <Property Name="MaTT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TenTrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="DONDATHANGs" Relationship="Self.FK_DDH_TTDH" FromRole="TRANGTHAIDONHANG" ToRole="DONDATHANG" />
+          <Property Name="TenTrangThai" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DONDATHANGs" Relationship="IHomeFurnitureModel.FK_DDH_TTDH" FromRole="TRANGTHAIDONHANG" ToRole="DONDATHANG" />
         </EntityType>
         <Association Name="FK_TT_AD">
-          <End Role="ADMIN" Type="Self.ADMIN" Multiplicity="0..1" />
-          <End Role="TINTUC" Type="Self.TINTUC" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.ADMIN" Role="ADMIN" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.TINTUC" Role="TINTUC" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ADMIN">
               <PropertyRef Name="MaAd" />
@@ -659,8 +732,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Anh_SP">
-          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="0..1" />
-          <End Role="ANHSANPHAM" Type="Self.ANHSANPHAM" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.SANPHAM" Role="SANPHAM" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.ANHSANPHAM" Role="ANHSANPHAM" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SANPHAM">
               <PropertyRef Name="MaSP" />
@@ -671,8 +744,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CTDH_DDH">
-          <End Role="DONDATHANG" Type="Self.DONDATHANG" Multiplicity="1" />
-          <End Role="CHITIETDATHANG" Type="Self.CHITIETDATHANG" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.DONDATHANG" Role="DONDATHANG" Multiplicity="1" />
+          <End Type="IHomeFurnitureModel.CHITIETDATHANG" Role="CHITIETDATHANG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DONDATHANG">
               <PropertyRef Name="MaDonHang" />
@@ -683,8 +756,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CTDH_SP">
-          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
-          <End Role="CHITIETDATHANG" Type="Self.CHITIETDATHANG" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.SANPHAM" Role="SANPHAM" Multiplicity="1" />
+          <End Type="IHomeFurnitureModel.CHITIETDATHANG" Role="CHITIETDATHANG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SANPHAM">
               <PropertyRef Name="MaSP" />
@@ -695,8 +768,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DG_KH">
-          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="0..1" />
-          <End Role="DANHGIA" Type="Self.DANHGIA" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.KHACHHANG" Role="KHACHHANG" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.DANHGIA" Role="DANHGIA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="KHACHHANG">
               <PropertyRef Name="MaKH" />
@@ -707,8 +780,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DG_SP">
-          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="0..1" />
-          <End Role="DANHGIA" Type="Self.DANHGIA" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.SANPHAM" Role="SANPHAM" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.DANHGIA" Role="DANHGIA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SANPHAM">
               <PropertyRef Name="MaSP" />
@@ -719,8 +792,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SP_DM">
-          <End Role="DANHMUC" Type="Self.DANHMUC" Multiplicity="0..1" />
-          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.DANHMUC" Role="DANHMUC" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.SANPHAM" Role="SANPHAM" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DANHMUC">
               <PropertyRef Name="MaDM" />
@@ -731,8 +804,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DDH_KH">
-          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="0..1" />
-          <End Role="DONDATHANG" Type="Self.DONDATHANG" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.KHACHHANG" Role="KHACHHANG" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.DONDATHANG" Role="DONDATHANG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="KHACHHANG">
               <PropertyRef Name="MaKH" />
@@ -743,8 +816,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DDH_KM">
-          <End Role="KHUYENMAI" Type="Self.KHUYENMAI" Multiplicity="0..1" />
-          <End Role="DONDATHANG" Type="Self.DONDATHANG" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.KHUYENMAI" Role="KHUYENMAI" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.DONDATHANG" Role="DONDATHANG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="KHUYENMAI">
               <PropertyRef Name="MaKM" />
@@ -755,8 +828,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DDH_PTTT">
-          <End Role="PHUONGTHUCTHANHTOAN" Type="Self.PHUONGTHUCTHANHTOAN" Multiplicity="0..1" />
-          <End Role="DONDATHANG" Type="Self.DONDATHANG" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.PHUONGTHUCTHANHTOAN" Role="PHUONGTHUCTHANHTOAN" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.DONDATHANG" Role="DONDATHANG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PHUONGTHUCTHANHTOAN">
               <PropertyRef Name="MaPT" />
@@ -767,8 +840,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DDH_TTDH">
-          <End Role="TRANGTHAIDONHANG" Type="Self.TRANGTHAIDONHANG" Multiplicity="0..1" />
-          <End Role="DONDATHANG" Type="Self.DONDATHANG" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.TRANGTHAIDONHANG" Role="TRANGTHAIDONHANG" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.DONDATHANG" Role="DONDATHANG" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TRANGTHAIDONHANG">
               <PropertyRef Name="MaTT" />
@@ -779,8 +852,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_YT_KH">
-          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="1" />
-          <End Role="SANPHAM_YEUTHICH" Type="Self.SANPHAM_YEUTHICH" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.KHACHHANG" Role="KHACHHANG" Multiplicity="1" />
+          <End Type="IHomeFurnitureModel.SANPHAM_YEUTHICH" Role="SANPHAM_YEUTHICH" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="KHACHHANG">
               <PropertyRef Name="MaKH" />
@@ -791,8 +864,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SP_TH">
-          <End Role="THUONGHIEU" Type="Self.THUONGHIEU" Multiplicity="0..1" />
-          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.THUONGHIEU" Role="THUONGHIEU" Multiplicity="0..1" />
+          <End Type="IHomeFurnitureModel.SANPHAM" Role="SANPHAM" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="THUONGHIEU">
               <PropertyRef Name="MaTH" />
@@ -803,8 +876,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_YT_SP">
-          <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
-          <End Role="SANPHAM_YEUTHICH" Type="Self.SANPHAM_YEUTHICH" Multiplicity="*" />
+          <End Type="IHomeFurnitureModel.SANPHAM" Role="SANPHAM" Multiplicity="1" />
+          <End Type="IHomeFurnitureModel.SANPHAM_YEUTHICH" Role="SANPHAM_YEUTHICH" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SANPHAM">
               <PropertyRef Name="MaSP" />
@@ -814,79 +887,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="IHomeFurnitureEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ADMINs" EntityType="Self.ADMIN" />
-          <EntitySet Name="ANHSANPHAMs" EntityType="Self.ANHSANPHAM" />
-          <EntitySet Name="CHITIETDATHANGs" EntityType="Self.CHITIETDATHANG" />
-          <EntitySet Name="DANHGIAs" EntityType="Self.DANHGIA" />
-          <EntitySet Name="DANHMUCs" EntityType="Self.DANHMUC" />
-          <EntitySet Name="DONDATHANGs" EntityType="Self.DONDATHANG" />
-          <EntitySet Name="KHACHHANGs" EntityType="Self.KHACHHANG" />
-          <EntitySet Name="KHUYENMAIs" EntityType="Self.KHUYENMAI" />
-          <EntitySet Name="LIENHEs" EntityType="Self.LIENHE" />
-          <EntitySet Name="PHUONGTHUCTHANHTOANs" EntityType="Self.PHUONGTHUCTHANHTOAN" />
-          <EntitySet Name="SANPHAMs" EntityType="Self.SANPHAM" />
-          <EntitySet Name="SANPHAM_YEUTHICH" EntityType="Self.SANPHAM_YEUTHICH" />
-          <EntitySet Name="THUONGHIEUx" EntityType="Self.THUONGHIEU" />
-          <EntitySet Name="TINTUCs" EntityType="Self.TINTUC" />
-          <EntitySet Name="TRANGTHAIDONHANGs" EntityType="Self.TRANGTHAIDONHANG" />
-          <AssociationSet Name="FK_TT_AD" Association="Self.FK_TT_AD">
-            <End Role="ADMIN" EntitySet="ADMINs" />
-            <End Role="TINTUC" EntitySet="TINTUCs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Anh_SP" Association="Self.FK_Anh_SP">
-            <End Role="SANPHAM" EntitySet="SANPHAMs" />
-            <End Role="ANHSANPHAM" EntitySet="ANHSANPHAMs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CTDH_DDH" Association="Self.FK_CTDH_DDH">
-            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
-            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANGs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CTDH_SP" Association="Self.FK_CTDH_SP">
-            <End Role="SANPHAM" EntitySet="SANPHAMs" />
-            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANGs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DG_KH" Association="Self.FK_DG_KH">
-            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
-            <End Role="DANHGIA" EntitySet="DANHGIAs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DG_SP" Association="Self.FK_DG_SP">
-            <End Role="SANPHAM" EntitySet="SANPHAMs" />
-            <End Role="DANHGIA" EntitySet="DANHGIAs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SP_DM" Association="Self.FK_SP_DM">
-            <End Role="DANHMUC" EntitySet="DANHMUCs" />
-            <End Role="SANPHAM" EntitySet="SANPHAMs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DDH_KH" Association="Self.FK_DDH_KH">
-            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
-            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DDH_KM" Association="Self.FK_DDH_KM">
-            <End Role="KHUYENMAI" EntitySet="KHUYENMAIs" />
-            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DDH_PTTT" Association="Self.FK_DDH_PTTT">
-            <End Role="PHUONGTHUCTHANHTOAN" EntitySet="PHUONGTHUCTHANHTOANs" />
-            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DDH_TTDH" Association="Self.FK_DDH_TTDH">
-            <End Role="TRANGTHAIDONHANG" EntitySet="TRANGTHAIDONHANGs" />
-            <End Role="DONDATHANG" EntitySet="DONDATHANGs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_YT_KH" Association="Self.FK_YT_KH">
-            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
-            <End Role="SANPHAM_YEUTHICH" EntitySet="SANPHAM_YEUTHICH" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SP_TH" Association="Self.FK_SP_TH">
-            <End Role="THUONGHIEU" EntitySet="THUONGHIEUx" />
-            <End Role="SANPHAM" EntitySet="SANPHAMs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_YT_SP" Association="Self.FK_YT_SP">
-            <End Role="SANPHAM" EntitySet="SANPHAMs" />
-            <End Role="SANPHAM_YEUTHICH" EntitySet="SANPHAM_YEUTHICH" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -896,197 +896,197 @@
           <EntitySetMapping Name="ADMINs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.ADMIN">
               <MappingFragment StoreEntitySet="ADMIN">
-                <ScalarProperty Name="MaAd" ColumnName="MaAd" />
-                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
-                <ScalarProperty Name="TenDN" ColumnName="TenDN" />
-                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="Quyen" ColumnName="Quyen" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="Quyen" ColumnName="Quyen" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="TenDN" ColumnName="TenDN" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="MaAd" ColumnName="MaAd" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ANHSANPHAMs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.ANHSANPHAM">
               <MappingFragment StoreEntitySet="ANHSANPHAM">
-                <ScalarProperty Name="MaAnh" ColumnName="MaAnh" />
-                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
-                <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
                 <ScalarProperty Name="LaAnhChinh" ColumnName="LaAnhChinh" />
+                <ScalarProperty Name="DuongDan" ColumnName="DuongDan" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaAnh" ColumnName="MaAnh" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CHITIETDATHANGs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.CHITIETDATHANG">
               <MappingFragment StoreEntitySet="CHITIETDATHANG">
-                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
-                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
-                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
                 <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DANHGIAs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.DANHGIA">
               <MappingFragment StoreEntitySet="DANHGIA">
-                <ScalarProperty Name="MaDG" ColumnName="MaDG" />
-                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
-                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
-                <ScalarProperty Name="SoSao" ColumnName="SoSao" />
-                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
-                <ScalarProperty Name="NgayDG" ColumnName="NgayDG" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayDG" ColumnName="NgayDG" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="SoSao" ColumnName="SoSao" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaDG" ColumnName="MaDG" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DANHMUCs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.DANHMUC">
               <MappingFragment StoreEntitySet="DANHMUC">
-                <ScalarProperty Name="MaDM" ColumnName="MaDM" />
-                <ScalarProperty Name="TenDanhMuc" ColumnName="TenDanhMuc" />
-                <ScalarProperty Name="Slug" ColumnName="Slug" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="Slug" ColumnName="Slug" />
+                <ScalarProperty Name="TenDanhMuc" ColumnName="TenDanhMuc" />
+                <ScalarProperty Name="MaDM" ColumnName="MaDM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DONDATHANGs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.DONDATHANG">
               <MappingFragment StoreEntitySet="DONDATHANG">
-                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
-                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
-                <ScalarProperty Name="NgayGiao" ColumnName="NgayGiao" />
-                <ScalarProperty Name="DiaChiGiaoHang" ColumnName="DiaChiGiaoHang" />
-                <ScalarProperty Name="DienThoaiNhan" ColumnName="DienThoaiNhan" />
-                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
-                <ScalarProperty Name="PhiVanChuyen" ColumnName="PhiVanChuyen" />
-                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
-                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
-                <ScalarProperty Name="MaPT" ColumnName="MaPT" />
-                <ScalarProperty Name="MaTT" ColumnName="MaTT" />
                 <ScalarProperty Name="MaKM" ColumnName="MaKM" />
+                <ScalarProperty Name="MaTT" ColumnName="MaTT" />
+                <ScalarProperty Name="MaPT" ColumnName="MaPT" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+                <ScalarProperty Name="PhiVanChuyen" ColumnName="PhiVanChuyen" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="DienThoaiNhan" ColumnName="DienThoaiNhan" />
+                <ScalarProperty Name="DiaChiGiaoHang" ColumnName="DiaChiGiaoHang" />
+                <ScalarProperty Name="NgayGiao" ColumnName="NgayGiao" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHACHHANGs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.KHACHHANG">
               <MappingFragment StoreEntitySet="KHACHHANG">
-                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
-                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
-                <ScalarProperty Name="TaiKhoan" ColumnName="TaiKhoan" />
-                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
-                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
-                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
-                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
-                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
-                <ScalarProperty Name="MaXacNhan" ColumnName="MaXacNhan" />
-                <ScalarProperty Name="ThoiGianHetHanOTP" ColumnName="ThoiGianHetHanOTP" />
                 <ScalarProperty Name="DaXacThucEmail" ColumnName="DaXacThucEmail" />
+                <ScalarProperty Name="ThoiGianHetHanOTP" ColumnName="ThoiGianHetHanOTP" />
+                <ScalarProperty Name="MaXacNhan" ColumnName="MaXacNhan" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="TaiKhoan" ColumnName="TaiKhoan" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHUYENMAIs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.KHUYENMAI">
               <MappingFragment StoreEntitySet="KHUYENMAI">
-                <ScalarProperty Name="MaKM" ColumnName="MaKM" />
-                <ScalarProperty Name="TenKM" ColumnName="TenKM" />
-                <ScalarProperty Name="PhanTramGiam" ColumnName="PhanTramGiam" />
-                <ScalarProperty Name="GiamToiDa" ColumnName="GiamToiDa" />
-                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
-                <ScalarProperty Name="NgayKetThuc" ColumnName="NgayKetThuc" />
                 <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="NgayKetThuc" ColumnName="NgayKetThuc" />
+                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
+                <ScalarProperty Name="GiamToiDa" ColumnName="GiamToiDa" />
+                <ScalarProperty Name="PhanTramGiam" ColumnName="PhanTramGiam" />
+                <ScalarProperty Name="TenKM" ColumnName="TenKM" />
+                <ScalarProperty Name="MaKM" ColumnName="MaKM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LIENHEs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.LIENHE">
               <MappingFragment StoreEntitySet="LIENHE">
-                <ScalarProperty Name="MaLH" ColumnName="MaLH" />
-                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
-                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
-                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
-                <ScalarProperty Name="NgayGui" ColumnName="NgayGui" />
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayGui" ColumnName="NgayGui" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="MaLH" ColumnName="MaLH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PHUONGTHUCTHANHTOANs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.PHUONGTHUCTHANHTOAN">
               <MappingFragment StoreEntitySet="PHUONGTHUCTHANHTOAN">
-                <ScalarProperty Name="MaPT" ColumnName="MaPT" />
                 <ScalarProperty Name="TenPhuongThuc" ColumnName="TenPhuongThuc" />
+                <ScalarProperty Name="MaPT" ColumnName="MaPT" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SANPHAMs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.SANPHAM">
               <MappingFragment StoreEntitySet="SANPHAM">
-                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
-                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
-                <ScalarProperty Name="Slug" ColumnName="Slug" />
-                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
-                <ScalarProperty Name="AnhBia" ColumnName="AnhBia" />
-                <ScalarProperty Name="ChatLieu" ColumnName="ChatLieu" />
-                <ScalarProperty Name="KichThuoc" ColumnName="KichThuoc" />
-                <ScalarProperty Name="MauSac" ColumnName="MauSac" />
-                <ScalarProperty Name="NgayCapNhat" ColumnName="NgayCapNhat" />
-                <ScalarProperty Name="SoLuongTon" ColumnName="SoLuongTon" />
-                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
-                <ScalarProperty Name="GiaKhuyenMai" ColumnName="GiaKhuyenMai" />
-                <ScalarProperty Name="LuotXem" ColumnName="LuotXem" />
-                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
-                <ScalarProperty Name="MaDM" ColumnName="MaDM" />
                 <ScalarProperty Name="MaTH" ColumnName="MaTH" />
+                <ScalarProperty Name="MaDM" ColumnName="MaDM" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="LuotXem" ColumnName="LuotXem" />
+                <ScalarProperty Name="GiaKhuyenMai" ColumnName="GiaKhuyenMai" />
+                <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+                <ScalarProperty Name="SoLuongTon" ColumnName="SoLuongTon" />
+                <ScalarProperty Name="NgayCapNhat" ColumnName="NgayCapNhat" />
+                <ScalarProperty Name="MauSac" ColumnName="MauSac" />
+                <ScalarProperty Name="KichThuoc" ColumnName="KichThuoc" />
+                <ScalarProperty Name="ChatLieu" ColumnName="ChatLieu" />
+                <ScalarProperty Name="AnhBia" ColumnName="AnhBia" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="Slug" ColumnName="Slug" />
+                <ScalarProperty Name="TenSP" ColumnName="TenSP" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SANPHAM_YEUTHICH">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.SANPHAM_YEUTHICH">
               <MappingFragment StoreEntitySet="SANPHAM_YEUTHICH">
-                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
-                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
                 <ScalarProperty Name="NgayThem" ColumnName="NgayThem" />
+                <ScalarProperty Name="MaSP" ColumnName="MaSP" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="THUONGHIEUx">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.THUONGHIEU">
               <MappingFragment StoreEntitySet="THUONGHIEU">
-                <ScalarProperty Name="MaTH" ColumnName="MaTH" />
-                <ScalarProperty Name="TenTH" ColumnName="TenTH" />
-                <ScalarProperty Name="Slug" ColumnName="Slug" />
-                <ScalarProperty Name="Logo" ColumnName="Logo" />
-                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
                 <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="Slug" ColumnName="Slug" />
+                <ScalarProperty Name="TenTH" ColumnName="TenTH" />
+                <ScalarProperty Name="MaTH" ColumnName="MaTH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TINTUCs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.TINTUC">
               <MappingFragment StoreEntitySet="TINTUC">
-                <ScalarProperty Name="MaTin" ColumnName="MaTin" />
-                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
-                <ScalarProperty Name="Slug" ColumnName="Slug" />
-                <ScalarProperty Name="TomTat" ColumnName="TomTat" />
-                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
-                <ScalarProperty Name="AnhTin" ColumnName="AnhTin" />
-                <ScalarProperty Name="NgayDang" ColumnName="NgayDang" />
-                <ScalarProperty Name="LuotXem" ColumnName="LuotXem" />
                 <ScalarProperty Name="MaAd" ColumnName="MaAd" />
+                <ScalarProperty Name="LuotXem" ColumnName="LuotXem" />
+                <ScalarProperty Name="NgayDang" ColumnName="NgayDang" />
+                <ScalarProperty Name="AnhTin" ColumnName="AnhTin" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="TomTat" ColumnName="TomTat" />
+                <ScalarProperty Name="Slug" ColumnName="Slug" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="MaTin" ColumnName="MaTin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRANGTHAIDONHANGs">
             <EntityTypeMapping TypeName="IHomeFurnitureModel.TRANGTHAIDONHANG">
               <MappingFragment StoreEntitySet="TRANGTHAIDONHANG">
-                <ScalarProperty Name="MaTT" ColumnName="MaTT" />
                 <ScalarProperty Name="TenTrangThai" ColumnName="TenTrangThai" />
+                <ScalarProperty Name="MaTT" ColumnName="MaTT" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
