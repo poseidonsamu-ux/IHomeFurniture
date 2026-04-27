@@ -15,7 +15,7 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities ketNoiCoSoDuLieu = new IHomeFurnitureEntities();
 
-        private readonly string maBaoMatApi = "AIzaSyB5kMDoS95UAlGj6B5CpWKKwn086NR5bg8";
+        private readonly string maBaoMatApi = "AIzaSyBLV3wmA0Vm5yyIpK9A7SNmP8E5WjVeD1E";
 
         [HttpPost]
         public async Task<JsonResult> GuiTinNhan(string cauHoi)

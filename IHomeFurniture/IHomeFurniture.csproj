@@ -349,6 +349,8 @@
     <Content Include="Views\Admin\ChiTietDonHang.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
+    <Content Include="Views\Cart\Checkout.cshtml" />
+    <Content Include="Views\Cart\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<IHomeFurniture.Models.CartItem>
+@{
+    ViewBag.Title = "Thanh toán đơn hàng | iHOME";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg-zinc-50 py-16 border-b border-zinc-100 text-center">
+    <h1 class="text-3xl md:text-4xl font-light text-black mb-2">Thanh <span class="font-bold">Toán</span></h1>
+    <p class="text-zinc-400 text-[11px] tracking-[0.2em] uppercase font-bold">Vui lòng nhập thông tin giao hàng</p>
+</div>
+
+<section class="max-w-[1440px] mx-auto px-6 lg:px-12 py-16">
+    @if (ViewBag.Error != null)
+    {
+        <div class="mb-8 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation"></i> @ViewBag.Error
+        </div>
+    }
+
+    <form action="/Cart/Checkout" method="post" class="flex flex-col lg:flex-row gap-16">
+        <div class="flex-1 space-y-8">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h3 class="text-xl font-bold uppercase tracking-tight">Thông tin người nhận</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-zinc-500">Họ và tên *</label>
+                    <input type="text" name="hoTen" required placeholder="Nguyễn Văn A"
+                           class="w-full bg-zinc-50 border border-zinc-200 p-4 rounded-xl outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-sm">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-zinc-500">Số điện thoại *</label>
+                    <input type="tel" name="soDienThoai" required placeholder="0908xxxxxx"
+                           class="w-full bg-zinc-50 border border-zinc-200 p-4 rounded-xl outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-sm">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="text-[11px] font-black uppercase tracking-widest text-zinc-500">Địa chỉ giao hàng cụ thể *</label>
+                <input type="text" name="diaChi" required placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."
+                       class="w-full bg-zinc-50 border border-zinc-200 p-4 rounded-xl outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-sm">
+            </div>
+
+            <div class="space-y-2">
+                <label class="text-[11px] font-black uppercase tracking-widest text-zinc-500">Ghi chú thêm</label>
+                <textarea name="ghiChu" rows="3" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi đến..."
+                          class="w-full bg-zinc-50 border border-zinc-200 p-4 rounded-xl outline-none focus:border-black focus:ring-1 focus:ring-black transition-all text-sm"></textarea>
+            </div>
+
+            <div class="pt-6 border-t border-zinc-100 flex items-center gap-4 text-zinc-400 text-[13px]">
+                <i class="fa-solid fa-shield-check text-green-500 text-xl"></i>
+                Thông tin của bạn được bảo mật tuyệt đối 100%
+            </div>
+        </div>
+
+        <div class="w-full lg:w-[450px]">
+            <div class="bg-zinc-50 rounded-[2rem] p-8 border border-zinc-100 sticky top-32">
+                <h3 class="text-sm font-black uppercase tracking-widest mb-8 text-center border-b border-zinc-200 pb-4">Đơn hàng của sếp</h3>
+
+                <div class="space-y-6 mb-8 max-h-[350px] overflow-y-auto pr-2">
+                    @foreach (var item in Model)
+                    {
+                        <div class="flex gap-4 items-center">
+                            <div class="relative w-16 h-20 bg-white rounded-lg overflow-hidden border border-zinc-100 flex-shrink-0">
+                                <img src="~/Images/@item.Image" class="w-full h-full object-cover">
+                                <span class="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">@item.Quantity</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-xs font-bold text-black line-clamp-1 uppercase tracking-tight">@item.ProductName</h4>
+                                <p class="text-zinc-400 text-[11px] mt-1">Đơn giá: @String.Format("{0:N0}", item.Price)đ</p>
+                            </div>
+                            <div class="text-xs font-black text-black">
+                                @String.Format("{0:N0}", item.TotalPrice)đ
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="space-y-4 border-t border-zinc-200 pt-6">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-zinc-500">Tạm tính</span>
+                        <span class="font-bold text-black">@String.Format("{0:N0}", ViewBag.TotalAmount)đ</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-zinc-500">Phí vận chuyển</span>
+                        <span class="text-green-600 font-bold">Miễn phí</span>
+                    </div>
+                    <hr class="border-zinc-200">
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-xs font-black uppercase tracking-widest">Tổng cộng</span>
+                        <span class="text-2xl font-black text-orange-500">@String.Format("{0:N0}", ViewBag.TotalAmount)đ</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] hover:bg-orange-600 transition-all shadow-xl shadow-zinc-200 mt-8 active:scale-95 flex items-center justify-center gap-3">
+                    XÁC NHẬN ĐẶT HÀNG
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</section>

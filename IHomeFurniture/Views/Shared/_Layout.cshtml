@@ -353,7 +353,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Cart/AddToCart",
+                url: "/Cart/Add", // ĐÃ SỬA THÀNH /Cart/Add TẠI ĐÂY
                 data: { productId: productId, quantity: quantity },
                 success: function (response) {
                     if (response.success) {

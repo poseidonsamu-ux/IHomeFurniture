@@ -20,7 +20,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
             <div class="relative bg-zinc-100 rounded-sm aspect-square overflow-hidden group shadow-sm">
-                <img src="~/Images/@Model.AnhBia" alt="@Model.TenSP" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 cursor-zoom-in">
+                <img src="@Url.Content("~/Images/" + Model.AnhBia)" alt="@Model.TenSP" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 cursor-zoom-in">
 
                 @if (Model.GiaKhuyenMai > 0 && Model.GiaKhuyenMai < Model.GiaBan)
                 {
@@ -54,14 +54,14 @@
 
                 <hr class="border-zinc-100 mb-10">
 
-                <form action="/Cart/Add" method="post" class="space-y-8">
-                    <input type="hidden" name="productId" value="@Model.MaSP" />
+                <div class="space-y-8">
+                    <input type="hidden" id="detail-product-id" value="@Model.MaSP" />
 
                     <div class="flex items-center gap-6 bg-zinc-50 p-4 rounded-2xl w-fit border border-zinc-100">
                         <span class="text-[11px] uppercase tracking-widest font-bold text-zinc-500 ml-2">Số lượng:</span>
                         <div class="flex items-center bg-white border border-zinc-200 rounded-full w-32 shadow-sm">
                             <button type="button" onclick="updateQty(-1)" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">-</button>
-                            <input type="number" id="qty" name="quantity" value="1" min="1" max="@Model.SoLuongTon" class="w-12 h-10 text-center text-sm font-black border-none outline-none bg-transparent" readonly>
+                            <input type="number" id="detail-qty" value="1" min="1" max="@Model.SoLuongTon" class="w-12 h-10 text-center text-sm font-black border-none outline-none bg-transparent" readonly>
                             <button type="button" onclick="updateQty(1)" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-black transition-colors">+</button>
                         </div>
                     </div>
@@ -73,9 +73,9 @@
                     <div class="flex gap-4 pt-2">
                         @if (Model.SoLuongTon > 0)
                         {
-                            <button type="submit" class="flex-1 bg-black text-white h-16 rounded-full text-[11px] uppercase tracking-[0.2em] font-black hover:bg-orange-600 transition-all duration-300 shadow-xl shadow-zinc-200 hover:shadow-orange-200 active:scale-95 flex items-center justify-center gap-3">
-                                <span>Thêm vào giỏ</span>
-                                <i class="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-1"></i>
+                            <button type="button" onclick="ThemVaoGioTuDetail()" class="flex-1 bg-black text-white h-16 rounded-full text-[11px] uppercase tracking-[0.2em] font-black hover:bg-orange-600 transition-all duration-300 shadow-xl shadow-zinc-200 hover:shadow-orange-200 active:scale-95 flex items-center justify-center gap-3">
+                                <span id="btn-text-detail">Thêm vào giỏ</span>
+                                <i class="fa-solid fa-arrow-right-long"></i>
                             </button>
                         }
                         else
@@ -85,7 +85,7 @@
                             </button>
                         }
                     </div>
-                </form>
+                </div>
 
                 <div class="mt-12 grid grid-cols-2 gap-4 bg-orange-50/50 p-6 rounded-2xl border border-orange-100/50">
                     <div class="flex items-center gap-3 text-xs font-bold text-zinc-800 tracking-wide uppercase">
@@ -101,7 +101,6 @@
                         Bảo hành 12 tháng
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -111,14 +110,13 @@
 {
     <section class="py-24 bg-white border-t border-zinc-100">
         <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
-            <h3 class="text-3xl font-light tracking-tighter mb-12">Có thể Sếp sẽ <span class="font-bold italic">thích</span></h3>
-
+            <h3 class="text-3xl font-light tracking-tighter mb-12">Có thể bạn sẽ <span class="font-bold italic">thích</span></h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach (var item in sanPhamCungLoai)
                 {
                     <div class="group cursor-pointer" onclick="window.location.href='/Product/Detail/@item.MaSP'">
                         <div class="relative overflow-hidden aspect-[4/5] bg-zinc-50 rounded-sm mb-4">
-                            <img src="~/Images/@item.AnhBia" alt="@item.TenSP" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <img src="@Url.Content("~/Images/" + item.AnhBia)" alt="@item.TenSP" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         </div>
                         <div>
                             <h4 class="text-sm font-medium text-zinc-800 line-clamp-1 group-hover:text-orange-500 transition-colors">@item.TenSP</h4>
@@ -134,9 +132,9 @@
 }
 
 <script>
-    // Script tăng giảm số lượng mượt mà
+    // 1. Chỉ giữ lại hàm điều khiển nút bấm số lượng
     function updateQty(change) {
-        const input = document.getElementById('qty');
+        const input = document.getElementById('detail-qty');
         let current = parseInt(input.value);
         let max = parseInt(input.getAttribute('max'));
 
@@ -144,5 +142,45 @@
         if (newVal >= 1 && newVal <= max) {
             input.value = newVal;
         }
+    }
+
+    // 2. Viết lại hàm thêm giỏ hàng cực kỳ ngắn gọn (Gọi chung file Layout)
+    function ThemVaoGioTuDetail() {
+        const productId = document.getElementById('detail-product-id').value;
+        const quantity = document.getElementById('detail-qty').value;
+
+        const btnText = document.getElementById('btn-text-detail');
+        const originalText = btnText.innerHTML;
+        btnText.innerHTML = "Đang xử lý...";
+
+        $.ajax({
+            type: "POST",
+            url: "/Cart/Add", // Chắc chắn trỏ về đúng C#
+            data: { productId: productId, quantity: quantity },
+            success: function (response) {
+                if (response.success) {
+                    btnText.innerHTML = originalText;
+
+                    // Cập nhật số lượng trên Navbar
+                    $("#cart-count").text(response.cartCount);
+                    $("#cart-count").addClass("animate-bounce");
+                    setTimeout(() => $("#cart-count").removeClass("animate-bounce"), 1000);
+
+                    // GỌI HÀM HIỆN POPUP CÓ SẴN TRONG _Layout.cshtml
+                    if (typeof showCartModal === "function") {
+                        showCartModal();
+                    } else {
+                        alert("Đã thêm thành công!"); // Sơ cua nếu Layout bị lỗi
+                    }
+                } else {
+                    btnText.innerHTML = originalText;
+                    alert("Lỗi: " + response.message);
+                }
+            },
+            error: function () {
+                btnText.innerHTML = originalText;
+                alert("Máy chủ không phản hồi. Vui lòng thử lại!");
+            }
+        });
     }
 </script>
