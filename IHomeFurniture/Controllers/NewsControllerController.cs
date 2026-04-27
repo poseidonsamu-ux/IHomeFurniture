@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using IHomeFurniture.Models;
 
 namespace IHomeFurniture.Controllers
@@ -9,41 +11,54 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        // 1. Lấy danh sách tin tức mới nhất
         public ActionResult Index()
         {
-            var listTin = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
-            return View(listTin);
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login", "Admin");
+            var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
+            return View(list);
         }
 
-        // 2. Xem chi tiết bài viết và tăng lượt xem "thực tế"
-        public ActionResult ChiTiet(int? id)
+        // 1. Thêm tin mới
+        [HttpGet]
+        public ActionResult Create()
         {
-            // 1. Kiểm tra ID tránh sập web
-            if (id == null) return RedirectToAction("Index", "Home");
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login", "Admin");
+            return View();
+        }
 
-            // 2. Tìm bài viết theo ID
-            var tin = db.TINTUCs.Find(id);
-            if (tin == null) return HttpNotFound();
-
-            // 3. LOGIC TĂNG LƯỢT XEM THỰC TẾ:
-            // Tạo một mã khóa duy nhất cho bài viết này trong Session người dùng
-            string sessionKey = "Viewed_Post_" + id;
-
-            // Kiểm tra nếu người dùng chưa xem bài này trong phiên làm việc hiện tại
-            if (Session[sessionKey] == null)
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Create(TINTUC tin, HttpPostedFileBase fAnhTin)
+        {
+            try
             {
-                // Tăng lượt xem lên 1 đơn vị
-                tin.LuotXem = (tin.LuotXem ?? 0) + 1;
-
-                // Lưu lại thay đổi vào Database
+                if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(fAnhTin.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
+                    fAnhTin.SaveAs(path);
+                    tin.AnhTin = fileName;
+                }
+                tin.NgayDang = DateTime.Now;
+                tin.LuotXem = 0;
+                tin.MaAd = (int)Session["Admin_ID"];
+                db.TINTUCs.Add(tin);
                 db.SaveChanges();
-
-                // Đánh dấu Session là đã xem để nhấn F5 không tăng nữa
-                Session[sessionKey] = true;
+                return RedirectToAction("Index");
             }
+            catch { return View(tin); }
+        }
 
-            return View(tin);
+        // 2. Xóa tin tức
+        public ActionResult Delete(int id)
+        {
+            var tin = db.TINTUCs.Find(id);
+            if (tin != null)
+            {
+                db.TINTUCs.Remove(tin);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
     }
 }

@@ -4,36 +4,36 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b9da515afd32492bbee5394e4afd06a6" Name="Diagram1">
-        <EntityTypeShape EntityType="IHomeFurnitureModel.ADMIN" Width="1.5" PointX="7.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.ANHSANPHAM" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.CHITIETDATHANG" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.DANHGIA" Width="1.5" PointX="8.25" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.DANHMUC" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.DONDATHANG" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.KHACHHANG" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.KHUYENMAI" Width="1.5" PointX="0.75" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.LIENHE" Width="1.5" PointX="7.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.PHUONGTHUCTHANHTOAN" Width="1.5" PointX="0.75" PointY="19.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.SANPHAM" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.SANPHAM_YEUTHICH" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.THUONGHIEU" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.TINTUC" Width="1.5" PointX="10" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="IHomeFurnitureModel.TRANGTHAIDONHANG" Width="1.5" PointX="0.75" PointY="21.875" IsExpanded="true" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_TT_AD" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_Anh_SP" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_CTDH_DDH" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_CTDH_SP" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_DG_KH" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_DG_SP" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_SP_DM" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_KH" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_KM" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_PTTT" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_TTDH" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_YT_KH" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_SP_TH" ManuallyRouted="false" />
-        <AssociationConnector Association="IHomeFurnitureModel.FK_YT_SP" ManuallyRouted="false" />
+      <Diagram DiagramId="b9da515afd32492bbee5394e4afd06a6" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="IHomeFurnitureModel.ADMIN" Width="1.5" PointX="7.75" PointY="3.125" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.ANHSANPHAM" Width="1.5" PointX="5.25" PointY="17.125" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.CHITIETDATHANG" Width="1.5" PointX="5.25" PointY="7.875" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.DANHGIA" Width="1.5" PointX="8.25" PointY="7.625" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.DANHMUC" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.DONDATHANG" Width="1.5" PointX="3" PointY="14.875" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.KHACHHANG" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.KHUYENMAI" Width="1.5" PointX="0.75" PointY="18" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.LIENHE" Width="1.5" PointX="5.75" PointY="11.75" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.PHUONGTHUCTHANHTOAN" Width="1.5" PointX="0.75" PointY="13.375" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.SANPHAM" Width="1.5" PointX="3" PointY="6.375" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.SANPHAM_YEUTHICH" Width="1.5" PointX="5.25" PointY="5" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.THUONGHIEU" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.TINTUC" Width="1.5" PointX="10" PointY="3" />
+        <EntityTypeShape EntityType="IHomeFurnitureModel.TRANGTHAIDONHANG" Width="1.5" PointX="0.75" PointY="15.75" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_TT_AD" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_Anh_SP" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_CTDH_DDH" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_CTDH_SP" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_DG_KH" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_DG_SP" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_SP_DM" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_KH" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_KM" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_PTTT" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_DDH_TTDH" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_YT_KH" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_SP_TH" />
+        <AssociationConnector Association="IHomeFurnitureModel.FK_YT_SP" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
