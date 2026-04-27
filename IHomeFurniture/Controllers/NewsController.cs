@@ -9,8 +9,10 @@ namespace IHomeFurniture.Controllers
 {
     public class NewsController : Controller
     {
+
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
+        // 1. Danh sách tin tức (Trang quản lý)
         public ActionResult Index()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login", "Admin");
@@ -18,7 +20,7 @@ namespace IHomeFurniture.Controllers
             return View(list);
         }
 
-        // 1. Thêm tin mới
+        // 2. Thêm tin mới (Giao diện)
         [HttpGet]
         public ActionResult Create()
         {
@@ -26,6 +28,7 @@ namespace IHomeFurniture.Controllers
             return View();
         }
 
+        // 3. Thêm tin mới (Xử lý lưu)
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Create(TINTUC tin, HttpPostedFileBase fAnhTin)
@@ -49,7 +52,7 @@ namespace IHomeFurniture.Controllers
             catch { return View(tin); }
         }
 
-        // 2. Xóa tin tức
+        // 4. Xóa tin tức
         public ActionResult Delete(int id)
         {
             var tin = db.TINTUCs.Find(id);
@@ -59,6 +62,25 @@ namespace IHomeFurniture.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+
+        // 5. Chi tiết tin tức (Dùng cho người xem)
+        public ActionResult ChiTiet(int? id)
+        {
+            // Kiểm tra nếu ID trống thì về trang chủ, tránh lỗi 500
+            if (id == null) return RedirectToAction("Index", "Home");
+
+            // Tìm bài viết theo mã ID
+            var baiViet = db.TINTUCs.Find(id);
+
+            // Nếu không tìm thấy bài viết
+            if (baiViet == null) return HttpNotFound();
+
+            // Tăng lượt xem (Check null để tránh lỗi cộng dồn)
+            baiViet.LuotXem = (baiViet.LuotXem ?? 0) + 1;
+            db.SaveChanges();
+
+            return View(baiViet);
         }
     }
 }
