@@ -29,44 +29,96 @@
 <section class="py-16 max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12">
 
     <aside class="w-full lg:w-64 flex-shrink-0 space-y-10 hidden lg:block">
+
+
         <div>
             <h3 class="text-xs font-black uppercase tracking-widest text-black mb-6">Danh mục</h3>
             <ul class="space-y-4 text-sm text-zinc-500 font-medium">
-                <li><a href="/Product/Index?priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm" class="hover:text-orange-500 transition-colors flex justify-between @(ViewBag.CategoryId == null ? "text-orange-500 font-bold" : "")"><span>Tất cả</span></a></li>
-                <li><a href="/Product/Index?categoryId=1&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm" class="hover:text-orange-500 transition-colors flex justify-between @(ViewBag.CategoryId == 1 ? "text-orange-500 font-bold" : "")"><span>Phòng khách</span></a></li>
-                <li><a href="/Product/Index?categoryId=2&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm" class="hover:text-orange-500 transition-colors flex justify-between @(ViewBag.CategoryId == 2 ? "text-orange-500 font-bold" : "")"><span>Phòng ngủ</span></a></li>
-                <li><a href="/Product/Index?categoryId=3&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm" class="hover:text-orange-500 transition-colors flex justify-between @(ViewBag.CategoryId == 3 ? "text-orange-500 font-bold" : "")"><span>Phòng ăn</span></a></li>
+                <li>
+                    <a href="/Product/Index?brandId=@ViewBag.BrandId&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm"
+                       class="hover:text-orange-500 transition-colors @(ViewBag.CategoryId == null ? "text-orange-500 font-bold" : "")">Tất cả</a>
+                </li>
+                @if (ViewBag.Categories != null)
+                {
+                    var categories = (List<IHomeFurniture.Models.DANHMUC>)ViewBag.Categories;
+                    for (int i = 0; i < categories.Count; i++)
+                    {
+                        <li class="@(i >= 5 ? "hidden extra-dm" : "")">
+                            <a href="/Product/Index?categoryId=@categories[i].MaDM&brandId=@ViewBag.BrandId&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm"
+                               class="hover:text-orange-500 transition-colors @(ViewBag.CategoryId == categories[i].MaDM ? "text-orange-500 font-bold" : "")">
+                                @categories[i].TenDanhMuc
+                            </a>
+                        </li>
+                    }
+                    if (categories.Count > 5)
+                    {
+                        <li>
+                            <button onclick="ToggleExtraItems('extra-dm', this)" class="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-orange-500 transition-colors mt-2">
+                                + Xem thêm
+                            </button>
+                        </li>
+                    }
+                }
             </ul>
+        </div>
+
+        <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-black mb-6">Thương hiệu</h3>
+            <div class="flex flex-wrap gap-2">
+                <a href="/Product/Index?categoryId=@ViewBag.CategoryId&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm"
+                   class="px-4 py-2 text-[10px] border rounded-md font-bold uppercase tracking-widest transition-all @(ViewBag.BrandId == null ? "bg-black text-white border-black" : "bg-white text-zinc-400 border-zinc-200 hover:border-black hover:text-black")">
+                    Tất cả
+                </a>
+                @if (ViewBag.Brands != null)
+                {
+                    var brands = (List<IHomeFurniture.Models.THUONGHIEU>)ViewBag.Brands;
+                    for (int i = 0; i < brands.Count; i++)
+                    {
+                        <a href="/Product/Index?brandId=@brands[i].MaTH&categoryId=@ViewBag.CategoryId&priceRange=@ViewBag.PriceRange&searchTerm=@ViewBag.SearchTerm"
+                           class="@(i >= 5 ? "hidden extra-th" : "") px-4 py-2 text-[10px] border rounded-md font-bold uppercase tracking-widest transition-all @(ViewBag.BrandId == brands[i].MaTH ? "bg-orange-500 text-white border-orange-500 shadow-lg shadow-orange-100" : "bg-white text-zinc-400 border-zinc-200 hover:border-black hover:text-black")">
+                            @brands[i].TenTH
+                        </a>
+                    }
+                    if (brands.Count > 5)
+                    {
+                        <button onclick="ToggleExtraItems('extra-th', this)" class="w-full text-left text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-orange-500 mt-4 transition-colors">
+                            + Xem thêm thương hiệu
+                        </button>
+                    }
+                }
+            </div>
         </div>
 
         <div>
             <h3 class="text-xs font-black uppercase tracking-widest text-black mb-6">Mức giá</h3>
             <ul class="space-y-4 text-sm text-zinc-500 font-medium">
                 <li>
-                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black @(string.IsNullOrEmpty(ViewBag.PriceRange) ? "text-orange-500 font-bold" : "")">
+                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&brandId=@ViewBag.BrandId&searchTerm=@ViewBag.SearchTerm"
+                       class="flex items-center gap-3 cursor-pointer hover:text-black @(string.IsNullOrEmpty(ViewBag.PriceRange) ? "text-orange-500 font-bold" : "")">
                         <i class="fa-solid fa-rotate-left text-xs"></i> Tất cả mức giá
                     </a>
                 </li>
+
                 <li>
-                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&priceRange=under2&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black">
+                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&brandId=@ViewBag.BrandId&priceRange=under2&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black @(ViewBag.PriceRange == "under2" ? "text-orange-500 font-bold" : "")">
                         <div class="w-4 h-4 border rounded-sm flex items-center justify-center transition-colors @(ViewBag.PriceRange == "under2" ? "bg-orange-500 border-orange-500 text-white" : "border-zinc-300 text-transparent")"><i class="fa-solid fa-check text-[10px]"></i></div>
                         Dưới 2 triệu
                     </a>
                 </li>
                 <li>
-                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&priceRange=2to5&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black">
+                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&brandId=@ViewBag.BrandId&priceRange=2to5&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black @(ViewBag.PriceRange == "2to5" ? "text-orange-500 font-bold" : "")">
                         <div class="w-4 h-4 border rounded-sm flex items-center justify-center transition-colors @(ViewBag.PriceRange == "2to5" ? "bg-orange-500 border-orange-500 text-white" : "border-zinc-300 text-transparent")"><i class="fa-solid fa-check text-[10px]"></i></div>
                         2 - 5 triệu
                     </a>
                 </li>
                 <li>
-                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&priceRange=5to10&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black">
+                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&brandId=@ViewBag.BrandId&priceRange=5to10&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black @(ViewBag.PriceRange == "5to10" ? "text-orange-500 font-bold" : "")">
                         <div class="w-4 h-4 border rounded-sm flex items-center justify-center transition-colors @(ViewBag.PriceRange == "5to10" ? "bg-orange-500 border-orange-500 text-white" : "border-zinc-300 text-transparent")"><i class="fa-solid fa-check text-[10px]"></i></div>
                         5 - 10 triệu
                     </a>
                 </li>
                 <li>
-                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&priceRange=over10&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black">
+                    <a href="/Product/Index?categoryId=@ViewBag.CategoryId&brandId=@ViewBag.BrandId&priceRange=over10&searchTerm=@ViewBag.SearchTerm" class="flex items-center gap-3 cursor-pointer hover:text-black @(ViewBag.PriceRange == "over10" ? "text-orange-500 font-bold" : "")">
                         <div class="w-4 h-4 border rounded-sm flex items-center justify-center transition-colors @(ViewBag.PriceRange == "over10" ? "bg-orange-500 border-orange-500 text-white" : "border-zinc-300 text-transparent")"><i class="fa-solid fa-check text-[10px]"></i></div>
                         Trên 10 triệu
                     </a>
@@ -76,18 +128,50 @@
     </aside>
 
     <div class="flex-1">
+
+        @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+        {
+            <div class="mb-10">
+                <h2 class="text-2xl font-light text-zinc-400 uppercase tracking-[0.2em] mb-2">
+                    Kết quả cho: <span class="font-black text-black italic">"@ViewBag.SearchTerm"</span>
+                </h2>
+                <a href="/Product/Index" class="text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-circle-xmark mr-1"></i> Xóa tìm kiếm
+                </a>
+            </div>
+        }
+
         <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 pb-4 border-b border-zinc-100">
             <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
                 Hiển thị <span class="text-black">@ViewBag.TotalItem</span> sản phẩm (Trang @ViewBag.CurrentPage)
             </span>
-            <div class="flex items-center gap-3 text-sm">
+
+            <div class="flex items-center gap-4 text-sm relative group">
                 <span class="text-zinc-400 text-[11px] uppercase tracking-widest font-bold">Sắp xếp:</span>
-                <select class="bg-transparent text-black font-medium outline-none cursor-pointer hover:text-orange-500 transition-colors">
-                    <option>Mới nhất</option>
-                    <option>Giá tăng dần</option>
-                    <option>Giá giảm dần</option>
-                    <option>Bán chạy</option>
-                </select>
+
+                <div class="relative inline-block text-left min-w-[150px]">
+                    <button type="button" onclick="document.getElementById('sortOptions').classList.toggle('hidden')"
+                            class="flex items-center justify-between w-full bg-white border border-zinc-200 px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-widest hover:border-black transition-all">
+                        <span>@(ViewBag.SortName ?? "Mới nhất")</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] ml-2"></i>
+                    </button>
+
+                    <div id="sortOptions" class="hidden absolute right-0 mt-2 w-48 bg-white border border-zinc-100 rounded-2xl shadow-xl z-[60] overflow-hidden">
+                        <div class="py-1">
+                            <a href="@Url.Action("Index", "Product", new { sortOrder = "newest", categoryId = ViewBag.CategoryId, brandId = ViewBag.BrandId, priceRange = ViewBag.PriceRange, searchTerm = ViewBag.SearchTerm })"
+                               class="block px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-zinc-600 hover:bg-zinc-50 hover:text-orange-500 transition-colors">Mới nhất</a>
+
+                            <a href="@Url.Action("Index", "Product", new { sortOrder = "price_asc", categoryId = ViewBag.CategoryId, brandId = ViewBag.BrandId, priceRange = ViewBag.PriceRange, searchTerm = ViewBag.SearchTerm })"
+                               class="block px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-zinc-600 hover:bg-zinc-50 hover:text-orange-500 transition-colors border-t border-zinc-50">Giá tăng dần</a>
+
+                            <a href="@Url.Action("Index", "Product", new { sortOrder = "price_desc", categoryId = ViewBag.CategoryId, brandId = ViewBag.BrandId, priceRange = ViewBag.PriceRange, searchTerm = ViewBag.SearchTerm })"
+                               class="block px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-zinc-600 hover:bg-zinc-50 hover:text-orange-500 transition-colors border-t border-zinc-50">Giá giảm dần</a>
+
+                            <a href="@Url.Action("Index", "Product", new { sortOrder = "best_seller", categoryId = ViewBag.CategoryId, brandId = ViewBag.BrandId, priceRange = ViewBag.PriceRange, searchTerm = ViewBag.SearchTerm })"
+                               class="block px-5 py-3 text-[11px] font-bold uppercase tracking-wider text-zinc-600 hover:bg-zinc-50 hover:text-orange-500 transition-colors border-t border-zinc-50">Bán chạy</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -135,9 +219,15 @@
             }
             else
             {
-                <div class="col-span-full py-20 text-center">
-                    <i class="fa-solid fa-box-open text-4xl text-zinc-300 mb-4 block"></i>
-                    <p class="text-zinc-500 font-medium">Hiện tại chưa có sản phẩm nào phù hợp với bộ lọc.</p>
+                <div class="col-span-full py-24 text-center border-2 border-dashed border-zinc-100 rounded-[3rem]">
+                    <div class="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-6 text-zinc-200 text-3xl">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-black uppercase tracking-tighter">Không tìm thấy sản phẩm nào</h3>
+                    <p class="text-zinc-400 text-sm mt-2">Thử tìm bằng từ khóa khác hoặc xóa bộ lọc xem sao nhé!</p>
+                    <a href="/Product/Index" class="inline-block mt-8 px-8 py-3 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-orange-500 transition-all shadow-lg">
+                        Quay lại cửa hàng
+                    </a>
                 </div>
             }
         </div>
@@ -219,6 +309,29 @@
 </div>
 
 <script>
+    //SHOW THÊM
+    function ToggleExtraItems(className, btn) {
+        // Lấy tất cả các phần tử có class tương ứng (extra-dm hoặc extra-th)
+        const items = document.querySelectorAll('.' + className);
+
+        // Kiểm tra xem hiện tại đang ẩn hay hiện
+        const isHidden = items[0].classList.contains('hidden');
+
+        if (isHidden) {
+            // Nếu đang ẩn -> Hiện ra
+            items.forEach(item => {
+                item.classList.remove('hidden');
+                // Thêm hiệu ứng hiện hình mượt mà nếu thích
+                item.classList.add('animate-fade-in');
+            });
+            btn.innerText = "- Thu gọn";
+        } else {
+            // Nếu đang hiện -> Ẩn đi
+            items.forEach(item => item.classList.add('hidden'));
+            btn.innerText = "+ Xem thêm";
+        }
+    }
+
     // --- MỞ/ĐÓNG POPUP SỐ LƯỢNG ---
     function openQuantityModal(event, productId) {
         event.stopPropagation(); // Ngăn click nhầm vào link chi tiết SP

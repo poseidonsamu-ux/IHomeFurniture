@@ -9,24 +9,36 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        public ActionResult Index(int? categoryId, string priceRange, string searchTerm, int page = 1)
+        public ActionResult Index(int? categoryId, int? brandId, string priceRange, string searchTerm, string sortOrder, int page = 1)
         {
             int pageSize = 8;
+            // Khởi tạo query duy nhất
             var query = db.SANPHAMs.Where(s => s.TrangThai == true).AsQueryable();
 
-            // 1. Lọc theo từ khóa (Từ ô Tìm kiếm hoặc Menu Bộ sưu tập truyền xuống)
+            // 1. Lấy dữ liệu cho bộ lọc Aside (Sidebar)
+            ViewBag.Categories = db.DANHMUCs.ToList();
+            ViewBag.Brands = db.THUONGHIEUx.ToList();
+
+            // 2. Lọc theo từ khóa (Chỉ làm 1 lần duy nhất)
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(s => s.TenSP.ToLower().Contains(searchTerm.ToLower()));
+                ViewBag.SearchTerm = searchTerm;
             }
 
-            // 2. Lọc danh mục
+            // 3. Lọc danh mục
             if (categoryId.HasValue)
             {
                 query = query.Where(s => s.MaDM == categoryId.Value);
             }
 
-            // 3. Lọc giá
+            // 4. Lọc theo thương hiệu
+            if (brandId.HasValue)
+            {
+                query = query.Where(s => s.MaTH == brandId.Value);
+            }
+
+            // 5. Lọc giá
             if (!string.IsNullOrEmpty(priceRange))
             {
                 if (priceRange == "under2") query = query.Where(s => s.GiaBan < 2000000);
@@ -35,21 +47,43 @@ namespace IHomeFurniture.Controllers
                 else if (priceRange == "over10") query = query.Where(s => s.GiaBan > 10000000);
             }
 
-            // Sắp xếp mới nhất
-            query = query.OrderByDescending(s => s.NgayCapNhat);
+            // 6. Xử lý Sắp xếp (Tuyệt đối không gán lại OrderBy ở dưới nữa)
+            ViewBag.CurrentSort = sortOrder;
+            switch (sortOrder)
+            {
+                case "price_asc":
+                    query = query.OrderBy(s => s.GiaBan);
+                    ViewBag.SortName = "Giá tăng dần";
+                    break;
+                case "price_desc":
+                    query = query.OrderByDescending(s => s.GiaBan);
+                    ViewBag.SortName = "Giá giảm dần";
+                    break;
+                case "best_seller":
+                    query = query.OrderByDescending(s => s.LuotXem);
+                    ViewBag.SortName = "Bán chạy";
+                    break;
+                default:
+                    query = query.OrderByDescending(s => s.NgayCapNhat);
+                    ViewBag.SortName = "Mới nhất";
+                    break;
+            }
 
-            // Phân trang
+            // 7. Tính toán phân trang
             int totalRow = query.Count();
             int totalPage = (int)Math.Ceiling((double)totalRow / pageSize);
+
+            // Thực thi truy vấn lấy dữ liệu trang hiện tại
             var sanPhams = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            // Gửi dữ liệu qua View
+            // 8. Đồng bộ ViewBag qua View
             ViewBag.TotalPage = totalPage;
             ViewBag.CurrentPage = page;
             ViewBag.TotalItem = totalRow;
             ViewBag.CategoryId = categoryId;
+            ViewBag.BrandId = brandId;
             ViewBag.PriceRange = priceRange;
-            ViewBag.SearchTerm = searchTerm; // Kẹp thêm từ khóa để giữ bộ lọc
+            ViewBag.SortOrder = sortOrder;
 
             return View(sanPhams);
         }

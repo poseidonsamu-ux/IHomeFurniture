@@ -82,12 +82,14 @@
             <div class="flex items-center space-x-4">
 
                 <div class="hidden md:flex items-center">
-                    <form action="/Search" method="get" class="flex items-center bg-gray-50 border border-gray-100 px-4 py-2 rounded-full focus-within:bg-white focus-within:border-gray-200 transition-all duration-300">
+                    <form action="/Product/Index" method="get" class="flex items-center bg-gray-50 border border-gray-100 px-4 py-2 rounded-full focus-within:bg-white focus-within:border-gray-200 transition-all duration-300">
+
                         <button type="submit" class="text-gray-400 hover:text-black transition-colors">
                             <i class="fa-solid fa-magnifying-glass text-sm"></i>
                         </button>
-                        <input type="text" name="searchTerm" placeholder="TÌM KIẾM..."
-                               class="bg-transparent outline-none ml-2 w-28 focus:w-44 transition-all duration-500 text-[11px] font-bold tracking-widest text-gray-700">
+
+                        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="TÌM KIẾM..."
+                               class="bg-transparent outline-none ml-2 w-28 focus:w-44 transition-all duration-500 text-[11px] font-bold tracking-widest text-gray-700 uppercase">
                     </form>
                 </div>
 
@@ -144,24 +146,15 @@
                         Mang đến giải pháp nội thất tối giản, hiện đại và tinh tế. Chúng tôi tin rằng không gian sống chính là nơi nuôi dưỡng tâm hồn.
                     </p>
                     <div class="flex space-x-5">
-                        <a href="#" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-brands fa-pinterest-p"></i></a>
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors text-lg"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors text-lg"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors text-lg"><i class="fa-brands fa-pinterest-p"></i></a>
+                        <a href="#" class="text-zinc-500 hover:text-white transition-colors text-lg"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8">Cửa hàng</h4>
-                    <ul class="space-y-4 text-sm text-zinc-400 font-light">
-                        <li><a href="#" class="hover:text-white transition-colors">Tất cả sản phẩm</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Bộ sưu tập mới</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Đồ trang trí</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Ưu đãi đặc biệt</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8">Hỗ trợ khách hàng</h4>
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8 text-zinc-200">Hỗ trợ khách hàng</h4>
                     <ul class="space-y-4 text-sm text-zinc-400 font-light">
                         <li><a href="#" class="hover:text-white transition-colors">Chính sách vận chuyển</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">Chính sách đổi trả</a></li>
@@ -171,16 +164,40 @@
                 </div>
 
                 <div>
-                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8">Newsletter</h4>
-                    <p class="text-zinc-400 text-sm mb-6 font-light">Đăng ký để nhận thông tin về bộ sưu tập mới nhất.</p>
-                    <form class="relative">
-                        <input type="email" placeholder="Email của bạn"
-                               class="w-full bg-transparent border-b border-zinc-700 pb-3 outline-none focus:border-white transition-colors text-sm font-light">
-                        <button type="submit" class="absolute right-0 bottom-3 text-zinc-400 hover:text-white">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </form>
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8 text-zinc-200">Liên hệ</h4>
+                    <ul class="space-y-5 text-sm text-zinc-400 font-light">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot text-orange-500 mt-1"></i>
+                            <span>123 Đường Tôn Dật Tiên, Quận 7, TP. HCM</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-orange-500"></i>
+                            <a href="tel:0123456789" class="hover:text-white transition-colors">0123 456 789</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-orange-500"></i>
+                            <a href="mailto:hello@ihome.vn" class="hover:text-white transition-colors">hello@ihome.vn</a>
+                        </li>
+                    </ul>
                 </div>
+
+                <div>
+                    <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-8 text-zinc-200">Vị trí Showroom</h4>
+                    <div class="w-full h-40 rounded-xl overflow-hidden border border-zinc-800 grayscale hover:grayscale-0 transition-all duration-500 shadow-lg">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.954415893333!2d106.71963!3d10.730193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f9b3636f34f%3A0x6280b27926b4f74d!2sCrescent%20Mall!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn"
+                                width="100%"
+                                height="100%"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-widest leading-relaxed">
+                        * Mở cửa: 08:00 - 21:00 hàng ngày. Rất hân hạnh được đón tiếp sếp tại iHome.
+                    </p>
+                </div>
+
             </div>
 
             <div class="pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-zinc-600 uppercase tracking-widest font-medium">
