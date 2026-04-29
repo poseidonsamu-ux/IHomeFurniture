@@ -257,6 +257,7 @@
     <Content Include="Images\ke_sach_01.jpg" />
     <Content Include="Images\ke_treo_01.jpg" />
     <Content Include="Images\ke_tv_01.jpg" />
+    <Content Include="Images\Home\living-room.jpg" />
     <Content Include="Images\nem_01.jpg" />
     <Content Include="Images\quat_tran_01.jpg" />
     <Content Include="Images\rem_cua_01.jpg" />
@@ -359,6 +360,7 @@
     <Content Include="Views\OrderStatus\Index.cshtml" />
     <Content Include="Views\OrderStatus\Create.cshtml" />
     <Content Include="Views\OrderStatus\Edit.cshtml" />
+    <Content Include="Views\News\DanhSach.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
