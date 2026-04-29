@@ -14,7 +14,6 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @* Quan trọng: Phải giấu Mã TT đi để POST về Controller *@
         @Html.HiddenFor(model => model.MaTT)
 
         <div class="form-group">
