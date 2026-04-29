@@ -1,0 +1,40 @@
+﻿@model IEnumerable<IHomeFurniture.Models.TRANGTHAIDONHANG>
+
+@{
+    ViewBag.Title = "Order Status Management";
+    // Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Bỏ comment dòng này nếu bạn có Layout riêng cho Admin
+}
+
+<h2>Quản Lý Trạng Thái Đơn Hàng</h2>
+
+<p>
+    @Html.ActionLink("Thêm trạng thái mới", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+@* Hiển thị thông báo lỗi nếu không xóa được *@
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Mã Trạng Thái</th>
+        <th>Tên Trạng Thái</th>
+        <th>Thao tác</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.MaTT</td>
+            <td>@item.TenTrangThai</td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.MaTT }, new { @class = "btn btn-sm btn-warning" }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.MaTT }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('Bạn có chắc chắn muốn xóa trạng thái này không?');" })
+            </td>
+        </tr>
+    }
+</table>

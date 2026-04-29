@@ -78,7 +78,7 @@ namespace IHomeFurniture.Controllers
             {
                 kh.NgayTao = DateTime.Now;
                 kh.TrangThai = true;
-                kh.DaXacThucEmail = true; // Admin tạo mặc định là đã xác thực luôn
+                kh.DaXacThucEmail = true; // check xác thực mặc định
 
                 db.KHACHHANGs.Add(kh);
                 db.SaveChanges();
@@ -118,9 +118,6 @@ namespace IHomeFurniture.Controllers
                     kh.DienThoai = model.DienThoai;
                     kh.DiaChi = model.DiaChi;
                     kh.TrangThai = model.TrangThai;
-
-                    // --- ĐÃ FIX TẠI ĐÂY ---
-                    // Cho phép Admin cập nhật trạng thái xác thực Email
                     kh.DaXacThucEmail = model.DaXacThucEmail;
 
                     db.SaveChanges();
@@ -243,97 +240,7 @@ namespace IHomeFurniture.Controllers
             return new EmptyResult();
         }
 
-        // 12. Danh sách tin tức
-        public ActionResult QuanLyTinTuc()
-        {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
-            return View(list);
-        }
-
-        // 13. Thêm tin tức mới
-        public ActionResult ThemTinTuc()
-        {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult ThemTinTuc(TINTUC tin, HttpPostedFileBase fAnhTin)
-        {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            try
-            {
-                if (fAnhTin != null && fAnhTin.ContentLength > 0)
-                {
-                    string fileName = Path.GetFileName(fAnhTin.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
-                    fAnhTin.SaveAs(path);
-                    tin.AnhTin = fileName;
-                }
-                tin.NgayDang = DateTime.Now;
-                tin.LuotXem = 0;
-                db.TINTUCs.Add(tin);
-                db.SaveChanges();
-                return RedirectToAction("QuanLyTinTuc");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = "Lỗi: " + ex.Message;
-                return View(tin);
-            }
-        }
-
-        // 14. Xóa tin tức
-        public ActionResult XoaTinTuc(int id)
-        {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            var tin = db.TINTUCs.Find(id);
-            if (tin != null)
-            {
-                db.TINTUCs.Remove(tin);
-                db.SaveChanges();
-            }
-            return RedirectToAction("QuanLyTinTuc");
-        }
-
-        // 15. Sửa tin tức
-        public ActionResult SuaTinTuc(int? id)
-        {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            if (id == null) return RedirectToAction("QuanLyTinTuc");
-
-            var tin = db.TINTUCs.Find(id);
-            if (tin == null) return HttpNotFound();
-            return View(tin);
-        }
-
-        [HttpPost]
-        [ValidateInput(false)]
-        [ValidateAntiForgeryToken]
-        public ActionResult SuaTinTuc(TINTUC model, HttpPostedFileBase fAnhTin)
-        {
-            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
-            var tin = db.TINTUCs.Find(model.MaTin);
-            if (tin != null)
-            {
-                tin.TieuDe = model.TieuDe;
-                tin.NoiDung = model.NoiDung;
-                if (fAnhTin != null && fAnhTin.ContentLength > 0)
-                {
-                    string fileName = Path.GetFileName(fAnhTin.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
-                    fAnhTin.SaveAs(path);
-                    tin.AnhTin = fileName;
-                }
-                db.SaveChanges();
-                return RedirectToAction("QuanLyTinTuc");
-            }
-            return View(model);
-        }
-
-        // 16. Sửa sản phẩm
+        // 12. Sửa sản phẩm
         public ActionResult SuaSanPham(int? id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -385,7 +292,7 @@ namespace IHomeFurniture.Controllers
             return View(model);
         }
 
-        // 17. Chi tiết đơn hàng
+        // 13. Chi tiết đơn hàng
         public ActionResult ChiTietDonHang(int? id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -401,7 +308,7 @@ namespace IHomeFurniture.Controllers
             return View(donHang);
         }
 
-        // 18. Cập nhật trạng thái đơn hàng
+        // 14. Cập nhật trạng thái đơn hàng
         [HttpPost]
         public ActionResult CapNhatTrangThai(int MaDonHang, int MaTT)
         {
