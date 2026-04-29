@@ -135,6 +135,7 @@
     <Compile Include="Controllers\ChatBoxAIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\OrderStatusController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -340,9 +341,9 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\News\ChiTiet.cshtml" />
-    <Content Include="Views\Admin\QuanLyTinTuc.cshtml" />
-    <Content Include="Views\Admin\ThemTinTuc.cshtml" />
-    <Content Include="Views\Admin\SuaTinTuc.cshtml" />
+    <Content Include="Views\News\QuanLyTinTuc.cshtml" />
+    <Content Include="Views\News\ThemTinTuc.cshtml" />
+    <Content Include="Views\News\SuaTinTuc.cshtml" />
     <Content Include="Views\Admin\SuaSanPham.cshtml" />
     <Content Include="Views\Admin\ChiTietDonHang.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
@@ -354,6 +355,10 @@
     <Content Include="Views\Home\DoiTra.cshtml" />
     <Content Include="Views\Home\BaoQuan.cshtml" />
     <Content Include="Views\Home\LienHe.cshtml" />
+    <Content Include="Views\Admin\ThemKhachHang.cshtml" />
+    <Content Include="Views\OrderStatus\Index.cshtml" />
+    <Content Include="Views\OrderStatus\Create.cshtml" />
+    <Content Include="Views\OrderStatus\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
