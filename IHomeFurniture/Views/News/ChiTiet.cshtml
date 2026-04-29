@@ -1,66 +1,83 @@
 ﻿@model IHomeFurniture.Models.TINTUC
+
 @{
-    ViewBag.Title = Model.TieuDe;
+    ViewBag.Title = Model.TieuDe + " | iHOME Journal";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="bg-zinc-50 py-12 md:py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="bg-white px-6 py-10 md:px-12 md:py-16 lg:px-20 rounded-[2rem] shadow-sm border border-zinc-200/60">
-
-            @* Nút quay lại *@
-            <a href="/" class="text-[11px] uppercase tracking-[0.2em] font-bold text-zinc-400 hover:text-orange-600 transition-colors mb-10 inline-flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left-long"></i> Trở về Trang chủ
+<div class="bg-white min-h-screen pb-32">
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-50">
+        <div class="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="/News/DanhSach" class="group flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full border border-zinc-100 flex items-center justify-center group-hover:bg-black group-hover:border-black transition-all duration-500">
+                    <i class="fa-solid fa-arrow-left text-[10px] group-hover:text-white transition-colors"></i>
+                </div>
+                <span class="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover:text-black">Quay lại tạp chí</span>
             </a>
 
-            @* Header Bài Viết *@
-            <h1 class="text-3xl md:text-5xl lg:text-[54px] font-black tracking-tight text-zinc-900 mb-8 leading-[1.15]">
+            <div class="flex items-center gap-5">
+                <span class="text-[10px] font-black uppercase tracking-widest text-zinc-300 hidden sm:block">Share /</span>
+                <a href="#" class="text-zinc-300 hover:text-black transition-colors"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                <a href="#" class="text-zinc-300 hover:text-black transition-colors"><i class="fa-brands fa-twitter text-sm"></i></a>
+                <a href="#" class="text-zinc-300 hover:text-black transition-colors"><i class="fa-solid fa-link text-sm"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <article class="max-w-4xl mx-auto px-6 mt-20">
+        <header class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="px-3 py-1 bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest rounded-sm">Inside iHome</span>
+                <span class="text-[10px] font-black text-zinc-300 uppercase tracking-widest">
+                    @(Model.NgayDang.HasValue ? Model.NgayDang.Value.ToString("dd MMMM, yyyy") : "Journal")
+                </span>
+                <span class="text-[10px] font-black text-zinc-300 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-regular fa-eye text-orange-500"></i> @(Model.LuotXem ?? 0) Lượt xem
+                </span>
+            </div>
+
+            <span class="text-[10px] font-black text-zinc-300 uppercase tracking-widest flex items-center gap-2">
+                <i class="fa-regular fa-eye text-orange-500"></i> @(Model.LuotXem ?? 0) Lượt xem
+            </span>
+
+            <h1 class="text-4xl md:text-6xl font-black leading-[1.1] tracking-tighter text-black uppercase mb-10">
                 @Model.TieuDe
             </h1>
 
-            <div class="flex flex-wrap items-center gap-5 text-[11px] text-zinc-500 uppercase tracking-widest mb-10 pb-8 border-b border-zinc-100 font-medium">
-                <span class="flex items-center"><i class="fa-regular fa-calendar-days mr-2 text-lg"></i> @(Model.NgayDang.HasValue ? Model.NgayDang.Value.ToString("dd/MM/yyyy") : "Đang cập nhật")</span>
-                <span class="flex items-center"><i class="fa-regular fa-eye mr-2 text-lg"></i> @Model.LuotXem Lượt xem</span>
-                <span class="bg-orange-100 text-orange-600 px-4 py-1.5 rounded-full font-black">TIN TỨC NỘI THẤT</span>
-            </div>
 
-            @* Đoạn tóm tắt (Sapo) *@
+
+            <div class="relative overflow-hidden rounded-[2.5rem] bg-zinc-50 shadow-2xl shadow-zinc-100 mb-16">
+                <img src="@Url.Content("~/Images/News/" + Model.AnhTin)"
+                     onerror="this.src='https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2000'"
+                     class="w-full object-cover aspect-video" />
+            </div>
+        </header>
+
+        <div class="max-w-3xl mx-auto">
             @if (!string.IsNullOrEmpty(Model.TomTat))
             {
-                <p class="text-xl md:text-2xl font-medium text-zinc-700 mb-12 italic border-l-4 border-orange-500 pl-6 py-2 bg-orange-50/50 rounded-r-2xl leading-relaxed">
-                    @Model.TomTat
-                </p>
-            }
-
-            @* Ảnh bìa bài viết *@
-            @if (!string.IsNullOrEmpty(Model.AnhTin))
-            {
-                <div class="rounded-2xl overflow-hidden mb-14 shadow-md bg-zinc-100">
-                    <img src="@Url.Content("~/Images/News/" + Model.AnhTin)"
-                         onerror="this.src='https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80'"
-                         alt="@Model.TieuDe"
-                         class="w-full aspect-video object-cover hover:scale-105 transition-transform duration-700 ease-out" />
+                <div class="mb-16">
+                    <p class="text-2xl font-medium text-zinc-800 leading-relaxed italic border-l-4 border-orange-500 pl-8">
+                        @Model.TomTat
+                    </p>
                 </div>
             }
 
-            @* Nội dung chi tiết *@
-            <div class="prose prose-zinc prose-xl md:prose-2xl max-w-none text-zinc-700 leading-relaxed
-                        prose-headings:text-zinc-900 prose-headings:font-black prose-headings:tracking-tight
-                        prose-img:rounded-3xl prose-img:shadow-lg prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline">
+            <div class="prose prose-zinc prose-lg max-w-none
+                        text-zinc-600 leading-[1.9]
+                        prose-p:mb-8 prose-p:text-justify
+                        prose-headings:text-black prose-headings:font-black prose-headings:uppercase prose-headings:tracking-widest
+                        prose-img:rounded-3xl prose-img:shadow-lg
+                        prose-strong:text-black prose-strong:font-black">
                 @Html.Raw(Model.NoiDung)
             </div>
 
-            @* Nút chia sẻ *@
-            <div class="mt-16 pt-10 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <span class="text-sm font-bold text-zinc-900 uppercase tracking-widest">Chia sẻ bài viết</span>
-                <div class="flex gap-5 text-2xl text-zinc-300">
-                    <a href="#" class="hover:text-blue-600 hover:-translate-y-1 transition-all"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="hover:text-sky-500 hover:-translate-y-1 transition-all"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" class="hover:text-red-500 hover:-translate-y-1 transition-all"><i class="fa-brands fa-pinterest"></i></a>
-                </div>
+            <div class="mt-24 pt-12 border-t border-zinc-100 flex flex-wrap gap-3">
+                <span class="w-full text-[10px] font-black uppercase tracking-[0.3em] text-zinc-300 mb-2">🏷️ Tags</span>
+                <span class="px-5 py-2 bg-zinc-50 text-zinc-500 text-[10px] font-black rounded-full uppercase border border-zinc-100">Nội thất</span>
+                <span class="px-5 py-2 bg-zinc-50 text-zinc-500 text-[10px] font-black rounded-full uppercase border border-zinc-100">Cảm hứng</span>
+                <span class="px-5 py-2 bg-zinc-50 text-zinc-500 text-[10px] font-black rounded-full uppercase border border-zinc-100">iHome Journal</span>
             </div>
-
         </div>
-    </div>
+    </article>
 </div>

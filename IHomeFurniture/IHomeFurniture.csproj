@@ -308,9 +308,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Images\News\huong-dan-bao-quan-noi-that-go-mdf.jpg" />
-    <Content Include="Images\News\sofa-nho-gon-cho-chung-cu-50m_c7f9fefbc0fb498cbd2d4b27aa79aa47_1024x1024.jpg" />
-    <Content Include="Images\News\xu_huong_thiet_ke_noi_that_2026_jmg1.png" />
+    <Content Include="Images\News\sofa-nho-gon-cho-chung-cu-50m.jpg" />
+    <Content Include="Images\News\xu_huong_thiet_ke_noi_that_2026.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -322,8 +321,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -354,10 +351,13 @@
     <Content Include="Views\Cart\Success.cshtml" />
     <Content Include="Views\Brand\Index.cshtml" />
     <Content Include="Views\Brand\Create.cshtml" />
+    <Content Include="Views\Home\VanChuyen.cshtml" />
+    <Content Include="Views\Home\DoiTra.cshtml" />
+    <Content Include="Views\Home\BaoQuan.cshtml" />
+    <Content Include="Views\News\DanhSach.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ChatBoxAI\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
