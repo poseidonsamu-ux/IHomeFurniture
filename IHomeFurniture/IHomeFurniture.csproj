@@ -133,7 +133,6 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ChatBoxAIController.cs" />
-    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -347,12 +346,14 @@
     <Content Include="Views\Admin\SuaSanPham.cshtml" />
     <Content Include="Views\Admin\ChiTietDonHang.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
-    <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Cart\Checkout.cshtml" />
     <Content Include="Views\Cart\Success.cshtml" />
     <Content Include="Views\Brand\Index.cshtml" />
     <Content Include="Views\Brand\Create.cshtml" />
     <Content Include="Views\Home\VanChuyen.cshtml" />
+    <Content Include="Views\Home\DoiTra.cshtml" />
+    <Content Include="Views\Home\BaoQuan.cshtml" />
+    <Content Include="Views\Home\LienHe.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

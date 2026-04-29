@@ -1,7 +1,41 @@
-﻿
-@{
-    ViewBag.Title = "VanChuyen";
-}
+﻿@{ ViewBag.Title = "Vận chuyển | iHOME"; Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-<h2>VanChuyen</h2>
+<div class="bg-white py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-20">
+            <span class="text-orange-500 font-black text-[10px] uppercase tracking-[0.4em] mb-4 block">Logistics & Delivery</span>
+            <h1 class="text-5xl md:text-6xl font-light tracking-tighter text-black uppercase">Hành trình <br><span class="font-bold">Đến tổ ấm</span></h1>
+        </header>
 
+        <div class="grid md:grid-cols-3 gap-12">
+            <div class="group">
+                <div class="text-7xl font-black text-zinc-100 group-hover:text-orange-100 transition-colors duration-500 mb-6">01</div>
+                <h3 class="text-xs font-black uppercase tracking-widest mb-4">Xác nhận đơn hàng</h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">Ngay sau khi sếp đặt hàng, đội ngũ iHome sẽ gọi điện xác nhận và kiểm tra kỹ tình trạng sản phẩm trong kho.</p>
+            </div>
+            <div class="group">
+                <div class="text-7xl font-black text-zinc-100 group-hover:text-orange-100 transition-colors duration-500 mb-6">02</div>
+                <h3 class="text-xs font-black uppercase tracking-widest mb-4">Đóng gói chuẩn iHome</h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">Sản phẩm được bọc 3 lớp: Màng PE chống xước, xốp nổ giảm chấn và khung gỗ bảo vệ cho các món đồ dễ vỡ.</p>
+            </div>
+            <div class="group">
+                <div class="text-7xl font-black text-zinc-100 group-hover:text-orange-100 transition-colors duration-500 mb-6">03</div>
+                <h3 class="text-xs font-black uppercase tracking-widest mb-4">Giao hàng & Lắp đặt</h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">Đội ngũ kỹ thuật của chúng tôi sẽ giao và lắp đặt hoàn thiện tại nhà sếp, đảm bảo mọi thứ hoàn hảo nhất.</p>
+            </div>
+        </div>
+
+        <div class="mt-20 p-10 bg-zinc-50 rounded-[3rem] border border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 bg-black rounded-full flex items-center justify-center text-white text-2xl shadow-xl">
+                    <i class="fa-solid fa-truck-fast"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-black uppercase text-sm tracking-widest">Miễn phí vận chuyển</h4>
+                    <p class="text-xs text-zinc-400 mt-1">Áp dụng cho mọi đơn hàng từ 20.000.000 VNĐ trở lên.</p>
+                </div>
+            </div>
+            <button class="px-10 py-4 bg-orange-500 text-white rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-lg active:scale-95">Xem bảng phí chi tiết</button>
+        </div>
+    </div>
+</div>
