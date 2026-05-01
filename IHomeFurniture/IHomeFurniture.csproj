@@ -137,6 +137,7 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\OrderStatusController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -361,6 +362,7 @@
     <Content Include="Views\OrderStatus\Create.cshtml" />
     <Content Include="Views\OrderStatus\Edit.cshtml" />
     <Content Include="Views\News\DanhSach.cshtml" />
+    <Content Include="Views\UserAccount\AccountInfor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
