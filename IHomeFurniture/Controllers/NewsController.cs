@@ -82,13 +82,5 @@ namespace IHomeFurniture.Controllers
 
             return View(baiViet);
         }
-
-
-        public ActionResult DanhSach()
-        {
-            // Lấy tất cả tin tức, tin mới nhất xếp lên đầu
-            var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
-            return View(list);
-        }
     }
 }

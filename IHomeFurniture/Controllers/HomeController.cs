@@ -26,6 +26,6 @@ namespace IHomeFurniture.Controllers
         public ActionResult VanChuyen() { return View(); }
         public ActionResult DoiTra() { return View(); }
         public ActionResult BaoQuan() { return View(); }
-
+        public ActionResult LienHe() { return View(); }
     }
 }

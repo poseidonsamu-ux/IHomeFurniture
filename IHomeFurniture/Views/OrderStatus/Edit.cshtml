@@ -1,0 +1,34 @@
+﻿@model IHomeFurniture.Models.TRANGTHAIDONHANG
+
+@{
+    ViewBag.Title = "Edit Order Status";
+}
+
+<h2>Chỉnh Sửa Trạng Thái</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.MaTT)
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên trạng thái</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TenTrangThai, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.TenTrangThai, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Cập nhật</button>
+                @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
+}

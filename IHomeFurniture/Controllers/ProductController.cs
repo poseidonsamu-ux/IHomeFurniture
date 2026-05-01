@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic; // Thêm cái này để dùng List
 using System.Linq;
 using System.Web.Mvc;
 using IHomeFurniture.Models;
@@ -10,7 +9,6 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        // 1. THÊM brandId vào tham số đầu vào
         public ActionResult Index(int? categoryId, int? brandId, string priceRange, string searchTerm, string sortOrder, int page = 1)
         {
             int pageSize = 8;
@@ -90,7 +88,6 @@ namespace IHomeFurniture.Controllers
             return View(sanPhams);
         }
 
-
         public ActionResult Detail(int id)
         {
             var sp = db.SANPHAMs.FirstOrDefault(s => s.MaSP == id && s.TrangThai == true);
@@ -106,5 +103,4 @@ namespace IHomeFurniture.Controllers
             return View(sp);
         }
     }
-
 }
