@@ -82,7 +82,6 @@ namespace IHomeFurniture.Controllers
 
             return View(baiViet);
         }
-
         public ActionResult DanhSach()
         {
             // Lấy tất cả tin tức, tin mới nhất xếp lên đầu

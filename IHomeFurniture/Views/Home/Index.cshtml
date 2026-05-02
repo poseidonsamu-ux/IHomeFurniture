@@ -79,24 +79,31 @@
                 {
                     <div class="group">
                         <div class="relative overflow-hidden aspect-[4/5] bg-zinc-100 rounded-sm mb-4">
-                            <img src="~/Images/@sp.AnhBia"
+                         
+                            <img src="@Url.Content("~/Images/" + (string.IsNullOrEmpty(sp.AnhBia) ? "default.jpg" : sp.AnhBia.Trim()))"
                                  onerror="this.src='https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80'"
-                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                 alt="@sp.TenSP">
 
                             <div class="absolute top-4 left-4 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-widest">New</div>
                             <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/60 to-transparent">
-                                <button class="w-full bg-white text-black py-3 text-xs font-bold hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-cart-plus"></i> THÊM VÀO GIỎ
+                              
+                                <button type="button" onclick="openQuantityModal(event, @sp.MaSP)" class="w-full bg-white text-black h-12 rounded-full text-[10px] font-black uppercase tracking-[0.1em] hover:bg-orange-500 hover:text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
                                 </button>
                             </div>
                         </div>
                         <div>
                             <a href="/Product/Details/@sp.MaSP" class="text-sm font-medium text-zinc-800 hover:underline decoration-zinc-300 underline-offset-4">@sp.TenSP</a>
                             <div class="flex items-center gap-3 mt-1">
-                                <span class="text-sm font-bold text-black">@string.Format("{0:N0}đ", sp.GiaBan)</span>
-                                @if (sp.GiaKhuyenMai > 0)
+                                <span class="text-sm font-bold text-black">
+                                    @(sp.GiaBan.HasValue ? sp.GiaBan.Value.ToString("#,##0") + "đ" : "Liên hệ")
+                                </span>
+                                @if (sp.GiaKhuyenMai.HasValue && sp.GiaKhuyenMai.Value > 0)
                                 {
-                                    <span class="text-[11px] text-zinc-400 line-through">@string.Format("{0:N0}đ", sp.GiaKhuyenMai)</span>
+                                    <span class="text-[11px] text-zinc-400 line-through">
+                                        @sp.GiaKhuyenMai.Value.ToString("#,##0")đ
+                                    </span>
                                 }
                             </div>
                         </div>
