@@ -1,0 +1,143 @@
+﻿@model IHomeFurniture.Models.KHACHHANG
+@{
+    ViewBag.Title = "Tài khoản của tôi | iHOME";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Lấy danh sách đơn hàng từ ViewBag
+    var dsDonHang = ViewBag.DanhSachDonHang as IEnumerable<IHomeFurniture.Models.DONDATHANG>;
+}
+
+<div class="bg-zinc-50 min-h-screen py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+
+        <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+                <span class="text-orange-500 font-black text-[10px] uppercase tracking-[0.4em] mb-2 block">Cài đặt cá nhân</span>
+                <h1 class="text-3xl md:text-5xl font-black text-black uppercase tracking-tighter">Thông tin <span class="font-light italic text-zinc-400">Tài khoản</span></h1>
+            </div>
+            <a href="/" class="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-black flex items-center gap-2 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại mua sắm
+            </a>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="mb-8 p-5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-bold rounded-[1.5rem] flex items-center gap-3">
+                <i class="fa-regular fa-circle-check text-lg"></i>
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="mb-8 p-5 bg-red-50 border border-red-200 text-red-700 text-sm font-bold rounded-[1.5rem] flex items-center gap-3">
+                <i class="fa-regular fa-circle-xmark text-lg"></i>
+                @ViewBag.Error
+            </div>
+        }
+
+        <div class="grid grid-cols-1 @(dsDonHang != null && dsDonHang.Any() ? "lg:grid-cols-3" : "") gap-12 items-start">
+
+            <div class="@(dsDonHang != null && dsDonHang.Any() ? "lg:col-span-2" : "max-w-4xl mx-auto w-full")">
+                @using (Html.BeginForm("AccountInfor", "UserAccount", FormMethod.Post, new { @class = "space-y-8" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-zinc-100 shadow-2xl shadow-zinc-200/50 space-y-6">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-zinc-400">Mã khách hàng</label>
+                                <input type="text" value="@Model.MaKH" disabled class="w-full bg-zinc-50 border border-zinc-100 px-6 py-4 rounded-2xl text-sm font-bold text-zinc-400 cursor-not-allowed outline-none" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-zinc-400">Tên tài khoản</label>
+                                <input type="text" value="@Model.TaiKhoan" disabled class="w-full bg-zinc-50 border border-zinc-100 px-6 py-4 rounded-2xl text-sm font-bold text-zinc-400 cursor-not-allowed outline-none" />
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-zinc-600">Họ và tên <span class="text-orange-500">*</span></label>
+                            <input type="text" name="HoTen" value="@Model.HoTen" required
+                                   class="w-full bg-white border border-zinc-200 px-6 py-4 rounded-2xl text-sm font-bold text-black focus:border-orange-500 focus:ring-2 focus:ring-orange-50/50 outline-none transition-all duration-300" />
+                            @if (ViewData["LoiHoTen"] != null)
+                            {
+                                <span class="text-xs text-red-500 font-bold">@ViewData["LoiHoTen"]</span>
+                            }
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-zinc-600">Email cá nhân <span class="text-orange-500">*</span></label>
+                                <input type="email" name="Email" value="@Model.Email" required
+                                       class="w-full bg-white border border-zinc-200 px-6 py-4 rounded-2xl text-sm font-bold text-black focus:border-orange-500 focus:ring-2 focus:ring-orange-50/50 outline-none transition-all duration-300" />
+                                @if (ViewData["LoiEmail"] != null)
+                                {
+                                    <span class="text-xs text-red-500 font-bold">@ViewData["LoiEmail"]</span>
+                                }
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-zinc-600">Số điện thoại</label>
+                                <input type="text" name="DienThoai" value="@Model.DienThoai"
+                                       class="w-full bg-white border border-zinc-200 px-6 py-4 rounded-2xl text-sm font-bold text-black focus:border-orange-500 focus:ring-2 focus:ring-orange-50/50 outline-none transition-all duration-300" />
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-zinc-600">Địa chỉ giao hàng mặc định</label>
+                            <textarea name="DiaChi" rows="3"
+                                      class="w-full bg-white border border-zinc-200 px-6 py-4 rounded-2xl text-sm font-bold text-black focus:border-orange-500 focus:ring-2 focus:ring-orange-50/50 outline-none transition-all duration-300">@Model.DiaChi</textarea>
+                        </div>
+
+                        <div class="pt-6 border-t border-zinc-50 flex justify-end">
+                            <button type="submit" class="px-8 py-4 bg-black text-white hover:bg-orange-500 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-500 shadow-xl hover:shadow-orange-500/20 hover:-translate-y-0.5">
+                                <i class="fa-regular fa-floppy-disk mr-2"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (dsDonHang != null && dsDonHang.Any())
+            {
+                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] border border-zinc-100 shadow-2xl shadow-zinc-200/50 h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-black uppercase tracking-tight text-black">Đơn hàng <span class="font-light italic text-zinc-400">của bạn</span></h3>
+                        <span class="text-[10px] bg-zinc-100 px-3 py-1 font-black text-zinc-500 rounded-full">@dsDonHang.Count() Đơn</span>
+                    </div>
+
+                    <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                        @foreach (var don in dsDonHang)
+                        {
+                            <div class="p-5 bg-zinc-50 border border-zinc-100 rounded-2xl hover:border-orange-200 transition-all">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Mã đơn hàng</p>
+                                        <span class="text-sm font-bold text-black">#@don.MaDonHang</span>
+                                    </div>
+                                    <span class="text-[9px] font-black uppercase px-3 py-1 bg-white border border-zinc-200 text-zinc-600 rounded-lg tracking-wider">
+                                        @(don.NgayDat.HasValue ? don.NgayDat.Value.ToString("dd/MM/yyyy") : "---")
+                                    </span>
+                                </div>
+
+                                <div class="space-y-1 mb-4">
+                                    <p class="text-xs text-zinc-500 leading-normal line-clamp-2"><span class="font-bold text-zinc-700">Giao tới:</span> @don.DiaChiGiaoHang</p>
+                                    <p class="text-xs text-zinc-500"><span class="font-bold text-zinc-700">Tổng tiền:</span> <span class="text-orange-500 font-bold">@string.Format("{0:N0}đ", don.TongTien)</span></p>
+                                </div>
+
+                                <div class="pt-3 border-t border-zinc-200/60 flex items-center justify-between">
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-emerald-600 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-circle text-[6px]"></i> Đã xác nhận
+                                    </span>
+                                    <a href="/Product" class="text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">Mua lại</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
