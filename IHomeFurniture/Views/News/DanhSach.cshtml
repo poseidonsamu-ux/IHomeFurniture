@@ -31,7 +31,7 @@
                 var firstPost = Model.First();
                 var remainingPosts = Model.Skip(1).ToList();
 
-                <div class="lg:w-7/12 group cursor-pointer" onclick="window.location.href='/News/ChiTiet/@firstPost.MaTin'">
+                <div class="lg:w-7/12 group cursor-pointer" onclick="window.location.href='@Url.Action("ChiTiet", "News", new { id = firstPost.MaTin })'">
                     <div class="relative overflow-hidden rounded-[4rem] bg-zinc-100 aspect-[16/10] mb-10 shadow-2xl">
                         <img src="@Url.Content("~/Images/News/" + firstPost.AnhTin)"
                              class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" />
@@ -44,7 +44,10 @@
                     <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span class="px-4 py-1 bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full">Tiêu điểm</span>
-                            <span class="text-zinc-400 text-xs font-bold uppercase tracking-widest">@firstPost.NgayDang.Value.ToString("dd . MM . yyyy")</span>
+                            <!-- ĐÃ FIX: Kiểm tra null cho NgayDang -->
+                            <span class="text-zinc-400 text-xs font-bold uppercase tracking-widest">
+                                @(firstPost.NgayDang?.ToString("dd . MM . yyyy") ?? "Chưa cập nhật")
+                            </span>
                         </div>
                         <h3 class="text-4xl md:text-6xl font-black leading-[1.1] uppercase tracking-tighter group-hover:text-orange-500 transition-colors">
                             @firstPost.TieuDe
@@ -53,10 +56,10 @@
                 </div>
 
                 <div class="lg:w-5/12 space-y-20">
-                    @foreach (var item in remainingPosts.Take(3)) 
+                    @foreach (var item in remainingPosts.Take(3))
                     {
                         <div class="flex flex-col sm:flex-row gap-8 group cursor-pointer border-b border-zinc-100 pb-12 last:border-none"
-                             onclick="window.location.href='/News/ChiTiet/@item.MaTin'">
+                             onclick="window.location.href='@Url.Action("ChiTiet", "News", new { id = item.MaTin })'">
                             <div class="w-full sm:w-48 h-48 flex-shrink-0 overflow-hidden rounded-[2rem] bg-zinc-100 shadow-xl">
                                 <img src="@Url.Content("~/Images/News/" + item.AnhTin)"
                                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -81,7 +84,7 @@
             {
                 foreach (var item in Model.Skip(4))
                 {
-                    <div class="group cursor-pointer" onclick="window.location.href='/News/ChiTiet/@item.MaTin'">
+                    <div class="group cursor-pointer" onclick="window.location.href='@Url.Action("ChiTiet", "News", new { id = item.MaTin })'">
                         <div class="relative aspect-square overflow-hidden rounded-[2.5rem] bg-zinc-100 mb-8">
                             <img src="@Url.Content("~/Images/News/" + item.AnhTin)" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" />
                         </div>
@@ -94,7 +97,6 @@
 </div>
 
 <style>
-
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;

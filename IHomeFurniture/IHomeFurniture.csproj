@@ -130,7 +130,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ChatBoxAIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -310,9 +309,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Images\News\huong-dan-bao-quan-noi-that-go.jpg" />
-    <Content Include="Images\News\sofa-nho-gon-cho-chung-cu-50m.jpg" />
-    <Content Include="Images\News\xu_huong_thiet_ke_noi_that_2026.jpg" />
+    <Content Include="Images\News\news3.jpg" />
+    <Content Include="Images\News\news2.jpg" />
+    <Content Include="Images\News\news1.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -343,16 +342,14 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\News\ChiTiet.cshtml" />
-    <Content Include="Views\News\QuanLyTinTuc.cshtml" />
-    <Content Include="Views\News\ThemTinTuc.cshtml" />
-    <Content Include="Views\News\SuaTinTuc.cshtml" />
+    <Content Include="Views\Admin\QuanLyTinTuc.cshtml" />
+    <Content Include="Views\Admin\ThemTinTuc.cshtml" />
+    <Content Include="Views\Admin\SuaTinTuc.cshtml" />
     <Content Include="Views\Admin\SuaSanPham.cshtml" />
     <Content Include="Views\Admin\ChiTietDonHang.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\Checkout.cshtml" />
     <Content Include="Views\Cart\Success.cshtml" />
-    <Content Include="Views\Brand\Index.cshtml" />
-    <Content Include="Views\Brand\Create.cshtml" />
     <Content Include="Views\Home\VanChuyen.cshtml" />
     <Content Include="Views\Home\DoiTra.cshtml" />
     <Content Include="Views\Home\BaoQuan.cshtml" />
@@ -363,6 +360,9 @@
     <Content Include="Views\OrderStatus\Edit.cshtml" />
     <Content Include="Views\News\DanhSach.cshtml" />
     <Content Include="Views\UserAccount\AccountInfor.cshtml" />
+    <Content Include="Views\Admin\QuanLyThuongHieu.cshtml" />
+    <Content Include="Views\Admin\ThemThuongHieu.cshtml" />
+    <Content Include="Views\Admin\SuaThuongHieu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

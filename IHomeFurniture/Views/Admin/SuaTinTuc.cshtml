@@ -13,7 +13,6 @@
         </a>
     </div>
 
-    @* ĐÃ FIX: Thêm new { id = Model.MaTin } và AntiForgeryToken bên dưới *@
     @using (Html.BeginForm("SuaTinTuc", "Admin", new { id = Model.MaTin }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()

@@ -9,11 +9,10 @@ namespace IHomeFurniture.Controllers
 {
     public class NewsController : Controller
     {
-
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
         // 1. Danh sách tin tức (Trang quản lý)
-        public ActionResult Index()
+        public ActionResult QuanLyTinTuc()
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login", "Admin");
             var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
@@ -47,7 +46,7 @@ namespace IHomeFurniture.Controllers
                 tin.MaAd = (int)Session["Admin_ID"];
                 db.TINTUCs.Add(tin);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("QuanLyTinTuc"); // Đã sửa lại đường dẫn
             }
             catch { return View(tin); }
         }
@@ -61,30 +60,73 @@ namespace IHomeFurniture.Controllers
                 db.TINTUCs.Remove(tin);
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("QuanLyTinTuc"); // Đã sửa lại đường dẫn
         }
 
         // 5. Chi tiết tin tức (Dùng cho người xem)
         public ActionResult ChiTiet(int? id)
         {
-            // Kiểm tra nếu ID trống thì về trang chủ, tránh lỗi 500
-            if (id == null) return RedirectToAction("Index", "Home");
+            if (id == null) return RedirectToAction("DanhSach", "News");
 
-            // Tìm bài viết theo mã ID
             var baiViet = db.TINTUCs.Find(id);
 
-            // Nếu không tìm thấy bài viết
             if (baiViet == null) return HttpNotFound();
 
-            // Tăng lượt xem (Check null để tránh lỗi cộng dồn)
             baiViet.LuotXem = (baiViet.LuotXem ?? 0) + 1;
             db.SaveChanges();
 
             return View(baiViet);
         }
+
+        // 6. Sửa tin tức (Lấy dữ liệu cũ lên giao diện)
+        [HttpGet]
+        public ActionResult SuaTinTuc(int? id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login", "Admin");
+            if (id == null) return RedirectToAction("QuanLyTinTuc"); // Đã sửa lại đường dẫn
+
+            var tin = db.TINTUCs.Find(id);
+            if (tin == null) return HttpNotFound();
+
+            return View(tin);
+        }
+
+        // 7. Sửa tin tức (Xử lý lưu vào Database)
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SuaTinTuc(TINTUC tin, HttpPostedFileBase fAnhTin)
+        {
+            try
+            {
+                var tinUpdate = db.TINTUCs.Find(tin.MaTin);
+                if (tinUpdate != null)
+                {
+                    tinUpdate.TieuDe = tin.TieuDe;
+                    tinUpdate.TomTat = tin.TomTat;
+                    tinUpdate.NoiDung = tin.NoiDung;
+
+                    if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                    {
+                        string fileName = Path.GetFileName(fAnhTin.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
+                        fAnhTin.SaveAs(path);
+                        tinUpdate.AnhTin = fileName;
+                    }
+
+                    db.SaveChanges();
+                    return RedirectToAction("QuanLyTinTuc");
+                }
+                return View(tin);
+            }
+            catch
+            {
+                return View(tin);
+            }
+        }
+
+        // 8. Danh sách tin tức (Dùng cho người xem)
         public ActionResult DanhSach()
         {
-            // Lấy tất cả tin tức, tin mới nhất xếp lên đầu
             var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
             return View(list);
         }

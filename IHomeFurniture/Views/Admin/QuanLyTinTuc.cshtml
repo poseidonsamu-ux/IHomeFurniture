@@ -6,7 +6,7 @@
 
 <div class="flex justify-between items-center mb-8">
     <h2 class="text-2xl font-black uppercase tracking-tight">Danh sách Tin Tức</h2>
-    <a href="/Admin/ThemTinTuc" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-blue-200">
+    <a href="@Url.Action("ThemTinTuc", "Admin")" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-blue-200">
         <i class="fa-solid fa-plus"></i> Viết bài mới
     </a>
 </div>
@@ -28,16 +28,17 @@
                 <tr class="hover:bg-gray-50 transition">
                     <td class="p-4 text-center font-semibold text-gray-500">#@item.MaTin</td>
                     <td class="p-4">
-                        <img src="~/Images/News/@item.AnhTin" class="w-20 h-12 object-cover rounded-lg border border-gray-100" />
+                        <img src="@Url.Content("~/Images/News/" + item.AnhTin)" class="w-20 h-12 object-cover rounded-lg border border-gray-100" />
                     </td>
                     <td class="p-4 font-bold text-gray-800">@item.TieuDe</td>
-                    <td class="p-4 text-gray-500">@item.NgayDang.Value.ToString("dd/MM/yyyy")</td>
+                    <td class="p-4 text-gray-500">@(item.NgayDang?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</td>
+
                     <td class="p-4">
                         <div class="flex justify-center gap-2">
-                            <a href="/Admin/SuaTinTuc/@item.MaTin" class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition" title="Sửa">
+                            <a href="@Url.Action("SuaTinTuc", "Admin", new { id = item.MaTin })" class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition" title="Sửa">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <a href="/Admin/XoaTinTuc/@item.MaTin" class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition" onclick="return confirm('Xóa bài này là mất luôn đó Sếp?')" title="Xóa">
+                            <a href="@Url.Action("XoaTinTuc", "Admin", new { id = item.MaTin })" class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition" onclick="return confirm('Xóa bài này là mất luôn đó Sếp?')" title="Xóa">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </div>
