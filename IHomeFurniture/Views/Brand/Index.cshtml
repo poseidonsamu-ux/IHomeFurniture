@@ -1,24 +1,44 @@
 ﻿@model IEnumerable<IHomeFurniture.Models.THUONGHIEU>
 @{
     ViewBag.Title = "Thương Hiệu | iHOME";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout của khách hàng
 }
 
 <div class="bg-white min-h-screen pb-32">
+    <!-- Hero Section -->
     <header class="pt-32 pb-20 px-6 text-center">
+        <div class="inline-block px-4 py-1.5 bg-zinc-100 rounded-full text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mb-6">
+            Trusted Partners
+        </div>
         <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter italic">
             Our <span class="text-orange-500">Brands</span>
         </h1>
-        <p class="text-zinc-500 mt-6 max-w-2xl mx-auto text-sm">Các đối tác nội thất hàng đầu đồng hành cùng iHome.</p>
+        <p class="text-zinc-500 mt-6 max-w-2xl mx-auto text-sm leading-relaxed">
+            Khám phá các đối tác và thương hiệu nội thất hàng đầu đồng hành cùng iHome để mang đến cho bạn không gian sống hoàn hảo nhất.
+        </p>
     </header>
 
-    <section class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-10">
-        @foreach (var item in Model)
-        {
-            <a href="@Url.Action("ChiTiet", "Brand", new { id = item.MaTH })" class="group block bg-zinc-50 rounded-[2rem] p-10 text-center hover:shadow-xl transition-all">
-                <h3 class="font-black text-xl text-zinc-800 uppercase group-hover:text-orange-500 transition-colors">@item.TenTH</h3>
-                <span class="text-[10px] text-zinc-400 uppercase tracking-widest mt-2 block">@item.DiaChi</span>
-            </a>
-        }
+    <!-- Brands Grid -->
+    <section class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10">
+            @foreach (var item in Model)
+            {
+                <a href="@Url.Action("ChiTiet", "Brand", new { id = item.MaTH })" class="group block bg-zinc-50 rounded-[2.5rem] p-8 text-center hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-zinc-100">
+                    <div class="w-24 h-24 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-sm overflow-hidden p-3 border border-zinc-100">
+                        @if (!string.IsNullOrEmpty(item.Logo))
+                        {
+                            <img src="@Url.Content("~/Images/Brands/" + item.Logo)" alt="@item.TenTH" class="w-full h-full object-contain group-hover:scale-110 transition duration-500" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-gem text-3xl text-zinc-200"></i>
+                        }
+                    </div>
+                    <h3 class="font-black text-lg text-zinc-800 uppercase tracking-tight group-hover:text-orange-500 transition-colors">
+                        @item.TenTH
+                    </h3>
+                </a>
+            }
+        </div>
     </section>
 </div>
