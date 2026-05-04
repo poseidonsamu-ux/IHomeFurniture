@@ -8,10 +8,8 @@ namespace IHomeFurniture.Controllers
 {
     public class CartController : Controller
     {
-        // KẾT NỐI TỚI DATABASE
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
-        // 1. Hàm lấy giỏ hàng từ Session
         public List<CartItem> GetCart()
         {
             List<CartItem> cart = Session["Cart"] as List<CartItem>;
@@ -22,6 +20,7 @@ namespace IHomeFurniture.Controllers
             }
             return cart;
         }
+
 
         // 2. Trang hiển thị Giỏ hàng
         public ActionResult Index()
@@ -80,58 +79,100 @@ namespace IHomeFurniture.Controllers
             return RedirectToAction("Index");
         }
 
-        // ==========================================
-        // PHẦN XỬ LÝ THANH TOÁN (Bám sát CSDL 100%)
-        // ==========================================
 
-        // 5. Hiển thị trang Thanh Toán (GET)
+
         [HttpGet]
         public ActionResult Checkout()
         {
+            // Kiểm tra giỏ hàng
             var cart = GetCart();
-            if (cart.Count == 0)
+            if (cart.Count == 0) return RedirectToAction("Index", "Cart");
+
+            // Bắt buộc đăng nhập: Nếu chưa đăng nhập thì chuyển hướng tới trang Đăng nhập
+            if (Session["TaiKhoan"] == null)
             {
-                return RedirectToAction("Index", "Cart");
+                return RedirectToAction("Login", "Account");
             }
+
+            // Lấy tên tài khoản từ Session dưới dạng string
+            string tenTaiKhoan = Session["TaiKhoan"].ToString();
+
+            // Tìm đối tượng KHACHHANG trong Database theo đúng thuộc tính TaiKhoan của Model
+            var kh = db.KHACHHANGs.SingleOrDefault(n => n.TaiKhoan == tenTaiKhoan);
+
+            if (kh != null)
+            {
+                // Đổ dữ liệu khách hàng (HoTen, DienThoai, DiaChi) vào ViewBag để View dùng
+                ViewBag.KhachHang = kh;
+            }
+
+            // Lấy danh sách phương thức thanh toán
+            ViewBag.PhuongThucTT = db.PHUONGTHUCTHANHTOANs.ToList();
             ViewBag.TotalAmount = cart.Sum(item => item.TotalPrice);
+
             return View(cart);
         }
 
-        // 6. Xử lý khi khách bấm nút Xác nhận đặt hàng (POST)
+        // 2. POST: Xử lý lưu đơn hàng khi khách bấm nút Xác nhận
         [HttpPost]
-        public ActionResult Checkout(string hoTen, string soDienThoai, string diaChi, string ghiChu)
+        [ValidateAntiForgeryToken]
+        public ActionResult Checkout(string hoTen, string soDienThoai, string diaChi, string ghiChu, int maPT)
         {
             var cart = GetCart();
             if (cart.Count == 0) return RedirectToAction("Index", "Cart");
 
+            if (Session["TaiKhoan"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Lấy lại thông tin khách hàng từ database
+            string tenTaiKhoan = Session["TaiKhoan"].ToString();
+            var kh = db.KHACHHANGs.SingleOrDefault(n => n.TaiKhoan == tenTaiKhoan);
+
             try
             {
+                if (string.IsNullOrEmpty(hoTen) || string.IsNullOrEmpty(soDienThoai) || string.IsNullOrEmpty(diaChi))
+                {
+                    ViewBag.Error = "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ giao hàng!";
+                    ViewBag.PhuongThucTT = db.PHUONGTHUCTHANHTOANs.ToList();
+                    ViewBag.TotalAmount = cart.Sum(item => item.TotalPrice);
+                    ViewBag.KhachHang = kh;
+                    return View(cart);
+                }
+
+                // Cập nhật lại thông tin mới nhất vào Database nếu khách hàng có sửa đổi trên Form
+                if (kh != null)
+                {
+                    kh.HoTen = hoTen;
+                    kh.DienThoai = soDienThoai;
+                    kh.DiaChi = diaChi;
+
+                    db.Entry(kh).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges(); // Lưu ngay thông tin khách hàng
+                }
+
                 // -- A. LƯU VÀO BẢNG DONDATHANG --
                 DONDATHANG donHangMoi = new DONDATHANG();
                 donHangMoi.NgayDat = DateTime.Now;
                 donHangMoi.DienThoaiNhan = soDienThoai;
                 donHangMoi.DiaChiGiaoHang = diaChi;
                 donHangMoi.TongTien = (decimal)cart.Sum(item => item.TotalPrice);
-                donHangMoi.MaTT = 1; // 1 = Chờ xác nhận (Dựa theo SQL của sếp)
-                donHangMoi.MaPT = 1; // 1 = COD (Mặc định tạm, sếp nâng cấp phương thức thanh toán sau)
+                donHangMoi.MaTT = 1; // 1 = Chờ xác nhận
+                donHangMoi.MaPT = maPT;
+                donHangMoi.MaKH = kh != null ? kh.MaKH : (int?)null;
 
-                // Ghép Tên Người Nhận vào Ghi Chú (Vì SQL không có cột Tên Người Nhận)
-                donHangMoi.GhiChu = "Người nhận: " + hoTen + ". Ghi chú: " + ghiChu;
-
-                // Nếu khách đã đăng nhập (Có Session MaKH) thì gán vào đơn hàng
-                if (Session["MaKH"] != null)
-                {
-                    donHangMoi.MaKH = (int)Session["MaKH"];
-                }
+                // Ghép Tên Người Nhận vào Ghi Chú
+                donHangMoi.GhiChu = "Người nhận: " + hoTen + ". " + (string.IsNullOrEmpty(ghiChu) ? "" : "Ghi chú: " + ghiChu);
 
                 db.DONDATHANGs.Add(donHangMoi);
-                db.SaveChanges(); // SQL sẽ tự sinh ra MaDonHang
+                db.SaveChanges(); // SQL sinh ra MaDonHang
 
                 // -- B. LƯU VÀO BẢNG CHITIETDATHANG --
                 foreach (var item in cart)
                 {
                     CHITIETDATHANG chiTiet = new CHITIETDATHANG();
-                    chiTiet.MaDonHang = donHangMoi.MaDonHang;   // Lấy Mã sinh ra ở trên
+                    chiTiet.MaDonHang = donHangMoi.MaDonHang;
                     chiTiet.MaSP = item.ProductId;
                     chiTiet.SoLuong = item.Quantity;
                     chiTiet.DonGia = (decimal)item.Price;
@@ -143,18 +184,18 @@ namespace IHomeFurniture.Controllers
                 // -- C. DỌN SẠCH GIỎ HÀNG --
                 Session["Cart"] = null;
 
-                // Chuyển sang trang báo thành công
                 return RedirectToAction("Success");
             }
             catch (Exception ex)
             {
                 ViewBag.Error = "Lỗi hệ thống: " + ex.Message;
+                ViewBag.PhuongThucTT = db.PHUONGTHUCTHANHTOANs.ToList();
                 ViewBag.TotalAmount = cart.Sum(item => item.TotalPrice);
+                ViewBag.KhachHang = kh;
                 return View(cart);
             }
         }
 
-        // 7. Trang báo đặt hàng thành công
         public ActionResult Success()
         {
             return View();

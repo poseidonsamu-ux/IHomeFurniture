@@ -141,10 +141,13 @@
                 {
                     <a href="/News/ChiTiet/@item.MaTin" class="block group cursor-pointer">
                         <div class="relative overflow-hidden aspect-[4/3] mb-6 rounded-sm">
-                            <img src="~/Images/News/@item.AnhTin"
-                                 onerror="this.src='https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80'"
+                            
+                       
+                            <img src="@Url.Content("~/Images/News/" + (string.IsNullOrEmpty(item.AnhTin) ? "default.jpg" : item.AnhTin.Trim()))"
+                                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80'"
                                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                  alt="@item.TieuDe">
+                            
                             <div class="absolute top-4 left-4 bg-white text-black text-[10px] px-3 py-1 uppercase tracking-widest font-bold">Blog</div>
                         </div>
                         <div class="flex items-center gap-4 text-[11px] text-zinc-400 uppercase tracking-widest mb-3">

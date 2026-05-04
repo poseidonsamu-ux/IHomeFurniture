@@ -32,6 +32,15 @@ namespace IHomeFurniture.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+
+            var dsDonHang = db.DONDATHANGs
+                              .Where(d => d.MaKH == kh.MaKH)
+                              .OrderByDescending(d => d.NgayDat)
+                              .ToList();
+
+            ViewBag.DanhSachDonHang = dsDonHang;
+
+
             return View(kh);
         }
 
@@ -91,6 +100,12 @@ namespace IHomeFurniture.Controllers
                 ViewBag.Error = "Có lỗi xảy ra: " + ex.Message;
             }
 
+            var dsDonHang = db.DONDATHANGs
+                              .Where(d => d.MaKH == kh.MaKH)
+                              .OrderByDescending(d => d.NgayDat)
+                              .ToList();
+
+            ViewBag.DanhSachDonHang = dsDonHang;
             return View(kh);
         }
     }
