@@ -78,7 +78,7 @@ namespace IHomeFurniture.Controllers
             {
                 kh.NgayTao = DateTime.Now;
                 kh.TrangThai = true;
-                kh.DaXacThucEmail = true; // check xác thực mặc định
+                kh.DaXacThucEmail = true;
 
                 db.KHACHHANGs.Add(kh);
                 db.SaveChanges();
@@ -128,7 +128,7 @@ namespace IHomeFurniture.Controllers
             return View(model);
         }
 
-        // 6. Xóa mềm (khóa) khách hàng
+        // 6. Khóa khách hàng
         public ActionResult XoaKhachHang(int id)
         {
             if (Session["Admin_ID"] == null) return RedirectToAction("Login");
@@ -321,6 +321,187 @@ namespace IHomeFurniture.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("ChiTietDonHang", new { id = MaDonHang });
+        }
+
+        // 15. Quản lý Tin Tức
+        public ActionResult QuanLyTinTuc()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            var list = db.TINTUCs.OrderByDescending(t => t.NgayDang).ToList();
+            return View(list);
+        }
+
+        // 16. Thêm Tin Tức
+        [HttpGet]
+        public ActionResult ThemTinTuc()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ThemTinTuc(TINTUC tin, HttpPostedFileBase fAnhTin)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(fAnhTin.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
+                    fAnhTin.SaveAs(path);
+                    tin.AnhTin = fileName;
+                }
+                tin.NgayDang = DateTime.Now;
+                tin.LuotXem = 0;
+                tin.MaAd = (int)Session["Admin_ID"];
+
+                db.TINTUCs.Add(tin);
+                db.SaveChanges();
+                return RedirectToAction("QuanLyTinTuc");
+            }
+            catch { return View(tin); }
+        }
+
+        // 17. Sửa Tin Tức
+        [HttpGet]
+        public ActionResult SuaTinTuc(int? id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            if (id == null) return RedirectToAction("QuanLyTinTuc");
+
+            var tin = db.TINTUCs.Find(id);
+            if (tin == null) return HttpNotFound();
+
+            return View(tin);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SuaTinTuc(TINTUC tin, HttpPostedFileBase fAnhTin)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                var tinUpdate = db.TINTUCs.Find(tin.MaTin);
+                if (tinUpdate != null)
+                {
+                    tinUpdate.TieuDe = tin.TieuDe;
+                    tinUpdate.TomTat = tin.TomTat;
+                    tinUpdate.NoiDung = tin.NoiDung;
+
+                    if (fAnhTin != null && fAnhTin.ContentLength > 0)
+                    {
+                        string fileName = Path.GetFileName(fAnhTin.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images/News/"), fileName);
+                        fAnhTin.SaveAs(path);
+                        tinUpdate.AnhTin = fileName;
+                    }
+
+                    db.SaveChanges();
+                    return RedirectToAction("QuanLyTinTuc");
+                }
+                return View(tin);
+            }
+            catch { return View(tin); }
+        }
+
+        // 18. Xóa Tin Tức
+        public ActionResult XoaTinTuc(int id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            var tin = db.TINTUCs.Find(id);
+            if (tin != null)
+            {
+                db.TINTUCs.Remove(tin);
+                db.SaveChanges();
+            }
+            return RedirectToAction("QuanLyTinTuc");
+        }
+
+        // 19. Danh sách thương hiệu (ĐÃ BỎ LOGO)
+        public ActionResult QuanLyThuongHieu()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            var list = db.THUONGHIEUx.OrderByDescending(t => t.MaTH).ToList();
+            return View(list);
+        }
+
+        // 20. Thêm Thương Hiệu (ĐÃ BỎ LOGO)
+        [HttpGet]
+        public ActionResult ThemThuongHieu()
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ThemThuongHieu(THUONGHIEU brand)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                db.THUONGHIEUx.Add(brand);
+                db.SaveChanges();
+                return RedirectToAction("QuanLyThuongHieu");
+            }
+            catch { return View(brand); }
+        }
+
+        // 21. Sửa Thương Hiệu (ĐÃ BỎ LOGO)
+        [HttpGet]
+        public ActionResult SuaThuongHieu(int? id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            if (id == null) return RedirectToAction("QuanLyThuongHieu");
+
+            var brand = db.THUONGHIEUx.Find(id);
+            if (brand == null) return HttpNotFound();
+
+            return View(brand);
+        }
+
+        [HttpPost]
+        public ActionResult SuaThuongHieu(THUONGHIEU brand)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                var brUpdate = db.THUONGHIEUx.Find(brand.MaTH);
+                if (brUpdate != null)
+                {
+                    brUpdate.TenTH = brand.TenTH;
+                    brUpdate.Slug = brand.Slug;
+                    brUpdate.DiaChi = brand.DiaChi;
+                    brUpdate.DienThoai = brand.DienThoai;
+
+                    db.SaveChanges();
+                    return RedirectToAction("QuanLyThuongHieu");
+                }
+                return View(brand);
+            }
+            catch { return View(brand); }
+        }
+
+        // 22. Xóa Thương Hiệu
+        public ActionResult XoaThuongHieu(int id)
+        {
+            if (Session["Admin_ID"] == null) return RedirectToAction("Login");
+            try
+            {
+                var brand = db.THUONGHIEUx.Find(id);
+                if (brand != null)
+                {
+                    db.THUONGHIEUx.Remove(brand);
+                    db.SaveChanges();
+                }
+            }
+            catch
+            {
+                TempData["Error"] = "Không thể xóa thương hiệu này vì đang có sản phẩm thuộc về nó!";
+            }
+            return RedirectToAction("QuanLyThuongHieu");
         }
     }
 }

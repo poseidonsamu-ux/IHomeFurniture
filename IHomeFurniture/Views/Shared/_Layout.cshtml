@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li class="relative group/dropdown py-4">
-                    <a href="#" class="relative py-2 transition-colors hover:text-black group/link cursor-pointer flex items-center gap-1.5">
+                    <a href="javascript:void(0);" class="relative py-2 transition-colors hover:text-black group/link cursor-pointer flex items-center gap-1.5">
                         Bộ sưu tập
                         <i class="fa-solid fa-chevron-down text-[9px] mt-0.5 text-zinc-400 transition-transform duration-300 group-hover/dropdown:rotate-180"></i>
                         <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover/link:w-full"></span>
@@ -95,29 +95,29 @@
 
                 <div class="h-8 w-[1px] bg-gray-200 mx-2"></div>
 
-               <div class="flex items-center">
-                @if (Session["TaiKhoan"] == null)
-                {
-                    <a href="@Url.Action("Login", "Account")" class="group flex items-center gap-2 hover:text-gray-500 transition-colors">
-                        <i class="fa-regular fa-user text-xl"></i>
-                        <span class="uppercase tracking-widest text-[12px] font-bold mt-0.5">Tài khoản</span>
-                    </a>
-                }
-                else
-                {
-                    <div class="flex items-center gap-3">
-   
-                        <a href="@Url.Action("AccountInfor", "UserAccount")" class="flex flex-col items-end leading-none hover:text-orange-500 transition-colors group cursor-pointer">
-                            <span class="text-[9px] uppercase text-zinc-400 group-hover:text-orange-400 mb-1 tracking-tighter transition-colors">Thành viên</span>
-                            <span class="text-xs font-bold tracking-wide">@Session["HoTen"]</span>
+                <div class="flex items-center">
+                    @if (Session["TaiKhoan"] == null)
+                    {
+                        <a href="@Url.Action("Login", "Account")" class="group flex items-center gap-2 hover:text-gray-500 transition-colors">
+                            <i class="fa-regular fa-user text-xl"></i>
+                            <span class="uppercase tracking-widest text-[12px] font-bold mt-0.5">Tài khoản</span>
                         </a>
-            
-                        <a href="@Url.Action("Logout", "Account")" class="text-zinc-300 hover:text-red-500 transition-colors ml-1">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
-                        </a>
-                    </div>
-                }
-            </div>
+                    }
+                    else
+                    {
+                        <div class="flex items-center gap-3">
+
+                            <a href="@Url.Action("AccountInfor", "UserAccount")" class="flex flex-col items-end leading-none hover:text-orange-500 transition-colors group cursor-pointer">
+                                <span class="text-[9px] uppercase text-zinc-400 group-hover:text-orange-400 mb-1 tracking-tighter transition-colors">Thành viên</span>
+                                <span class="text-xs font-bold tracking-wide">@Session["HoTen"]</span>
+                            </a>
+
+                            <a href="@Url.Action("Logout", "Account")" class="text-zinc-300 hover:text-red-500 transition-colors ml-1">
+                                <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
 
                 <a href="/Cart" class="relative group ml-2">
                     <div class="flex items-center bg-black text-white px-5 py-2.5 rounded-full hover:bg-zinc-800 transition-all shadow-sm active:scale-95">

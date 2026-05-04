@@ -9,39 +9,29 @@ namespace IHomeFurniture.Controllers
     {
         IHomeFurnitureEntities db = new IHomeFurnitureEntities();
 
+        // 1. Danh sách các thương hiệu (Dành cho khách hàng xem)
         public ActionResult Index()
         {
-            var list = db.THUONGHIEUx.OrderByDescending(t => t.MaTH).ToList();
+            // Lấy danh sách thương hiệu, sắp xếp theo tên A-Z cho đẹp
+            var list = db.THUONGHIEUx.OrderBy(t => t.TenTH).ToList();
             return View(list);
         }
 
-        [HttpGet]
-        public ActionResult Create()
+        // 2. Chi tiết thương hiệu (Khi khách hàng click vào 1 hãng)
+        public ActionResult ChiTiet(int? id)
         {
-            return View();
-        }
+            // Nếu không có ID thì đẩy về trang danh sách hãng
+            if (id == null) return RedirectToAction("Index");
 
-        [HttpPost]
-        public ActionResult Create(THUONGHIEU brand)
-        {
-            if (ModelState.IsValid)
-            {
-                db.THUONGHIEUx.Add(brand);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(brand);
-        }
-
-        public ActionResult Delete(int id)
-        {
+            // Tìm thương hiệu theo ID
             var brand = db.THUONGHIEUx.Find(id);
-            if (brand != null)
-            {
-                db.THUONGHIEUx.Remove(brand);
-                db.SaveChanges();
-            }
-            return RedirectToAction("Index");
+            if (brand == null) return HttpNotFound();
+
+            // (Tùy chọn) Lấy thêm danh sách sản phẩm thuộc hãng này để hiển thị kèm
+            // Lọc các sản phẩm có MaTH bằng với id hãng và đang ở trạng thái mở bán
+            ViewBag.ListSanPham = db.SANPHAMs.Where(s => s.MaTH == id && s.TrangThai == true).ToList();
+
+            return View(brand);
         }
     }
 }

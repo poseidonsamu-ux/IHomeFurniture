@@ -16,7 +16,6 @@
 <body class="bg-gray-100 flex h-screen overflow-hidden">
 
     @{
-        // CỤC LOGIC VIP: Lấy đường dẫn hiện tại để làm menu tự động sáng
         string currentUrl = Request.RawUrl != null ? Request.RawUrl.ToLower() : "";
     }
 
@@ -56,7 +55,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/Brand/Index" class="flex items-center px-6 py-3 transition @(currentUrl.Contains("brand") ? "text-blue-400 bg-gray-800 border-l-4 border-blue-500" : "text-gray-300 hover:text-white hover:bg-gray-800 border-l-4 border-transparent")">
+                    <a href="/Admin/QuanLyThuongHieu" class="flex items-center px-6 py-3 transition @(currentUrl.Contains("brand") ? "text-blue-400 bg-gray-800 border-l-4 border-blue-500" : "text-gray-300 hover:text-white hover:bg-gray-800 border-l-4 border-transparent")">
                         <i class="fa-solid fa-tags w-6"></i> <span class="ml-2">Thương hiệu</span>
                     </a>
                 </li>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<IHomeFurniture.Models.THUONGHIEU>
+@{
+    ViewBag.Title = "Quản lý Thương Hiệu";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="flex justify-between items-center mb-8">
+    <h2 class="text-2xl font-black uppercase tracking-tight">Danh sách Thương Hiệu</h2>
+    <a href="@Url.Action("ThemThuongHieu", "Admin")" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-blue-200">
+        <i class="fa-solid fa-plus"></i> Thêm Thương Hiệu
+    </a>
+</div>
+
+<div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-bold">
+                <th class="p-4 w-20 text-center">ID</th>
+                <th class="p-4">Tên Thương Hiệu</th>
+                <th class="p-4">Điện thoại</th>
+                <th class="p-4 w-32 text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 text-sm">
+            @foreach (var item in Model)
+            {
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 text-center font-semibold text-gray-500">#@item.MaTH</td>
+                    <td class="p-4">
+                        <div class="font-bold text-gray-800">@item.TenTH</div>
+                        <div class="text-xs text-gray-400">@item.DiaChi</div>
+                    </td>
+                    <td class="p-4 text-gray-500">@item.DienThoai</td>
+                    <td class="p-4 text-center">
+                        <div class="flex justify-center gap-2">
+                            <a href="@Url.Action("SuaThuongHieu", "Admin", new { id = item.MaTH })" class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a href="@Url.Action("XoaThuongHieu", "Admin", new { id = item.MaTH })" class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition" onclick="return confirm('Xóa nhé sếp?')">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
