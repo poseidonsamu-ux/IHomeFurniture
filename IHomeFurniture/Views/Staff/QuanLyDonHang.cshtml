@@ -1,0 +1,104 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+    ViewBag.Title = "Quản lý đơn hàng";
+    string currentStatus = ViewBag.CurrentStatus as string ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold mb-0">Quản lý & Xử lý đơn hàng</h3>
+</div>
+
+<!-- Thanh tìm kiếm & lọc -->
+<div class="card card-box bg-white p-3 mb-4">
+    <form method="get" action="@Url.Action("QuanLyDonHang", "Staff")" class="row g-2 align-items-center">
+        <div class="col-md-5">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo mã đơn, người nhận, số điện thoại..." value="@ViewBag.SearchTerm" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select name="status" class="form-select">
+                <option value="">-- Lọc theo trạng thái --</option>
+                <option value="Chờ xử lý" @(currentStatus == "Chờ xử lý" ? "selected" : "")>Chờ xử lý</option>
+                <option value="Đang giao" @(currentStatus == "Đang giao" ? "selected" : "")>Đang giao</option>
+                <option value="Hoàn thành" @(currentStatus == "Hoàn thành" ? "selected" : "")>Hoàn thành</option>
+                <option value="Đã hủy" @(currentStatus == "Đã hủy" ? "selected" : "")>Đã hủy</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-filter me-1"></i> Lọc dữ liệu</button>
+            <a href="@Url.Action("QuanLyDonHang", "Staff")" class="btn btn-outline-secondary"><i class="fa-solid fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Danh sách đơn hàng -->
+<div class="card card-box bg-white">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã Đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ giao hàng</th>
+                    <th>Tổng giá trị</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end" style="min-width: 210px;">Cập nhật trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DÒNG MẪU 1 -->
+                <tr>
+                    <td class="fw-bold">#101</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>0901234567</td>
+                    <td class="text-truncate" style="max-width: 220px;" title="123 Lê Lợi, Quận 1">123 Lê Lợi, Quận 1</td>
+                    <td class="text-danger fw-bold">15,000,000 đ</td>
+                    <td><span class="badge bg-warning text-dark">Chờ xử lý</span></td>
+                    <td class="text-end">
+                        <form action="@Url.Action("CapNhatTrangThaiDonHang", "Staff")" method="post" class="d-inline-flex gap-1">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="orderId" value="101" />
+                            <select name="newStatus" class="form-select form-select-sm" style="width: 130px;">
+                                <option value="Chờ xử lý" selected>Chờ xử lý</option>
+                                <option value="Đang giao">Đang giao</option>
+                                <option value="Hoàn thành">Hoàn thành</option>
+                                <option value="Đã hủy">Đã hủy</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Lưu">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <!-- DÒNG MẪU 2 -->
+                <tr>
+                    <td class="fw-bold">#102</td>
+                    <td>Trần Thị B</td>
+                    <td>0987654321</td>
+                    <td class="text-truncate" style="max-width: 220px;" title="456 Nguyễn Huệ, Quận 1">456 Nguyễn Huệ, Quận 1</td>
+                    <td class="text-danger fw-bold">8,500,000 đ</td>
+                    <td><span class="badge bg-primary">Đang giao</span></td>
+                    <td class="text-end">
+                        <form action="@Url.Action("CapNhatTrangThaiDonHang", "Staff")" method="post" class="d-inline-flex gap-1">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="orderId" value="102" />
+                            <select name="newStatus" class="form-select form-select-sm" style="width: 130px;">
+                                <option value="Chờ xử lý">Chờ xử lý</option>
+                                <option value="Đang giao" selected>Đang giao</option>
+                                <option value="Hoàn thành">Hoàn thành</option>
+                                <option value="Đã hủy">Đã hủy</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Lưu">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

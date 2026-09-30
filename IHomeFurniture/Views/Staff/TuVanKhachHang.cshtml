@@ -1,0 +1,157 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+    ViewBag.Title = "Tư vấn khách hàng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-1">Bàn làm việc tư vấn khách hàng</h3>
+        <p class="text-muted small mb-0">Tra cứu nhanh giá sản phẩm và hỗ trợ tư vấn qua Hotline / Zalo</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Cột trái: Danh sách khách hàng cần chăm sóc & tư vấn -->
+    <div class="col-lg-7">
+        <div class="card card-box bg-white p-3 mb-3 shadow-sm border-0">
+            <form method="get" action="@Url.Action("TuVanKhachHang", "Staff")" class="d-flex gap-2">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="text" name="search" class="form-control" placeholder="Tìm nhanh khách hàng theo tên hoặc số điện thoại..." value="@Request.QueryString["search"]" />
+                </div>
+                <button type="submit" class="btn btn-primary px-3"><i class="fa-solid fa-search"></i></button>
+                <a href="@Url.Action("TuVanKhachHang", "Staff")" class="btn btn-outline-secondary" title="Tải lại"><i class="fa-solid fa-rotate-left"></i></a>
+            </form>
+        </div>
+
+        <div class="card card-box bg-white shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-0">
+                <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-headset me-2"></i>Khách hàng cần chăm sóc & liên hệ</h6>
+            </div>
+            <div class="list-group list-group-flush">
+                <!-- KHÁCH HÀNG MẪU 1 -->
+                <div class="list-group-item py-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold mb-1 text-dark">Nguyễn Văn An</h6>
+                            <p class="text-muted small mb-2">
+                                <i class="fa-solid fa-phone text-success me-1"></i>0901234567
+                                <span class="mx-1">|</span>
+                                <i class="fa-solid fa-envelope text-secondary me-1"></i>an.nguyen@gmail.com
+                            </p>
+                            <span class="badge bg-light text-dark border">Quan tâm: Sofa phòng khách</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="tel:0901234567" class="btn btn-sm btn-outline-success" title="Gọi điện trực tiếp">
+                                <i class="fa-solid fa-phone me-1"></i> Gọi
+                            </a>
+                            <a href="https://zalo.me/0901234567" target="_blank" class="btn btn-sm btn-outline-primary fw-semibold" title="Chat Zalo">
+                                Zalo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHÁCH HÀNG MẪU 2 -->
+                <div class="list-group-item py-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold mb-1 text-dark">Trần Thị Mai</h6>
+                            <p class="text-muted small mb-2">
+                                <i class="fa-solid fa-phone text-success me-1"></i>0988776655
+                                <span class="mx-1">|</span>
+                                <i class="fa-solid fa-envelope text-secondary me-1"></i>mai.tran@yahoo.com
+                            </p>
+                            <span class="badge bg-light text-dark border">Quan tâm: Bàn ăn 6 ghế</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="tel:0988776655" class="btn btn-sm btn-outline-success" title="Gọi điện trực tiếp">
+                                <i class="fa-solid fa-phone me-1"></i> Gọi
+                            </a>
+                            <a href="https://zalo.me/0988776655" target="_blank" class="btn btn-sm btn-outline-primary fw-semibold" title="Chat Zalo">
+                                Zalo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHÁCH HÀNG MẪU 3 -->
+                <div class="list-group-item py-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold mb-1 text-dark">Lê Quốc Huy</h6>
+                            <p class="text-muted small mb-2">
+                                <i class="fa-solid fa-phone text-success me-1"></i>0912334455
+                                <span class="mx-1">|</span>
+                                <i class="fa-solid fa-envelope text-secondary me-1"></i>huy.le@outlook.com
+                            </p>
+                            <span class="badge bg-light text-dark border">Cần hỗ trợ giao hàng</span>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="tel:0912334455" class="btn btn-sm btn-outline-success" title="Gọi điện trực tiếp">
+                                <i class="fa-solid fa-phone me-1"></i> Gọi
+                            </a>
+                            <a href="https://zalo.me/0912334455" target="_blank" class="btn btn-sm btn-outline-primary fw-semibold" title="Chat Zalo">
+                                Zalo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cột phải: Bảng giá nhanh các mẫu nội thất bán chạy để tư vấn chốt đơn -->
+    <div class="col-lg-5">
+        <div class="card card-box bg-white p-3 shadow-sm border-0">
+            <h6 class="fw-bold mb-3"><i class="fa-solid fa-bolt text-warning me-2"></i>Sản phẩm gợi ý chốt đơn nhanh</h6>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item px-0 py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold text-dark">Sofa Da Góc Chữ L Hiện Đại</div>
+                            <small class="text-muted">Kho còn: <strong class="text-success">14</strong> cái</small>
+                        </div>
+                        <span class="text-danger fw-bold">18,500,000 đ</span>
+                    </div>
+                </div>
+
+                <div class="list-group-item px-0 py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold text-dark">Bộ Bàn Ăn Gỗ Sồi 6 Ghế</div>
+                            <small class="text-muted">Kho còn: <strong class="text-warning">3</strong> cái</small>
+                        </div>
+                        <span class="text-danger fw-bold">12,200,000 đ</span>
+                    </div>
+                </div>
+
+                <div class="list-group-item px-0 py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold text-dark">Giường Ngủ Tân Cổ Điển 1m8</div>
+                            <small class="text-muted">Kho còn: <strong class="text-success">8</strong> cái</small>
+                        </div>
+                        <span class="text-danger fw-bold">9,800,000 đ</span>
+                    </div>
+                </div>
+
+                <div class="list-group-item px-0 py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold text-dark">Bàn Trà Mặt Đá Khung Kim Loại</div>
+                            <small class="text-muted">Kho còn: <strong class="text-success">20</strong> cái</small>
+                        </div>
+                        <span class="text-danger fw-bold">3,500,000 đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 pt-2 border-top">
+                <a href="@Url.Action("TheoDoiSanPham", "Staff")" class="btn btn-sm btn-outline-secondary w-100">
+                    <i class="fa-solid fa-boxes-stacked me-1"></i> Tra cứu tồn kho toàn bộ showroom
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

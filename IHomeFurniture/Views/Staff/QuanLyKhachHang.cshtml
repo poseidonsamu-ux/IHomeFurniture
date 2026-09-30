@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+    ViewBag.Title = "Quản lý khách hàng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="fw-bold mb-0">Hồ sơ khách hàng</h3>
+        <p class="text-muted small mb-0">Tra cứu lịch sử mua sắm và thông tin liên hệ của khách</p>
+    </div>
+</div>
+
+<!-- Thanh tìm kiếm -->
+<div class="card card-box bg-white p-3 mb-4 shadow-sm border-0">
+    <form method="get" action="@Url.Action("QuanLyKhachHang", "Staff")" class="row g-2">
+        <div class="col-md-9">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                <input type="text" name="search" class="form-control" placeholder="Tìm theo tên khách hàng, email, số điện thoại..." value="@Request.QueryString["search"]" />
+            </div>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-filter me-1"></i> Tìm kiếm</button>
+            <a href="@Url.Action("QuanLyKhachHang", "Staff")" class="btn btn-outline-secondary" title="Tải lại"><i class="fa-solid fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Bảng danh sách khách hàng -->
+<div class="card card-box bg-white shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ nhận hàng</th>
+                    <th class="text-center">Số đơn đã đặt</th>
+                    <th>Ngày tham gia</th>
+                    <th class="text-end">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DỮ LIỆU MẪU 1 -->
+                <tr>
+                    <td>
+                        <div class="fw-bold text-dark">Nguyễn Văn An</div>
+                        <small class="text-muted">Mã: KH001</small>
+                    </td>
+                    <td>an.nguyen@gmail.com</td>
+                    <td><span class="fw-semibold">0901234567</span></td>
+                    <td class="text-truncate" style="max-width: 200px;" title="123 Lê Duẩn, P. Bến Nghé, Quận 1, TP.HCM">123 Lê Duẩn, P. Bến Nghé, Quận 1, TP.HCM</td>
+                    <td class="text-center">
+                        <span class="badge bg-primary rounded-pill">3 đơn</span>
+                    </td>
+                    <td>15/01/2026</td>
+                    <td class="text-end">
+                        <a href="@Url.Action("TuVanKhachHang", "Staff", new { search = "0901234567" })" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-comments me-1"></i> Tư vấn
+                        </a>
+                    </td>
+                </tr>
+
+                <!-- DỮ LIỆU MẪU 2 -->
+                <tr>
+                    <td>
+                        <div class="fw-bold text-dark">Trần Thị Mai</div>
+                        <small class="text-muted">Mã: KH002</small>
+                    </td>
+                    <td>mai.tran@yahoo.com</td>
+                    <td><span class="fw-semibold">0988776655</span></td>
+                    <td class="text-truncate" style="max-width: 200px;" title="456 Điện Biên Phủ, Bình Thạnh, TP.HCM">456 Điện Biên Phủ, Bình Thạnh, TP.HCM</td>
+                    <td class="text-center">
+                        <span class="badge bg-primary rounded-pill">1 đơn</span>
+                    </td>
+                    <td>02/02/2026</td>
+                    <td class="text-end">
+                        <a href="@Url.Action("TuVanKhachHang", "Staff", new { search = "0988776655" })" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-comments me-1"></i> Tư vấn
+                        </a>
+                    </td>
+                </tr>
+
+                <!-- DỮ LIỆU MẪU 3 -->
+                <tr>
+                    <td>
+                        <div class="fw-bold text-dark">Lê Quốc Huy</div>
+                        <small class="text-muted">Mã: KH003</small>
+                    </td>
+                    <td>huy.le@outlook.com</td>
+                    <td><span class="fw-semibold">0912334455</span></td>
+                    <td class="text-truncate" style="max-width: 200px;" title="78 Võ Văn Tần, Quận 3, TP.HCM">78 Võ Văn Tần, Quận 3, TP.HCM</td>
+                    <td class="text-center">
+                        <span class="badge bg-secondary rounded-pill">0 đơn</span>
+                    </td>
+                    <td>10/03/2026</td>
+                    <td class="text-end">
+                        <a href="@Url.Action("TuVanKhachHang", "Staff", new { search = "0912334455" })" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-comments me-1"></i> Tư vấn
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+    ViewBag.Title = "Theo dõi sản phẩm & Tồn kho";
+    string searchTerm = ViewBag.SearchTerm as string ?? Request.QueryString["search"] ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="fw-bold mb-0">Theo dõi sản phẩm & Tồn kho</h3>
+        <p class="text-muted small mb-0">Kiểm soát số lượng tồn kho nội thất nhằm tư vấn đơn hàng kịp thời</p>
+    </div>
+</div>
+
+<!-- Thanh tìm kiếm & lọc danh mục -->
+<div class="card card-box bg-white p-3 mb-4 shadow-sm border-0">
+    <form method="get" action="@Url.Action("TheoDoiSanPham", "Staff")" class="row g-2">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                <input type="text" name="search" class="form-control" placeholder="Tìm theo tên sản phẩm, mã SKU..." value="@searchTerm" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select name="categoryId" class="form-select">
+                <option value="">-- Tất cả danh mục nội thất --</option>
+                <option value="1">Sofa - Bàn trà</option>
+                <option value="2">Bàn ghế ăn</option>
+                <option value="3">Giường - Tủ phòng ngủ</option>
+                <option value="4">Bàn làm việc</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-filter me-1"></i> Lọc kho</button>
+            <a href="@Url.Action("TheoDoiSanPham", "Staff")" class="btn btn-outline-secondary" title="Tải lại"><i class="fa-solid fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Bảng hiển thị danh sách sản phẩm và cảnh báo kho -->
+<div class="card card-box bg-white shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã SKU</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Giá niêm yết</th>
+                    <th class="text-center">Số lượng tồn</th>
+                    <th>Cảnh báo kho</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- DỮ LIỆU MẪU 1 -->
+                <tr>
+                    <td class="fw-semibold text-secondary">SF-L01</td>
+                    <td class="fw-bold">Sofa Da Góc Chữ L Hiện Đại</td>
+                    <td>Sofa - Bàn trà</td>
+                    <td class="text-danger fw-bold">18,500,000 đ</td>
+                    <td class="text-center fw-bold fs-6">14</td>
+                    <td>
+                        <span class="badge bg-success"><i class="fa-solid fa-circle-check me-1"></i>Sẵn sàng giao</span>
+                    </td>
+                </tr>
+
+                <!-- DỮ LIỆU MẪU 2 -->
+                <tr>
+                    <td class="fw-semibold text-secondary">BA-S06</td>
+                    <td class="fw-bold">Bộ Bàn Ăn Gỗ Sồi Tự Nhiên 6 Ghế</td>
+                    <td>Bàn ghế ăn</td>
+                    <td class="text-danger fw-bold">12,200,000 đ</td>
+                    <td class="text-center fw-bold fs-6 text-warning">3</td>
+                    <td>
+                        <span class="badge bg-warning text-dark"><i class="fa-solid fa-triangle-exclamation me-1"></i>Sắp hết hàng (≤ 5)</span>
+                    </td>
+                </tr>
+
+                <!-- DỮ LIỆU MẪU 3 -->
+                <tr>
+                    <td class="fw-semibold text-secondary">GN-M02</td>
+                    <td class="fw-bold">Giường Ngủ Bọc Nệm Tân Cổ Điển</td>
+                    <td>Giường - Tủ phòng ngủ</td>
+                    <td class="text-danger fw-bold">9,800,000 đ</td>
+                    <td class="text-center fw-bold fs-6 text-danger">0</td>
+                    <td>
+                        <span class="badge bg-danger"><i class="fa-solid fa-circle-xmark me-1"></i>Hết hàng</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

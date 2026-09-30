@@ -137,6 +137,7 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\OrderStatusController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -366,6 +367,13 @@
     <Content Include="Views\Admin\SuaThuongHieu.cshtml" />
     <Content Include="Views\Brand\Index.cshtml" />
     <Content Include="Views\Brand\ChiTiet.cshtml" />
+    <Content Include="Views\Staff.cshtml" />
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Staff\QuanLyDonHang.cshtml" />
+    <Content Include="Views\Staff\TheoDoiSanPham.cshtml" />
+    <Content Include="Views\Staff\QuanLyKhachHang.cshtml" />
+    <Content Include="Views\Staff\TuVanKhachHang.cshtml" />
+    <Content Include="Views\Shared\_LayoutStaff.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
