@@ -1,89 +1,321 @@
-﻿@{
+﻿@using System.Linq
+@model List<IHomeFurniture.Controllers.StaffRow>
+
+@{
+    ViewBag.Title = "Tổng quan nhân viên";
     Layout = "~/Views/Shared/_LayoutStaff.cshtml";
-    ViewBag.Title = "Bảng điều khiển nhân viên";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="mb-8">
+    <p class="text-sm font-semibold text-blue-600 mb-2">
+        <i class="fa-solid fa-house mr-2"></i>
+        IHOME STAFF CENTER
+    </p>
+
+    <h1 class="text-2xl font-bold text-gray-800">
+        Xin chào, @Session["IHomeStaffName"] 👋
+    </h1>
+
+    <p class="text-gray-500 mt-2 text-sm">
+        Chào mừng bạn quay lại! Đây là tình hình hoạt động
+        cửa hàng hôm nay.
+    </p>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+    <a href="@Url.Action("QuanLyDonHang", new { trangThai = 1 })"
+       class="staff-card p-6 hover:shadow-md transition">
+
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-clock text-xl"></i>
+            </div>
+
+            <span class="bg-yellow-50 text-yellow-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+                Cần xử lý
+            </span>
+        </div>
+
+        <p class="mt-5 text-sm text-gray-500">
+            Đơn chờ xác nhận
+        </p>
+
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">
+            @ViewBag.SoDonCho
+        </h3>
+
+        <p class="text-xs text-gray-400 mt-3">
+            Xem danh sách
+            <i class="fa-solid fa-arrow-right ml-1"></i>
+        </p>
+    </a>
+
+    <a href="@Url.Action("QuanLyDonHang", new { trangThai = 2 })"
+       class="staff-card p-6 hover:shadow-md transition">
+
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-truck-fast text-xl"></i>
+            </div>
+
+            <span class="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+                Đang vận hành
+            </span>
+        </div>
+
+        <p class="mt-5 text-sm text-gray-500">
+            Đơn đang xử lý / giao
+        </p>
+
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">
+            @ViewBag.SoDonDangXuLy
+        </h3>
+
+        <p class="text-xs text-gray-400 mt-3">
+            Theo dõi đơn
+            <i class="fa-solid fa-arrow-right ml-1"></i>
+        </p>
+    </a>
+
+    <a href="@Url.Action("TheoDoiSanPham", new { sapHet = true })"
+       class="staff-card p-6 hover:shadow-md transition">
+
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-box-open text-xl"></i>
+            </div>
+
+            <span class="bg-red-50 text-red-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+                Cảnh báo kho
+            </span>
+        </div>
+
+        <p class="mt-5 text-sm text-gray-500">
+            Sản phẩm sắp hết
+        </p>
+
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">
+            @ViewBag.SapHetHang
+        </h3>
+
+        <p class="text-xs text-gray-400 mt-3">
+            Kiểm tra tồn kho
+            <i class="fa-solid fa-arrow-right ml-1"></i>
+        </p>
+    </a>
+
+    <a href="@Url.Action("TuVanKhachHang", new { trangThai = 1 })"
+       class="staff-card p-6 hover:shadow-md transition">
+
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-headset text-xl"></i>
+            </div>
+
+            <span class="bg-purple-50 text-purple-700 text-xs px-2.5 py-1 rounded-full font-semibold">
+                Chờ phản hồi
+            </span>
+        </div>
+
+        <p class="mt-5 text-sm text-gray-500">
+            Liên hệ chưa xử lý
+        </p>
+
+        <h3 class="text-3xl font-bold text-gray-800 mt-1">
+            @ViewBag.LienHeMoi
+        </h3>
+
+        <p class="text-xs text-gray-400 mt-3">
+            Chăm sóc khách hàng
+            <i class="fa-solid fa-arrow-right ml-1"></i>
+        </p>
+    </a>
+
+</div>
+
+<div class="bg-gradient-to-r from-gray-900 via-gray-800 to-blue-900
+            rounded-2xl p-7 mb-8 text-white
+            flex flex-col md:flex-row justify-between gap-6">
+
     <div>
-        <h3 class="fw-bold mb-1">Bảng tổng quan nhân viên</h3>
-        <p class="text-muted mb-0">Theo dõi tiến độ đơn hàng và hoạt động bán lẻ nội thất.</p>
-    </div>
-</div>
+        <p class="text-xs font-bold text-blue-300 tracking-widest uppercase">
+            <i class="fa-solid fa-chart-line mr-2"></i>
+            Doanh thu tham khảo tháng này
+        </p>
 
-<!-- 4 Thẻ thống kê nhanh -->
-<div class="row g-3 mb-4">
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat bg-white p-3 border-start border-warning border-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <span class="text-muted small">Đơn chờ duyệt</span>
-                    <h3 class="fw-bold mb-0 text-warning">0</h3>
-                </div>
-                <i class="fa-solid fa-clock-rotate-left fa-2x text-warning opacity-75"></i>
-            </div>
-        </div>
+        <h2 class="text-3xl md:text-4xl font-bold mt-3">
+            @(((decimal)ViewBag.DoanhThu).ToString("N0"))
+            <span class="text-lg text-blue-300">đ</span>
+        </h2>
+
+        <p class="text-sm text-gray-300 mt-3">
+            Tổng giá trị đơn đã giao, tính theo ngày đặt.
+            Chưa phải số tiền đã đối soát thanh toán.
+        </p>
     </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat bg-white p-3 border-start border-primary border-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <span class="text-muted small">Đơn đang giao</span>
-                    <h3 class="fw-bold mb-0 text-primary">0</h3>
-                </div>
-                <i class="fa-solid fa-truck-fast fa-2x text-primary opacity-75"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat bg-white p-3 border-start border-danger border-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <span class="text-muted small">Sản phẩm sắp hết</span>
-                    <h3 class="fw-bold mb-0 text-danger">0</h3>
-                </div>
-                <i class="fa-solid fa-boxes-packing fa-2x text-danger opacity-75"></i>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat bg-white p-3 border-start border-success border-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <span class="text-muted small">Khách hàng</span>
-                    <h3 class="fw-bold mb-0 text-success">0</h3>
-                </div>
-                <i class="fa-solid fa-users fa-2x text-success opacity-75"></i>
-            </div>
+
+    <div class="flex items-center">
+        <div class="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center">
+            <i class="fa-solid fa-sack-dollar text-4xl text-blue-300"></i>
         </div>
     </div>
 </div>
 
-<!-- Bảng đơn đặt hàng -->
-<div class="card card-stat bg-white">
-    <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-        <h5 class="fw-bold mb-0">Đơn đặt hàng gần đây</h5>
-        <a href="@Url.Action("QuanLyDonHang", "Staff")" class="btn btn-sm btn-outline-primary">Tất cả đơn hàng</a>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th>Mã Đơn</th>
-                    <th>Khách hàng</th>
-                    <th>Thời gian đặt</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Vị trí sau này ní dùng vòng lặp foreach duyệt dữ liệu từ SQL lên -->
-                <tr>
-                    <td colspan="6" class="text-center py-4 text-muted">
-                        Chưa có dữ liệu đơn hàng.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <section class="staff-card xl:col-span-2 overflow-hidden">
+
+        <div class="p-6 border-b border-gray-100
+                    flex flex-wrap justify-between items-center gap-3">
+
+            <div>
+                <h2 class="font-bold text-lg text-gray-800">
+                    <i class="fa-solid fa-receipt text-blue-500 mr-2"></i>
+                    Đơn hàng gần đây
+                </h2>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Theo dõi các đơn hàng mới nhất
+                </p>
+            </div>
+
+            <a href="@Url.Action("QuanLyDonHang")"
+               class="text-blue-600 text-sm font-semibold hover:underline">
+                Xem tất cả
+                <i class="fa-solid fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="staff-table">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("ChiTietDonHang", new { id = item.N("MaDonHang") })"
+                                   class="font-semibold text-blue-600 hover:underline">
+                                    #@item.N("MaDonHang").ToString("D5")
+                                </a>
+
+                                <div class="text-xs text-gray-400 mt-1">
+                                    @item.Date("NgayDat")
+                                </div>
+                            </td>
+
+                            <td class="font-medium text-gray-800">
+                                @item.T("HoTen")
+                            </td>
+
+                            <td class="font-bold text-gray-700">
+                                @item.Vnd("TongTien")
+                            </td>
+
+                            <td>
+                                <span class="staff-badge staff-badge-@(item.N("MaTT"))">
+                                    @item.T("TenTrangThai")
+                                </span>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-gray-400 py-10">
+                                Chưa có đơn hàng nào.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="staff-card p-6">
+
+        <h2 class="font-bold text-lg text-gray-800 mb-2">
+            <i class="fa-solid fa-bolt text-blue-500 mr-2"></i>
+            Thao tác nhanh
+        </h2>
+
+        <p class="text-sm text-gray-500 mb-6">
+            Truy cập nhanh các công việc hằng ngày
+        </p>
+
+        <div class="space-y-3">
+
+            <a href="@Url.Action("QuanLyDonHang", new { trangThai = 1 })"
+               class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-blue-300 hover:bg-blue-50 transition">
+
+                <div class="w-11 h-11 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                </div>
+
+                <div class="flex-1">
+                    <p class="font-semibold text-gray-800 text-sm">
+                        Xác nhận đơn hàng
+                    </p>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Tiếp nhận đơn mới
+                    </p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right text-gray-400"></i>
+            </a>
+
+            <a href="@Url.Action("TheoDoiSanPham")"
+               class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-blue-300 hover:bg-blue-50 transition">
+
+                <div class="w-11 h-11 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+
+                <div class="flex-1">
+                    <p class="font-semibold text-gray-800 text-sm">
+                        Quản lý tồn kho
+                    </p>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Kiểm tra số lượng sản phẩm
+                    </p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right text-gray-400"></i>
+            </a>
+
+            <a href="@Url.Action("TuVanKhachHang")"
+               class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-blue-300 hover:bg-blue-50 transition">
+
+                <div class="w-11 h-11 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
+                <div class="flex-1">
+                    <p class="font-semibold text-gray-800 text-sm">
+                        Tư vấn khách hàng
+                    </p>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        Xem và xử lý liên hệ
+                    </p>
+                </div>
+
+                <i class="fa-solid fa-chevron-right text-gray-400"></i>
+            </a>
+
+        </div>
+    </section>
+
 </div>

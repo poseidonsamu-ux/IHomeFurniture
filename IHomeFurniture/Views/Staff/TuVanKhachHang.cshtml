@@ -1,157 +1,321 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+﻿
+@using System.Linq
+@model List<IHomeFurniture.Controllers.StaffRow>
+
+@{
     ViewBag.Title = "Tư vấn khách hàng";
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+
+    int status = (int)ViewBag.TrangThai;
+
+    int all = Model.Count;
+    int waiting = Model.Count(x => !x.Yes("TrangThai"));
+    int done = Model.Count(x => x.Yes("TrangThai"));
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h3 class="fw-bold mb-1">Bàn làm việc tư vấn khách hàng</h3>
-        <p class="text-muted small mb-0">Tra cứu nhanh giá sản phẩm và hỗ trợ tư vấn qua Hotline / Zalo</p>
-    </div>
+<div class="mb-7">
+
+    <h1 class="text-2xl font-bold text-gray-800">
+        Chăm sóc & tư vấn khách hàng
+    </h1>
+
+    <p class="text-sm text-gray-500 mt-2">
+        Tiếp nhận, giải đáp và quản lý các yêu cầu liên hệ
+        từ khách hàng IHOME.
+    </p>
+
 </div>
 
-<div class="row g-4">
-    <!-- Cột trái: Danh sách khách hàng cần chăm sóc & tư vấn -->
-    <div class="col-lg-7">
-        <div class="card card-box bg-white p-3 mb-3 shadow-sm border-0">
-            <form method="get" action="@Url.Action("TuVanKhachHang", "Staff")" class="d-flex gap-2">
-                <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                    <input type="text" name="search" class="form-control" placeholder="Tìm nhanh khách hàng theo tên hoặc số điện thoại..." value="@Request.QueryString["search"]" />
-                </div>
-                <button type="submit" class="btn btn-primary px-3"><i class="fa-solid fa-search"></i></button>
-                <a href="@Url.Action("TuVanKhachHang", "Staff")" class="btn btn-outline-secondary" title="Tải lại"><i class="fa-solid fa-rotate-left"></i></a>
-            </form>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7">
+
+    <a href="@Url.Action("TuVanKhachHang", new { trangThai = 0 })"
+       class="staff-card p-5 hover:shadow-md transition">
+
+        <div class="flex items-center justify-between">
+
+            <div>
+                <p class="text-gray-500 text-sm">
+                    Yêu cầu đang hiển thị
+                </p>
+
+                <h3 class="text-3xl font-bold text-gray-800 mt-2">
+                    @all
+                </h3>
+            </div>
+
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                <i class="fa-solid fa-inbox text-xl"></i>
+            </div>
+
         </div>
 
-        <div class="card card-box bg-white shadow-sm border-0">
-            <div class="card-header bg-white py-3 border-0">
-                <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-headset me-2"></i>Khách hàng cần chăm sóc & liên hệ</h6>
-            </div>
-            <div class="list-group list-group-flush">
-                <!-- KHÁCH HÀNG MẪU 1 -->
-                <div class="list-group-item py-3">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="fw-bold mb-1 text-dark">Nguyễn Văn An</h6>
-                            <p class="text-muted small mb-2">
-                                <i class="fa-solid fa-phone text-success me-1"></i>0901234567
-                                <span class="mx-1">|</span>
-                                <i class="fa-solid fa-envelope text-secondary me-1"></i>an.nguyen@gmail.com
-                            </p>
-                            <span class="badge bg-light text-dark border">Quan tâm: Sofa phòng khách</span>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <a href="tel:0901234567" class="btn btn-sm btn-outline-success" title="Gọi điện trực tiếp">
-                                <i class="fa-solid fa-phone me-1"></i> Gọi
-                            </a>
-                            <a href="https://zalo.me/0901234567" target="_blank" class="btn btn-sm btn-outline-primary fw-semibold" title="Chat Zalo">
-                                Zalo
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    </a>
 
-                <!-- KHÁCH HÀNG MẪU 2 -->
-                <div class="list-group-item py-3">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="fw-bold mb-1 text-dark">Trần Thị Mai</h6>
-                            <p class="text-muted small mb-2">
-                                <i class="fa-solid fa-phone text-success me-1"></i>0988776655
-                                <span class="mx-1">|</span>
-                                <i class="fa-solid fa-envelope text-secondary me-1"></i>mai.tran@yahoo.com
-                            </p>
-                            <span class="badge bg-light text-dark border">Quan tâm: Bàn ăn 6 ghế</span>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <a href="tel:0988776655" class="btn btn-sm btn-outline-success" title="Gọi điện trực tiếp">
-                                <i class="fa-solid fa-phone me-1"></i> Gọi
-                            </a>
-                            <a href="https://zalo.me/0988776655" target="_blank" class="btn btn-sm btn-outline-primary fw-semibold" title="Chat Zalo">
-                                Zalo
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <a href="@Url.Action("TuVanKhachHang", new { trangThai = 1 })"
+       class="staff-card p-5 hover:shadow-md transition">
 
-                <!-- KHÁCH HÀNG MẪU 3 -->
-                <div class="list-group-item py-3">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="fw-bold mb-1 text-dark">Lê Quốc Huy</h6>
-                            <p class="text-muted small mb-2">
-                                <i class="fa-solid fa-phone text-success me-1"></i>0912334455
-                                <span class="mx-1">|</span>
-                                <i class="fa-solid fa-envelope text-secondary me-1"></i>huy.le@outlook.com
-                            </p>
-                            <span class="badge bg-light text-dark border">Cần hỗ trợ giao hàng</span>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <a href="tel:0912334455" class="btn btn-sm btn-outline-success" title="Gọi điện trực tiếp">
-                                <i class="fa-solid fa-phone me-1"></i> Gọi
-                            </a>
-                            <a href="https://zalo.me/0912334455" target="_blank" class="btn btn-sm btn-outline-primary fw-semibold" title="Chat Zalo">
-                                Zalo
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <div class="flex items-center justify-between">
+
+            <div>
+                <p class="text-gray-500 text-sm">
+                    Chưa xử lý trong bộ lọc
+                </p>
+
+                <h3 class="text-3xl font-bold text-yellow-600 mt-2">
+                    @waiting
+                </h3>
             </div>
+
+            <div class="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                <i class="fa-solid fa-hourglass-half text-xl"></i>
+            </div>
+
         </div>
+
+    </a>
+
+    <a href="@Url.Action("TuVanKhachHang", new { trangThai = 2 })"
+       class="staff-card p-5 hover:shadow-md transition">
+
+        <div class="flex items-center justify-between">
+
+            <div>
+                <p class="text-gray-500 text-sm">
+                    Đã xử lý trong bộ lọc
+                </p>
+
+                <h3 class="text-3xl font-bold text-green-600 mt-2">
+                    @done
+                </h3>
+            </div>
+
+            <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-xl"></i>
+            </div>
+
+        </div>
+
+    </a>
+
+</div>
+
+<section class="staff-card overflow-hidden">
+
+    <div class="p-5 border-b border-gray-100 flex flex-wrap justify-between items-center gap-3">
+
+        <h2 class="font-bold text-gray-800 text-lg">
+            <i class="fa-solid fa-comments text-blue-500 mr-2"></i>
+            Danh sách yêu cầu tư vấn
+        </h2>
+
+        <form method="get"
+              action="@Url.Action("TuVanKhachHang")">
+
+            <select name="trangThai"
+                    onchange="this.form.submit()"
+                    class="staff-input text-sm">
+
+                <option value="0"
+                        @(status == 0 ? "selected" : "")>
+                    Tất cả
+                </option>
+
+                <option value="1"
+                        @(status == 1 ? "selected" : "")>
+                    Chưa xử lý
+                </option>
+
+                <option value="2"
+                        @(status == 2 ? "selected" : "")>
+                    Đã xử lý
+                </option>
+
+            </select>
+        </form>
+
     </div>
 
-    <!-- Cột phải: Bảng giá nhanh các mẫu nội thất bán chạy để tư vấn chốt đơn -->
-    <div class="col-lg-5">
-        <div class="card card-box bg-white p-3 shadow-sm border-0">
-            <h6 class="fw-bold mb-3"><i class="fa-solid fa-bolt text-warning me-2"></i>Sản phẩm gợi ý chốt đơn nhanh</h6>
-            <div class="list-group list-group-flush">
-                <div class="list-group-item px-0 py-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fw-semibold text-dark">Sofa Da Góc Chữ L Hiện Đại</div>
-                            <small class="text-muted">Kho còn: <strong class="text-success">14</strong> cái</small>
+    <div class="divide-y divide-gray-100">
+
+        @foreach (var item in Model)
+        {
+            bool processed = item.Yes("TrangThai");
+
+            <article class="p-5 lg:p-6 hover:bg-gray-50/60 transition">
+
+                <div class="flex flex-col lg:flex-row lg:justify-between gap-4">
+
+                    <div class="flex gap-4">
+
+                        <div class="w-12 h-12 shrink-0 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-user"></i>
                         </div>
-                        <span class="text-danger fw-bold">18,500,000 đ</span>
+
+                        <div>
+                            <div class="flex flex-wrap gap-2 items-center">
+
+                                <h3 class="font-bold text-gray-800">
+                                    @item.T("HoTen")
+                                </h3>
+
+                                @if (processed)
+                                {
+                                    <span class="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-semibold">
+                                        Đã xử lý
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full text-xs font-semibold">
+                                        Chờ tư vấn
+                                    </span>
+                                }
+
+                            </div>
+
+                            <p class="text-xs text-gray-500 mt-2">
+                                <i class="fa-regular fa-envelope mr-1"></i>
+                                @item.T("Email")
+                            </p>
+
+                            <p class="text-xs text-gray-500 mt-1">
+                                <i class="fa-solid fa-phone mr-1"></i>
+                                @item.T("DienThoai")
+                            </p>
+                        </div>
+
                     </div>
+
+                    <div class="text-sm text-gray-400 lg:text-right">
+
+                        <p>@("#LH" + item.N("MaLH").ToString("D4"))</p>
+
+                        <p class="mt-1">
+                            <i class="fa-regular fa-clock mr-1"></i>
+                            @item.Date("NgayGui")
+                        </p>
+
+                    </div>
+
                 </div>
 
-                <div class="list-group-item px-0 py-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fw-semibold text-dark">Bộ Bàn Ăn Gỗ Sồi 6 Ghế</div>
-                            <small class="text-muted">Kho còn: <strong class="text-warning">3</strong> cái</small>
+                <div class="mt-5 lg:ml-16">
+
+                    <h4 class="font-semibold text-gray-800 mb-2">
+                        @item.T("TieuDe")
+                    </h4>
+
+                    <p class="text-sm text-gray-600 leading-7 whitespace-pre-wrap">
+                        @item.T("NoiDung")
+                    </p>
+
+                    @if (!string.IsNullOrWhiteSpace(item.T("GhiChuXuLy")))
+                    {
+                        <div class="bg-blue-50 border-l-4 border-blue-400 rounded-r-xl p-4 mt-4">
+
+                            <p class="text-xs font-bold text-blue-700 mb-2">
+                                <i class="fa-solid fa-clipboard-check mr-1"></i>
+                                GHI CHÚ XỬ LÝ
+                            </p>
+
+                            <p class="text-sm text-gray-700 whitespace-pre-wrap">
+                                @item.T("GhiChuXuLy")
+                            </p>
+
+                            <p class="text-xs text-gray-400 mt-3">
+                                @item.T("TenNhanVien") ·
+                                @item.Date("NgayXuLy")
+                            </p>
+
                         </div>
-                        <span class="text-danger fw-bold">12,200,000 đ</span>
-                    </div>
+                    }
+
+                    <details class="mt-5 border border-gray-200 rounded-xl bg-white">
+
+                        <summary class="cursor-pointer p-4 font-semibold text-blue-600 text-sm select-none">
+                            <i class="fa-solid fa-pen-to-square mr-2"></i>
+                            @(processed ? "Cập nhật kết quả / Mở lại" : "Xử lý yêu cầu tư vấn")
+                        </summary>
+
+                        <div class="p-4 border-t border-gray-100">
+
+                            @using (Html.BeginForm(
+                                "XuLyLienHe",
+                                "Staff",
+                                FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.N("MaLH")" />
+
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    Nội dung ghi chú
+                                </label>
+
+                                <textarea name="ghiChu"
+                                          rows="4"
+                                          minlength="5"
+                                          maxlength="1000"
+                                          required
+                                          class="staff-input w-full"
+                                          placeholder="Ví dụ: Đã liên hệ khách hàng, tư vấn sản phẩm phù hợp...">@item.T("GhiChuXuLy")</textarea>
+
+                                <div class="flex flex-wrap gap-3 mt-4">
+
+                                    <button type="submit"
+                                            name="daXuLy"
+                                            value="true"
+                                            class="staff-button">
+                                        <i class="fa-solid fa-check"></i>
+                                        Lưu & hoàn tất
+                                    </button>
+
+                                    <button type="submit"
+                                            name="daXuLy"
+                                            value="false"
+                                            class="px-4 py-2.5 rounded-xl border border-yellow-300 bg-yellow-50 text-yellow-700 hover:bg-yellow-100 text-sm font-semibold">
+                                        <i class="fa-solid fa-rotate-left mr-1"></i>
+                                        Lưu & chờ xử lý
+                                    </button>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </details>
+
                 </div>
 
-                <div class="list-group-item px-0 py-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fw-semibold text-dark">Giường Ngủ Tân Cổ Điển 1m8</div>
-                            <small class="text-muted">Kho còn: <strong class="text-success">8</strong> cái</small>
-                        </div>
-                        <span class="text-danger fw-bold">9,800,000 đ</span>
-                    </div>
-                </div>
+            </article>
+        }
 
-                <div class="list-group-item px-0 py-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fw-semibold text-dark">Bàn Trà Mặt Đá Khung Kim Loại</div>
-                            <small class="text-muted">Kho còn: <strong class="text-success">20</strong> cái</small>
-                        </div>
-                        <span class="text-danger fw-bold">3,500,000 đ</span>
-                    </div>
-                </div>
+        @if (!Model.Any())
+        {
+            <div class="py-20 text-center">
+
+                <i class="fa-solid fa-comments text-5xl text-gray-300 mb-5"></i>
+
+                <p class="text-gray-500 font-semibold">
+                    Không có yêu cầu tư vấn phù hợp.
+                </p>
+
+                <p class="text-gray-400 text-sm mt-2">
+                    Các liên hệ mới của khách hàng sẽ hiển thị tại đây.
+                </p>
+
             </div>
-
-            <div class="mt-3 pt-2 border-top">
-                <a href="@Url.Action("TheoDoiSanPham", "Staff")" class="btn btn-sm btn-outline-secondary w-100">
-                    <i class="fa-solid fa-boxes-stacked me-1"></i> Tra cứu tồn kho toàn bộ showroom
-                </a>
-            </div>
-        </div>
+        }
++
     </div>
+
+</section>
+
+<div class="mt-5 bg-blue-50 border border-blue-100 p-4 rounded-xl text-sm text-blue-800">
+    <i class="fa-solid fa-circle-info mr-2"></i>
+    Ghi chú và trạng thái xử lý được lưu vào SQL Server.
+    Chức năng này chưa tự động gửi email hoặc tin nhắn cho khách hàng.
+    Danh sách hiển thị tối đa 200 liên hệ theo bộ lọc.
 </div>

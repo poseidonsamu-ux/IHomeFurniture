@@ -1,92 +1,291 @@
-﻿@{
+﻿@using System.Linq
+@model List<IHomeFurniture.Controllers.StaffRow>
+
+@{
+    ViewBag.Title = "Theo dõi sản phẩm";
     Layout = "~/Views/Shared/_LayoutStaff.cshtml";
-    ViewBag.Title = "Theo dõi sản phẩm & Tồn kho";
-    string searchTerm = ViewBag.SearchTerm as string ?? Request.QueryString["search"] ?? "";
+
+    string q = (string)ViewBag.Search;
+    bool low = (bool)ViewBag.SapHet;
+
+    int total = Model.Count;
+    int warning = Model.Count(x => x.N("SoLuongTon") <= 5);
+    int available = Model.Count(x => x.N("SoLuongTon") > 5);
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h3 class="fw-bold mb-0">Theo dõi sản phẩm & Tồn kho</h3>
-        <p class="text-muted small mb-0">Kiểm soát số lượng tồn kho nội thất nhằm tư vấn đơn hàng kịp thời</p>
+<div class="mb-7">
+    <h1 class="text-2xl font-bold text-gray-800">
+        Quản lý kho sản phẩm
+    </h1>
+
+    <p class="text-sm text-gray-500 mt-2">
+        Theo dõi số lượng tồn, giá bán và cập nhật kho hàng IHOME.
+    </p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-7">
+
+    <div class="staff-card p-5 flex items-center gap-4">
+
+        <div class="w-14 h-14 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+            <i class="fa-solid fa-couch text-xl"></i>
+        </div>
+
+        <div>
+            <p class="text-sm text-gray-500">
+                Sản phẩm hiển thị
+            </p>
+
+            <h3 class="text-2xl font-bold text-gray-800 mt-1">
+                @total
+            </h3>
+        </div>
+
     </div>
+
+    <div class="staff-card p-5 flex items-center gap-4">
+
+        <div class="w-14 h-14 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
+            <i class="fa-solid fa-boxes-stacked text-xl"></i>
+        </div>
+
+        <div>
+            <p class="text-sm text-gray-500">
+                Tồn trên 5 sản phẩm
+            </p>
+
+            <h3 class="text-2xl font-bold text-gray-800 mt-1">
+                @available
+            </h3>
+        </div>
+
+    </div>
+
+    <div class="staff-card p-5 flex items-center gap-4">
+
+        <div class="w-14 h-14 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+        </div>
+
+        <div>
+            <p class="text-sm text-gray-500">
+                Sắp hết / hết hàng
+            </p>
+
+            <h3 class="text-2xl font-bold text-gray-800 mt-1">
+                @warning
+            </h3>
+        </div>
+
+    </div>
+
 </div>
 
-<!-- Thanh tìm kiếm & lọc danh mục -->
-<div class="card card-box bg-white p-3 mb-4 shadow-sm border-0">
-    <form method="get" action="@Url.Action("TheoDoiSanPham", "Staff")" class="row g-2">
-        <div class="col-md-6">
-            <div class="input-group">
-                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                <input type="text" name="search" class="form-control" placeholder="Tìm theo tên sản phẩm, mã SKU..." value="@searchTerm" />
+<section class="staff-card overflow-hidden">
+
+    <div class="p-5 border-b border-gray-100">
+
+        <form method="get"
+              action="@Url.Action("TheoDoiSanPham")"
+              class="flex flex-col md:flex-row gap-3">
+
+            <div class="relative flex-1">
+
+                <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+
+                <input name="q"
+                       value="@q"
+                       class="staff-input w-full pl-11"
+                       placeholder="Tìm tên sản phẩm hoặc mã sản phẩm..." />
             </div>
-        </div>
-        <div class="col-md-4">
-            <select name="categoryId" class="form-select">
-                <option value="">-- Tất cả danh mục nội thất --</option>
-                <option value="1">Sofa - Bàn trà</option>
-                <option value="2">Bàn ghế ăn</option>
-                <option value="3">Giường - Tủ phòng ngủ</option>
-                <option value="4">Bàn làm việc</option>
-            </select>
-        </div>
-        <div class="col-md-2 d-flex gap-2">
-            <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-filter me-1"></i> Lọc kho</button>
-            <a href="@Url.Action("TheoDoiSanPham", "Staff")" class="btn btn-outline-secondary" title="Tải lại"><i class="fa-solid fa-rotate-left"></i></a>
-        </div>
-    </form>
-</div>
 
-<!-- Bảng hiển thị danh sách sản phẩm và cảnh báo kho -->
-<div class="card card-box bg-white shadow-sm border-0">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
+            <select name="sapHet"
+                    class="staff-input md:w-56">
+
+                <option value="false"
+                        @(!low ? "selected" : "")>
+                    Tất cả sản phẩm
+                </option>
+
+                <option value="true"
+                        @(low ? "selected" : "")>
+                    Sản phẩm tồn ≤ 5
+                </option>
+
+            </select>
+
+            <button type="submit" class="staff-button">
+                <i class="fa-solid fa-filter"></i>
+                Lọc
+            </button>
+
+            <a href="@Url.Action("TheoDoiSanPham")"
+               class="px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 text-center">
+                Đặt lại
+            </a>
+
+        </form>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="staff-table">
+
+            <thead>
                 <tr>
-                    <th>Mã SKU</th>
-                    <th>Tên sản phẩm</th>
+                    <th>Sản phẩm</th>
                     <th>Danh mục</th>
-                    <th>Giá niêm yết</th>
-                    <th class="text-center">Số lượng tồn</th>
-                    <th>Cảnh báo kho</th>
+                    <th>Giá bán</th>
+                    <th>Số lượng</th>
+                    <th>Trạng thái kho</th>
+                    <th>Điều chỉnh tồn kho</th>
                 </tr>
             </thead>
+
             <tbody>
-                <!-- DỮ LIỆU MẪU 1 -->
-                <tr>
-                    <td class="fw-semibold text-secondary">SF-L01</td>
-                    <td class="fw-bold">Sofa Da Góc Chữ L Hiện Đại</td>
-                    <td>Sofa - Bàn trà</td>
-                    <td class="text-danger fw-bold">18,500,000 đ</td>
-                    <td class="text-center fw-bold fs-6">14</td>
-                    <td>
-                        <span class="badge bg-success"><i class="fa-solid fa-circle-check me-1"></i>Sẵn sàng giao</span>
-                    </td>
-                </tr>
 
-                <!-- DỮ LIỆU MẪU 2 -->
-                <tr>
-                    <td class="fw-semibold text-secondary">BA-S06</td>
-                    <td class="fw-bold">Bộ Bàn Ăn Gỗ Sồi Tự Nhiên 6 Ghế</td>
-                    <td>Bàn ghế ăn</td>
-                    <td class="text-danger fw-bold">12,200,000 đ</td>
-                    <td class="text-center fw-bold fs-6 text-warning">3</td>
-                    <td>
-                        <span class="badge bg-warning text-dark"><i class="fa-solid fa-triangle-exclamation me-1"></i>Sắp hết hàng (≤ 5)</span>
-                    </td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    int stock = item.N("SoLuongTon");
 
-                <!-- DỮ LIỆU MẪU 3 -->
-                <tr>
-                    <td class="fw-semibold text-secondary">GN-M02</td>
-                    <td class="fw-bold">Giường Ngủ Bọc Nệm Tân Cổ Điển</td>
-                    <td>Giường - Tủ phòng ngủ</td>
-                    <td class="text-danger fw-bold">9,800,000 đ</td>
-                    <td class="text-center fw-bold fs-6 text-danger">0</td>
-                    <td>
-                        <span class="badge bg-danger"><i class="fa-solid fa-circle-xmark me-1"></i>Hết hàng</span>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <div class="flex items-center gap-3 min-w-[200px]">
+
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-50 to-gray-100 rounded-xl flex items-center justify-center text-blue-500 shrink-0">
+                                    <i class="fa-solid fa-couch text-lg"></i>
+                                </div>
+
+                                <div>
+                                    <p class="font-semibold text-gray-800">
+                                        @item.T("TenSP")
+                                    </p>
+
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        #SP@item.N("MaSP").ToString("D4")
+                                    </p>
+                                </div>
+
+                            </div>
+                        </td>
+
+                        <td class="text-gray-600">
+                            @item.T("TenDanhMuc")
+                        </td>
+
+                        <td>
+                            <p class="font-semibold text-gray-800 whitespace-nowrap">
+                                @item.Vnd("GiaBan")
+                            </p>
+                        </td>
+
+                        <td>
+                            <span class="text-lg font-bold @(stock <= 5 ? "text-red-600" : "text-gray-800")">
+                                @stock
+                            </span>
+                        </td>
+
+                        <td>
+                            @if (!item.Yes("TrangThai"))
+                            {
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    Ngừng bán
+                                </span>
+                            }
+                            else if (stock == 0)
+                            {
+                                <span class="bg-red-100 text-red-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    <i class="fa-solid fa-circle-xmark mr-1"></i>
+                                    Hết hàng
+                                </span>
+                            }
+                            else if (stock <= 5)
+                            {
+                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                                    Sắp hết
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    <i class="fa-solid fa-check-circle mr-1"></i>
+                                    Còn hàng
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @using (Html.BeginForm(
+                                "CapNhatTonKho",
+                                "Staff",
+                                FormMethod.Post,
+                                new { @class = "flex flex-col gap-2 min-w-[185px]" }
+                            ))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.N("MaSP")" />
+
+                                <input type="number"
+                                       name="soLuong"
+                                       value="@stock"
+                                       min="0"
+                                       max="1000000"
+                                       required
+                                       class="staff-input w-full text-sm" />
+
+                                <input type="text"
+                                       name="lyDo"
+                                       minlength="5"
+                                       maxlength="200"
+                                       required
+                                       class="staff-input w-full text-xs"
+                                       placeholder="Lý do điều chỉnh..." />
+
+                                <button type="submit"
+                                        onclick="return confirm('Bạn chắc chắn muốn thay đổi tồn kho?')"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-semibold transition">
+                                    <i class="fa-solid fa-floppy-disk mr-1"></i>
+                                    Lưu tồn kho
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6"
+                            class="py-16 text-center text-gray-400">
+
+                            <i class="fa-solid fa-box-open text-4xl mb-4"></i>
+                            <p>Không có sản phẩm phù hợp.</p>
+                        </td>
+                    </tr>
+                }
+
             </tbody>
+
         </table>
+
     </div>
+
+</section>
+
+<div class="mt-5 bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3">
+
+    <i class="fa-solid fa-circle-info text-blue-600 mt-0.5"></i>
+
+    <p class="text-sm text-blue-800">
+        <strong>Lưu ý:</strong> Mọi thao tác chỉnh sửa tồn kho
+        đều được ghi vào bảng NHATKYNHANVIEN.
+        Hãy nhập lý do chính xác trước khi lưu.
+        Bảng hiển thị tối đa 200 sản phẩm khớp bộ lọc.
+    </p>
+
 </div>

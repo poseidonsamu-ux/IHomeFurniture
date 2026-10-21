@@ -1,0 +1,340 @@
+﻿@using System.Linq
+@model IHomeFurniture.Controllers.StaffRow
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+
+    var details =
+        (List<IHomeFurniture.Controllers.StaffRow>)ViewBag.ChiTiet;
+
+    var history =
+        (List<IHomeFurniture.Controllers.StaffRow>)ViewBag.NhatKy;
+
+    int status = Model.N("MaTT");
+
+    int nextStatus =
+        status == 1 ? 2 :
+        status == 2 ? 3 :
+        status == 3 ? 4 :
+        status == 4 ? 6 : 0;
+
+    string nextText =
+        status == 1 ? "Xác nhận đơn hàng" :
+        status == 2 ? "Bàn giao vận chuyển" :
+        status == 3 ? "Xác nhận đã giao" :
+        status == 4 ? "Ghi nhận hoàn trả" : "";
+
+    int orderId = Model.N("MaDonHang");
+}
+
+<div class="flex flex-wrap justify-between items-center gap-4 mb-7">
+
+    <div>
+
+        <a href="@Url.Action("QuanLyDonHang")"
+           class="text-sm text-blue-600 hover:underline font-semibold">
+            <i class="fa-solid fa-arrow-left mr-2"></i>
+            Quay lại danh sách
+        </a>
+
+        <h1 class="text-2xl font-bold text-gray-800 mt-3">
+            Đơn hàng #@orderId.ToString("D5")
+        </h1>
+
+        <p class="text-gray-500 text-sm mt-2">
+            Ngày đặt: @Model.Date("NgayDat")
+        </p>
+
+    </div>
+
+    <span class="staff-badge staff-badge-@status">
+        @Model.T("TenTrangThai")
+    </span>
+
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <div class="xl:col-span-2 space-y-6">
+
+        <section class="staff-card overflow-hidden">
+
+            <div class="p-5 border-b border-gray-100">
+
+                <h2 class="font-bold text-lg text-gray-800">
+                    <i class="fa-solid fa-box text-blue-500 mr-2"></i>
+                    Sản phẩm đã đặt
+                </h2>
+
+            </div>
+
+            <div class="overflow-x-auto">
+
+                <table class="staff-table">
+
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var product in details)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+
+                                        <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center shrink-0">
+                                            <i class="fa-solid fa-couch"></i>
+                                        </div>
+
+                                        <div>
+                                            <p class="font-semibold text-gray-800">
+                                                @product.T("TenSP")
+                                            </p>
+
+                                            <p class="text-xs text-gray-400 mt-1">
+                                                SP #@product.N("MaSP")
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @product.Vnd("DonGia")
+                                </td>
+
+                                <td class="font-semibold">
+                                    @product.N("SoLuong")
+                                </td>
+
+                                <td class="font-bold text-blue-600">
+                                    @product.Vnd("ThanhTien")
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="p-6 bg-gray-50 border-t border-gray-100">
+
+                <div class="flex justify-between mb-3 text-sm">
+                    <span class="text-gray-500">
+                        Phí vận chuyển
+                    </span>
+
+                    <span class="font-semibold text-gray-700">
+                        @Model.Vnd("PhiVanChuyen")
+                    </span>
+                </div>
+
+                <div class="flex justify-between pt-4 border-t border-gray-200">
+
+                    <span class="font-bold text-gray-800">
+                        Tổng giá trị đơn hàng
+                    </span>
+
+                    <span class="text-2xl font-bold text-blue-600">
+                        @Model.Vnd("TongTien")
+                    </span>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="staff-card p-6">
+
+            <h2 class="font-bold text-lg text-gray-800 mb-5">
+                <i class="fa-solid fa-clock-rotate-left text-blue-500 mr-2"></i>
+                Lịch sử xử lý
+            </h2>
+
+            <div class="space-y-5">
+
+                @foreach (var log in history)
+                {
+                    <div class="flex gap-4">
+
+                        <div class="flex flex-col items-center">
+                            <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <span class="flex-1 w-px bg-gray-200 mt-2"></span>
+                        </div>
+
+                        <div class="flex-1 pb-3">
+                            <p class="font-semibold text-gray-800 text-sm">
+                                @log.T("HanhDong")
+                            </p>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                @log.T("NoiDung")
+                            </p>
+
+                            <p class="text-xs text-gray-400 mt-2">
+                                <i class="fa-solid fa-user mr-1"></i>
+                                @log.T("HoTen")
+
+                                <span class="mx-2">·</span>
+
+                                @log.Date("NgayThucHien")
+                            </p>
+                        </div>
+
+                    </div>
+                }
+
+                @if (!history.Any())
+                {
+                    <p class="text-gray-400 text-sm">
+                        Chưa có lịch sử cập nhật từ nhân viên.
+                    </p>
+                }
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="space-y-6">
+
+        <section class="staff-card p-6">
+
+            <h2 class="font-bold text-lg text-gray-800 mb-5">
+                <i class="fa-solid fa-user text-blue-500 mr-2"></i>
+                Thông tin khách hàng
+            </h2>
+
+            <div class="space-y-4 text-sm">
+
+                <div>
+                    <p class="text-gray-400 mb-1">Người đặt</p>
+                    <p class="font-semibold text-gray-800">
+                        @Model.T("HoTen")
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-gray-400 mb-1">Email</p>
+                    <p class="font-medium text-gray-700 break-all">
+                        @Model.T("Email")
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-gray-400 mb-1">Số điện thoại nhận hàng</p>
+                    <p class="font-medium text-gray-700">
+                        @Model.T("DienThoaiNhan")
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-gray-400 mb-1">Địa chỉ giao hàng</p>
+                    <p class="font-medium text-gray-700">
+                        @Model.T("DiaChiGiaoHang")
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-gray-400 mb-1">Phương thức thanh toán</p>
+                    <p class="font-medium text-gray-700">
+                        @Model.T("TenPhuongThuc")
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-gray-400 mb-1">Ghi chú của khách</p>
+                    <p class="text-gray-700 whitespace-pre-wrap">
+                        @(string.IsNullOrWhiteSpace(Model.T("GhiChu"))
+                            ? "Không có ghi chú"
+                            : Model.T("GhiChu"))
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="staff-card p-6">
+
+            <h2 class="font-bold text-lg text-gray-800 mb-2">
+                <i class="fa-solid fa-list-check text-blue-500 mr-2"></i>
+                Xử lý đơn hàng
+            </h2>
+
+            <p class="text-xs text-gray-500 mb-5">
+                Mỗi lần thay đổi trạng thái sẽ được ghi nhật ký.
+            </p>
+
+            @if (nextStatus > 0)
+            {
+                using (Html.BeginForm(
+                    "CapNhatDonHang",
+                    "Staff",
+                    FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="id"
+                           value="@orderId" />
+
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Ghi chú xử lý
+                    </label>
+
+                    <textarea name="ghiChu"
+                              maxlength="400"
+                              rows="4"
+                              class="staff-input w-full mb-4"
+                              placeholder="Nhập ghi chú nếu cần..."></textarea>
+
+                    <button type="submit"
+                            name="trangThai"
+                            value="@nextStatus"
+                            onclick="return confirm('Xác nhận cập nhật trạng thái đơn hàng?')"
+                            class="staff-button w-full">
+                        <i class="fa-solid fa-check"></i>
+                        @nextText
+                    </button>
+
+                    if (status == 1 || status == 2)
+                    {
+                        <button type="submit"
+                                name="trangThai"
+                                value="5"
+                                onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?')"
+                                class="w-full mt-3 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 font-semibold text-sm">
+                            <i class="fa-solid fa-ban mr-2"></i>
+                            Hủy đơn hàng
+                        </button>
+                    }
+                }
+            }
+            else
+            {
+                <div class="bg-gray-50 text-gray-500 text-sm rounded-xl p-4 text-center">
+                    <i class="fa-solid fa-circle-check mb-2 text-xl"></i>
+
+                    <p>
+                        Đơn hàng ở trạng thái kết thúc,
+                        không còn bước xử lý tiếp theo.
+                    </p>
+                </div>
+            }
+
+        </section>
+
+    </div>
+
+</div>

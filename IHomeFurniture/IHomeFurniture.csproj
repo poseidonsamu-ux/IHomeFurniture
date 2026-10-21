@@ -374,6 +374,8 @@
     <Content Include="Views\Staff\QuanLyKhachHang.cshtml" />
     <Content Include="Views\Staff\TuVanKhachHang.cshtml" />
     <Content Include="Views\Shared\_LayoutStaff.cshtml" />
+    <Content Include="Views\Staff\ChiTietDonHang.cshtml" />
+    <Content Include="Views\Staff\DangNhap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,107 +1,178 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+﻿@using System.Linq
+@model List<IHomeFurniture.Controllers.StaffRow>
+
+@{
     ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Views/Shared/_LayoutStaff.cshtml";
+
+    string q = (string)ViewBag.Search;
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="flex flex-wrap justify-between items-center gap-4 mb-7">
+
     <div>
-        <h3 class="fw-bold mb-0">Hồ sơ khách hàng</h3>
-        <p class="text-muted small mb-0">Tra cứu lịch sử mua sắm và thông tin liên hệ của khách</p>
+        <h1 class="text-2xl font-bold text-gray-800">
+            Danh sách khách hàng
+        </h1>
+
+        <p class="text-sm text-gray-500 mt-2">
+            Tra cứu thông tin và theo dõi hoạt động mua hàng.
+        </p>
     </div>
+
+    <span class="bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-semibold text-sm">
+        <i class="fa-solid fa-users mr-2"></i>
+        @Model.Count kết quả
+    </span>
+
 </div>
 
-<!-- Thanh tìm kiếm -->
-<div class="card card-box bg-white p-3 mb-4 shadow-sm border-0">
-    <form method="get" action="@Url.Action("QuanLyKhachHang", "Staff")" class="row g-2">
-        <div class="col-md-9">
-            <div class="input-group">
-                <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                <input type="text" name="search" class="form-control" placeholder="Tìm theo tên khách hàng, email, số điện thoại..." value="@Request.QueryString["search"]" />
+<section class="staff-card overflow-hidden">
+
+    <div class="p-5 border-b border-gray-100">
+
+        <form method="get"
+              action="@Url.Action("QuanLyKhachHang")"
+              class="flex flex-col md:flex-row gap-3">
+
+            <div class="relative flex-1">
+
+                <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+
+                <input name="q"
+                       value="@q"
+                       class="staff-input w-full pl-11"
+                       placeholder="Tìm tên, email, số điện thoại..." />
+
             </div>
-        </div>
-        <div class="col-md-3 d-flex gap-2">
-            <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-filter me-1"></i> Tìm kiếm</button>
-            <a href="@Url.Action("QuanLyKhachHang", "Staff")" class="btn btn-outline-secondary" title="Tải lại"><i class="fa-solid fa-rotate-left"></i></a>
-        </div>
-    </form>
-</div>
 
-<!-- Bảng danh sách khách hàng -->
-<div class="card card-box bg-white shadow-sm border-0">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
+            <button type="submit" class="staff-button">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Tìm kiếm
+            </button>
+
+            <a href="@Url.Action("QuanLyKhachHang")"
+               class="px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 text-center">
+                Đặt lại
+            </a>
+
+        </form>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="staff-table">
+
+            <thead>
                 <tr>
-                    <th>Họ và tên</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Địa chỉ nhận hàng</th>
-                    <th class="text-center">Số đơn đã đặt</th>
+                    <th>Khách hàng</th>
+                    <th>Thông tin liên hệ</th>
                     <th>Ngày tham gia</th>
-                    <th class="text-end">Hành động</th>
+                    <th>Số đơn</th>
+                    <th>Đã mua</th>
+                    <th>Trạng thái</th>
                 </tr>
             </thead>
+
             <tbody>
-                <!-- DỮ LIỆU MẪU 1 -->
-                <tr>
-                    <td>
-                        <div class="fw-bold text-dark">Nguyễn Văn An</div>
-                        <small class="text-muted">Mã: KH001</small>
-                    </td>
-                    <td>an.nguyen@gmail.com</td>
-                    <td><span class="fw-semibold">0901234567</span></td>
-                    <td class="text-truncate" style="max-width: 200px;" title="123 Lê Duẩn, P. Bến Nghé, Quận 1, TP.HCM">123 Lê Duẩn, P. Bến Nghé, Quận 1, TP.HCM</td>
-                    <td class="text-center">
-                        <span class="badge bg-primary rounded-pill">3 đơn</span>
-                    </td>
-                    <td>15/01/2026</td>
-                    <td class="text-end">
-                        <a href="@Url.Action("TuVanKhachHang", "Staff", new { search = "0901234567" })" class="btn btn-sm btn-outline-success">
-                            <i class="fa-solid fa-comments me-1"></i> Tư vấn
-                        </a>
-                    </td>
-                </tr>
 
-                <!-- DỮ LIỆU MẪU 2 -->
-                <tr>
-                    <td>
-                        <div class="fw-bold text-dark">Trần Thị Mai</div>
-                        <small class="text-muted">Mã: KH002</small>
-                    </td>
-                    <td>mai.tran@yahoo.com</td>
-                    <td><span class="fw-semibold">0988776655</span></td>
-                    <td class="text-truncate" style="max-width: 200px;" title="456 Điện Biên Phủ, Bình Thạnh, TP.HCM">456 Điện Biên Phủ, Bình Thạnh, TP.HCM</td>
-                    <td class="text-center">
-                        <span class="badge bg-primary rounded-pill">1 đơn</span>
-                    </td>
-                    <td>02/02/2026</td>
-                    <td class="text-end">
-                        <a href="@Url.Action("TuVanKhachHang", "Staff", new { search = "0988776655" })" class="btn btn-sm btn-outline-success">
-                            <i class="fa-solid fa-comments me-1"></i> Tư vấn
-                        </a>
-                    </td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="flex items-center gap-3 min-w-[180px]">
 
-                <!-- DỮ LIỆU MẪU 3 -->
-                <tr>
-                    <td>
-                        <div class="fw-bold text-dark">Lê Quốc Huy</div>
-                        <small class="text-muted">Mã: KH003</small>
-                    </td>
-                    <td>huy.le@outlook.com</td>
-                    <td><span class="fw-semibold">0912334455</span></td>
-                    <td class="text-truncate" style="max-width: 200px;" title="78 Võ Văn Tần, Quận 3, TP.HCM">78 Võ Văn Tần, Quận 3, TP.HCM</td>
-                    <td class="text-center">
-                        <span class="badge bg-secondary rounded-pill">0 đơn</span>
-                    </td>
-                    <td>10/03/2026</td>
-                    <td class="text-end">
-                        <a href="@Url.Action("TuVanKhachHang", "Staff", new { search = "0912334455" })" class="btn btn-sm btn-outline-success">
-                            <i class="fa-solid fa-comments me-1"></i> Tư vấn
-                        </a>
-                    </td>
-                </tr>
+                                <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold shrink-0">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+
+                                <div>
+                                    <p class="font-semibold text-gray-800">
+                                        @item.T("HoTen")
+                                    </p>
+
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        @item.T("TaiKhoan")
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <p class="text-gray-700 break-all">
+                                <i class="fa-regular fa-envelope text-gray-400 mr-1"></i>
+                                @item.T("Email")
+                            </p>
+
+                            <p class="text-xs text-gray-500 mt-2">
+                                <i class="fa-solid fa-phone text-gray-400 mr-1"></i>
+                                @item.T("DienThoai")
+                            </p>
+
+                            <p class="text-xs text-gray-400 mt-2 max-w-[250px]">
+                                @item.T("DiaChi")
+                            </p>
+                        </td>
+
+                        <td class="text-gray-600 whitespace-nowrap">
+                            @item.Date("NgayTao")
+                        </td>
+
+                        <td>
+                            <span class="font-bold text-gray-800">
+                                @item.N("SoDon")
+                            </span>
+                        </td>
+
+                        <td class="font-semibold text-blue-600 whitespace-nowrap">
+                            @item.Vnd("DaMua")
+                        </td>
+
+                        <td>
+                            @if (item.Yes("TrangThai"))
+                            {
+                                <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    Hoạt động
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs font-semibold">
+                                    Đã khóa
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6"
+                            class="py-16 text-center text-gray-400">
+
+                            <i class="fa-solid fa-users-slash text-4xl mb-4"></i>
+                            <p>Không tìm thấy khách hàng.</p>
+                        </td>
+                    </tr>
+                }
+
             </tbody>
+
         </table>
+
     </div>
+
+</section>
+
+<div class="mt-5 bg-white rounded-xl border border-gray-200 px-5 py-4">
+
+    <p class="text-sm text-gray-500">
+        <i class="fa-solid fa-shield-halved text-blue-500 mr-2"></i>
+        Nhân viên được phép tra cứu khách hàng để hỗ trợ
+        đơn hàng và chăm sóc khách hàng. Việc khóa, xóa hoặc
+        thay đổi tài khoản thuộc quyền quản trị viên.
+    </p>
+
 </div>
